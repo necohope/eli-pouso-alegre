@@ -23,11 +23,36 @@
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function num(n) { return Number(n || 0).toLocaleString("pt-BR"); }
-  function sessao() { try { var a = JSON.parse(localStorage.getItem(CHAVE) || "null"); return a && a.exp > Date.now() ? a : null; } catch (e) { return null; } }
+  function sessao() { if (DEMO) return { email: "demonstração", exp: Infinity }; try { var a = JSON.parse(localStorage.getItem(CHAVE) || "null"); return a && a.exp > Date.now() ? a : null; } catch (e) { return null; } }
   function salvar(a) { try { localStorage.setItem(CHAVE, JSON.stringify(a)); } catch (e) { /* navegação privada: login só nesta aba */ } }
   function limpar() { try { localStorage.removeItem(CHAVE); } catch (e) { /* ok */ } }
 
+  // Modo demonstração (admin.html?demo): dados fictícios, sem login, nada é enviado.
+  var DEMO = /[?&]demo\b/.test(location.search);
+  function demo(corpo) {
+    var n = corpo.dias || 30, serie = [], seed = 3;
+    function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+    for (var i = n - 1; i >= 0; i--) {
+      var d = new Date(Date.now() - i * 86400000), fds = d.getDay() === 0 || d.getDay() === 6;
+      var v = Math.round((fds ? 9 : 22) + rnd() * 14 + (n - i) * 0.3);
+      serie.push({ dia: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"), visitantes: v, paginas: Math.round(v * (2.2 + rnd())) });
+    }
+    var vis = serie.reduce(function (a, x) { return a + x.visitantes; }, 0), pag = serie.reduce(function (a, x) { return a + x.paginas; }, 0);
+    var ids = (window.ELI_EVENTOS || []).filter(function (e) { return e.data >= "2026-10-01"; }).slice(0, 6).map(function (e) { return e.id; });
+    return Promise.resolve({ ok: true, dias: n, geradoEm: "agora (demonstração)", totais: { paginas: pag, visitantes: vis, novos: Math.round(vis * 0.62), viaApp: Math.round(vis * 0.04) },
+      hoje: serie[serie.length - 1], serie: serie,
+      paginas: [{ nome: "agenda", total: Math.round(pag * 0.48) }, { nome: "inicio", total: Math.round(pag * 0.39) }, { nome: "governanca", total: Math.round(pag * 0.13) }],
+      acoes: [{ nome: "evento_aberto", total: Math.round(vis * 0.35) }, { nome: "salvar_agenda", total: Math.round(vis * 0.08) }, { nome: "whatsapp", total: Math.round(vis * 0.05) }, { nome: "inscricao", total: Math.round(vis * 0.04) }, { nome: "convite_app", total: Math.round(vis * 0.2) }, { nome: "app_instalado", total: Math.round(vis * 0.02) }, { nome: "cadastro_enviado", total: 4 }],
+      origens: [{ nome: "Direto ou app", total: Math.round(vis * 0.41) }, { nome: "instagram.com", total: Math.round(vis * 0.24) }, { nome: "google.com", total: Math.round(vis * 0.16) }, { nome: "whatsapp", total: Math.round(vis * 0.11) }, { nome: "linkedin.com", total: Math.round(vis * 0.05) }],
+      eventosAbertos: ids.map(function (id, k) { return { nome: id, total: Math.round(vis * 0.1 / (k + 1)) }; }),
+      dispositivos: [{ nome: "celular", total: Math.round(vis * 0.71) }, { nome: "computador", total: Math.round(vis * 0.26) }, { nome: "tablet", total: Math.round(vis * 0.03) }],
+      navegadores: [{ nome: "Chrome", total: Math.round(vis * 0.58) }, { nome: "Safari", total: Math.round(vis * 0.31) }, { nome: "Samsung", total: Math.round(vis * 0.07) }, { nome: "Edge", total: Math.round(vis * 0.04) }],
+      sistemas: [{ nome: "Android", total: Math.round(vis * 0.52) }, { nome: "iOS", total: Math.round(vis * 0.23) }, { nome: "Windows", total: Math.round(vis * 0.17) }, { nome: "macOS", total: Math.round(vis * 0.08) }],
+      agenda: { pendente: 3, aprovado: 12, recusado: 1 } });
+  }
+
   function api(corpo) {
+    if (DEMO) return demo(corpo);
     if (!CFG.ENDPOINT) return Promise.reject(new Error("A planilha ainda não está ligada ao site (ENDPOINT vazio em config.js)."));
     return fetch(CFG.ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(corpo) })
       .then(function (r) { if (!r.ok) throw new Error("A planilha respondeu com erro " + r.status + "."); return r.json(); })
@@ -163,5 +188,11 @@
   }
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { if (ultimo) grafico(ultimo.serie); }, 150); });
 
+  if (DEMO) {
+    var aviso = document.createElement("p");
+    aviso.className = "adm-demo"; aviso.textContent = "Demonstração com dados fictícios. Os números reais aparecem depois que a planilha for ligada.";
+    $("[data-painel]").insertBefore(aviso, $("[data-painel]").firstChild);
+    $("[data-sair]").style.display = "none";
+  }
   if (sessao()) { mostrar("painel"); carregar(); } else mostrar("login");
 })();

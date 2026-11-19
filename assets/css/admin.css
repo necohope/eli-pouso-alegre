@@ -49,3 +49,4 @@
 
 .adm-tip { position: fixed; z-index: 60; pointer-events: none; background: var(--ink-deep); color: #fff; font-size: .8125rem; line-height: 1.35; padding: 8px 10px; border-radius: 8px; box-shadow: 0 8px 24px rgba(28,44,107,.25); }
 .adm-tip strong { display: block; font-weight: 700; }
+.adm-demo { background: var(--sun); color: var(--ink); font-weight: 700; border-radius: 10px; padding: 10px 14px; margin: 0 0 16px; }
