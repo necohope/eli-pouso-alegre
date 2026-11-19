@@ -12,6 +12,19 @@ O site tem três páginas:
 
 É um site estático: HTML, CSS e JavaScript puros, sem framework e sem etapa de build. Qualquer hospedagem gratuita serve.
 
+## Onde está no ar
+
+| O quê | Onde |
+|---|---|
+| Site público | https://eli-pouso-alegre.vercel.app |
+| Código | https://github.com/necohope/eli-pouso-alegre (público) |
+| Hospedagem | Vercel, projeto `eli-pouso-alegre` no time Deep Tree |
+| Planilha da agenda | A definir na Etapa 4 (registrar aqui quem tem acesso) |
+
+Cada `git push` na branch `main` publica o site sozinho, pelo GitHub Actions (`.github/workflows/publicar-vercel.yml`). O acompanhamento fica na aba **Actions** do repositório. Para isso funcionar, o repositório precisa do segredo `VERCEL_TOKEN` e das variáveis `VERCEL_ORG_ID` e `VERCEL_PROJECT_ID`.
+
+Arquivos listados em `.vercelignore` (este README, o prompt de trabalho, a pasta `.github`) ficam no repositório, mas não vão para o site.
+
 ## Estrutura das pastas
 
 ```
@@ -23,7 +36,13 @@ assets/js/app.js           Comportamento do site
 assets/img/                Logos do ELI e fotos de Pouso Alegre (licenças abaixo)
 assets/fonts/              Fonte Saira (licença SIL Open Font License)
 apps-script/Code.gs        Backend gratuito: Google Planilha + Apps Script
+404.html                   Página de "não encontrado"
+robots.txt, sitemap.xml    Orientação para buscadores
+vercel.json                Cabeçalhos de segurança e cache na Vercel
+.github/workflows/         Publicação automática a cada git push
 ```
+
+As fotos têm versão `.webp` (tamanho cheio e `-800` para celular), usadas via `<picture>`. Os `.jpg` continuam como alternativa. A imagem de compartilhamento em redes sociais é `assets/img/og-eli-pouso-alegre.jpg` (1200×630).
 
 ## Ver o site no computador
 

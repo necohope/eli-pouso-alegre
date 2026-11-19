@@ -17,3 +17,5 @@ node_modules/
 # Segredos (nunca versionar)
 .env
 .env.*
+.vercel
+.env*

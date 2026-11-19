@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /apps-script/
 
-Sitemap: https://DOMINIO/sitemap.xml
+Sitemap: https://eli-pouso-alegre.vercel.app/sitemap.xml

@@ -1,0 +1,35 @@
+# Publica o site na Vercel a cada push na branch main.
+# Precisa de:
+#   - segredo VERCEL_TOKEN (criado em vercel.com/account/tokens)
+#   - variáveis VERCEL_ORG_ID e VERCEL_PROJECT_ID (estão em .vercel/project.json)
+name: Publicar na Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: publicar-producao
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publicar em produção
+        run: npx --yes vercel@58.8.0 deploy --prod --yes --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
