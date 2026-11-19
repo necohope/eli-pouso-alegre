@@ -9,7 +9,7 @@ window.ELI_CONFIG = {
   ENDPOINT: "",
 
   // Mostrar eventos de exemplo junto com os reais? Deixe false quando a agenda tiver eventos de verdade.
-  MOSTRAR_EXEMPLOS: true,
+  MOSTRAR_EXEMPLOS: false,
 
   // Fuso usado nos links do Google Agenda
   FUSO: "America/Sao_Paulo",

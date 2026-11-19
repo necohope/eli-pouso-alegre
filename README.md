@@ -1,6 +1,6 @@
 # ELI Pouso Alegre — site do Ecossistema Local de Inovação
 
-Versão mínima (MVP) do site do ELI Pouso Alegre, feita pelo Grupo 2 (Ambientes de Inovação e Programas e Ações).
+Versão mínima (MVP) do site do ELI Pouso Alegre, o Ecossistema Local de Inovação da cidade.
 
 O site tem três páginas:
 
@@ -31,7 +31,7 @@ Arquivos listados em `.vercelignore` (este README, o prompt de trabalho, a pasta
 index.html                 Todas as páginas (troca por âncora)
 assets/css/styles.css      Estilos. Cores tiradas do símbolo do ELI
 assets/js/config.js        Configurações: endereço da planilha, exemplos ligados ou não
-assets/js/eventos.js       Tipos de evento, eventos iniciais e membros do Grupo 2
+assets/js/eventos.js       Tipos de evento, eventos e instituições do Grupo 2
 assets/js/app.js           Comportamento do site
 assets/img/                Logos do ELI e fotos de Pouso Alegre (licenças abaixo)
 assets/fonts/              Fonte Saira (licença SIL Open Font License)
@@ -77,16 +77,16 @@ Nome e e-mail de quem cadastrou ficam só na planilha. O site nunca recebe esses
 ## Antes de publicar
 
 - [ ] Grupo de Governança validou visão, missão, princípios e regras (a página marca tudo como proposta).
-- [ ] Os membros do Grupo 2 concordaram em ter nome e instituição no site.
+- [x] Decisão: o site não publica nomes de pessoas físicas, só de instituições (lista em `ELI_INSTITUICOES_GRUPO2`, `assets/js/eventos.js`).
 - [ ] `CONTATO_GRUPO2` preenchido em `assets/js/config.js`.
-- [ ] Quando houver eventos reais, `MOSTRAR_EXEMPLOS: false` e remover os exemplos de `eventos.js`.
+- [x] Eventos reais de 2026 cadastrados em `eventos.js` (pesquisa de novembro de 2026, com link da fonte em cada evento) e `MOSTRAR_EXEMPLOS: false`.
 - [ ] Confirmar a data do II Seminário INOVA SUL (hoje marcado como "agosto de 2027, a confirmar").
 - [ ] Confirmar com o Sebrae Minas o uso da marca ELI no site.
 
 ## Editar textos e dados
 
 - Textos das páginas: `index.html`.
-- Eventos iniciais, tipos de evento e membros do Grupo 2: `assets/js/eventos.js`.
+- Eventos, tipos de evento e instituições do Grupo 2: `assets/js/eventos.js`. Não use nomes de pessoas físicas.
 - Referências nacionais e mundiais e o organograma: `assets/js/app.js`, procure por `REFS` e `function org`.
 
 ## Créditos e licenças

@@ -1,0 +1,24 @@
+{
+  "name": "ELI Pouso Alegre — Ecossistema Local de Inovação",
+  "short_name": "ELI Pouso Alegre",
+  "description": "Agenda Única da Inovação e informações do Ecossistema Local de Inovação de Pouso Alegre (MG).",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "id": "/",
+  "start_url": "/?origem=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#2A4192",
+  "categories": ["business", "education", "events"],
+  "icons": [
+    { "src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Agenda Única", "short_name": "Agenda", "url": "/?origem=app#agenda", "icons": [{ "src": "/assets/img/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Governança", "url": "/?origem=app#governanca", "icons": [{ "src": "/assets/img/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

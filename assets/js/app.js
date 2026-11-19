@@ -8,7 +8,7 @@
   var CFG = window.ELI_CONFIG || {};
   var TIPOS = window.ELI_TIPOS || [];
   var PUBLICOS = window.ELI_PUBLICOS || [];
-  var GRUPO2 = window.ELI_GRUPO2 || [];
+  var INSTITUICOES = window.ELI_INSTITUICOES_GRUPO2 || [];
   var BASE = (window.ELI_EVENTOS || []).slice();
   var remote = [];
   var previews = [];
@@ -21,6 +21,7 @@
   var DIAS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
   var DIAS_LONGOS = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
 
+  function safeUrl(u) { return typeof u === "string" && /^https?:\/\//i.test(u); }
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -44,7 +45,11 @@
     return list.filter(function (e) { if (seen[e.id]) return false; seen[e.id] = 1; return true; })
       .sort(function (a, b) { return (a.data + (a.hora || "")).localeCompare(b.data + (b.hora || "")); });
   }
-  function endOf(e) { return parseD(e.dataFim || e.data); }
+  function endOf(e) {
+    // "Data a confirmar" vale pelo mês inteiro: só vira "realizado" depois que o mês acaba.
+    if (e.dataAConfirmar && !e.dataFim) { var d = parseD(e.data); return new Date(d.getFullYear(), d.getMonth() + 1, 0); }
+    return parseD(e.dataFim || e.data);
+  }
   function upcoming(list) { var t = today(); return list.filter(function (e) { return endOf(e) >= t; }); }
   function daysCovered(e) {
     var out = [], d = parseD(e.data), end = endOf(e);
@@ -114,7 +119,7 @@
       { x: 205, y: 150, label: "Universidades", c: "var(--blue)", txt: "Universidades e institutos formam gente e geram conhecimento. São o Grupo 3 do ELI." },
       { x: 420, y: 120, label: "Startups", c: "var(--coral)", txt: "Startups transformam conhecimento em negócio. Precisam de ambientes, mentores e capital." },
       { x: 505, y: 300, label: "Empresas", c: "var(--peach)", txt: "Empresas trazem problemas reais, mercado e investimento. Inovação aberta começa aqui." },
-      { x: 395, y: 450, label: "Poder público", c: "var(--sun)", txt: "Prefeitura e Câmara criam políticas, conselhos e fundos. Tema do Grupo 1." },
+      { x: 395, y: 450, label: "Setor público", c: "var(--sun)", txt: "Prefeitura e Câmara criam políticas, conselhos e fundos. Tema do Grupo 1." },
       { x: 175, y: 420, label: "Ambientes", c: "var(--mint)", txt: "Incubadoras, coworkings e espaços maker são onde as conexões acontecem. Tema do Grupo 2." },
       { x: 110, y: 270, label: "Associações", c: "var(--rose)", txt: "Associações e entidades mobilizam o setor produtivo e dão escala às ações." },
       { x: 320, y: 285, label: "Investidores", c: "var(--ink)", txt: "Anjos, fundos e editais de fomento colocam combustível nas boas ideias." }
@@ -210,7 +215,7 @@
       '</div>' +
       '<div class="org__groups">' +
         '<article class="org__group" style="--c:var(--sun)"><span class="org__num">Grupo 1</span><h3>Políticas Públicas e Capital</h3><ul><li>Políticas públicas</li><li>Capital</li></ul><p>Leis, conselhos e fundos municipais, investidores, crédito e fomento.</p></article>' +
-        '<article class="org__group is-ours" style="--c:var(--coral)"><span class="org__num">Grupo 2</span><h3>Ambientes de Inovação e Programas e Ações</h3><ul><li>Ambientes de inovação</li><li>Programas e ações</li></ul><p>Espaços onde a inovação acontece e as atividades que movimentam a rede.</p><p class="org__lead">Liderança: Mateus Hope, NEMPA</p><p><a href="#agenda">Ver o projeto da Agenda Única</a></p></article>' +
+        '<article class="org__group is-ours" style="--c:var(--coral)"><span class="org__num">Grupo 2</span><h3>Ambientes de Inovação e Programas e Ações</h3><ul><li>Ambientes de inovação</li><li>Programas e ações</li></ul><p>Espaços onde a inovação acontece e as atividades que movimentam a rede.</p><p class="org__lead">Liderança: NEMPA</p><p><a href="#agenda">Ver o projeto da Agenda Única</a></p></article>' +
         '<article class="org__group" style="--c:var(--blue)"><span class="org__num">Grupo 3</span><h3>ICTIs</h3><ul><li>Instituições de ciência, tecnologia e inovação</li></ul><p>Universidades, institutos federais e centros de pesquisa.</p></article>' +
       '</div>';
     $$("[data-org]").forEach(function (el) { el.innerHTML = html; });
@@ -227,7 +232,7 @@
     mundo: [
       { p: "Medellín, Colômbia", w: "A Ruta N, criada em 2009, é o centro de inovação e negócios da cidade e articula universidade, empresa e Estado como política de longo prazo.", t: "Um endereço claro para a inovação.", c: "var(--peach)" },
       { p: "Cambridge, Estados Unidos", w: "O Venture Café promove o Thursday Gathering: um encontro semanal, gratuito e aberto, onde empreendedores, pesquisadores e investidores se cruzam.", t: "Ritmo vence evento isolado.", c: "var(--rose)" },
-      { p: "Boulder, Estados Unidos", w: "A Tese de Boulder, de Brad Feld, resume quatro princípios: empreendedores na liderança, compromisso de longo prazo, portas abertas a todos e atividades contínuas que envolvam toda a comunidade.", t: "A agenda é parte da estratégia, não detalhe.", c: "var(--coral)" }
+      { p: "Boulder, Estados Unidos", w: "A Tese de Boulder resume quatro princípios: empreendedores na liderança, compromisso de longo prazo, portas abertas a todos e atividades contínuas que envolvam toda a comunidade.", t: "A agenda é parte da estratégia, não detalhe.", c: "var(--coral)" }
     ]
   };
   function refs() {
@@ -241,12 +246,14 @@
   }
 
   /* ---------------- agenda: lista ---------------- */
-  var state = { tipos: {}, q: "", mode: "lista", calMonth: null };
+  var state = { tipos: {}, q: "", mode: "lista", calMonth: null, past: false };
 
-  function filtered() {
+  // allDates: true no calendário (navega por qualquer mês); na lista, passados só com o botão ligado.
+  function filtered(allDates) {
     var q = state.q.trim().toLowerCase();
     var anyTipo = Object.keys(state.tipos).some(function (k) { return state.tipos[k]; });
-    return upcoming(allEvents()).filter(function (e) {
+    var base = allDates || state.past ? allEvents() : upcoming(allEvents());
+    return base.filter(function (e) {
       if (anyTipo && !state.tipos[e.tipo]) return false;
       if (q) {
         var hay = (e.titulo + " " + e.organizador + " " + e.local + " " + (e.descricao || "")).toLowerCase();
@@ -266,17 +273,19 @@
     if (e.hora) when.push(e.hora.replace(":", "h") + (e.horaFim ? " às " + e.horaFim.replace(":", "h") : ""));
     var isClash = !LONGOS[e.tipo] && !e.dataAConfirmar && clashes[e.data] && clashes[e.data].length > 1;
     var badges = [];
+    var isPast = endOf(e) < today();
+    if (isPast) badges.push('<span class="badge badge--past">Realizado</span>');
     if (e.exemplo) badges.push('<span class="badge badge--ex">Exemplo</span>');
     if (e.preview) badges.push('<span class="badge badge--ex">Prévia, não enviado</span>');
     if (e.gratuito) badges.push('<span class="badge">Gratuito</span>');
     badges.push('<span class="badge">' + FORMATOS[e.formato || "presencial"] + '</span>');
-    if (isClash) badges.push('<span class="badge badge--clash">Mesmo dia de outro evento</span>');
-    return '<li class="event' + (e.exemplo || e.preview ? " is-example" : "") + '">' + dateHtml +
+    if (isClash && !isPast) badges.push('<span class="badge badge--clash">Mesmo dia de outro evento</span>');
+    return '<li class="event' + (e.exemplo || e.preview ? " is-example" : "") + (isPast ? " is-past" : "") + '">' + dateHtml +
       '<div><p class="event__type"><span class="dot" style="--c:' + t.cor + '"></span>' + esc(t.nome) + '</p>' +
       '<h3 class="event__title"><button type="button" data-open="' + esc(e.id) + '">' + esc(e.titulo) + '</button></h3>' +
       '<p class="event__meta"><span>' + esc(e.organizador) + '</span><span>' + esc(e.local) + '</span>' + (when.length ? '<span>' + esc(when.join(", ")) + '</span>' : "") + '</p>' +
       (compact ? (e.exemplo ? '<div class="event__badges"><span class="badge badge--ex">Exemplo</span></div>' : "") : '<div class="event__badges">' + badges.join("") + '</div>') +
-      '</div><a class="btn btn--ghost btn--small event__go" href="' + gcal(e) + '" target="_blank" rel="noopener">Salvar no Google Agenda</a></li>';
+      '</div>' + (isPast ? "" : '<a class="btn btn--ghost btn--small event__go" href="' + gcal(e) + '" target="_blank" rel="noopener">Salvar no Google Agenda</a>') + '</li>';
   }
 
   function renderList() {
@@ -286,13 +295,21 @@
       box.innerHTML = '<div class="empty"><strong>Nenhum evento encontrado com esses filtros.</strong>Limpe a busca ou os tipos selecionados. Conhece um evento que deveria estar aqui? <button class="btn btn--small" type="button" data-goto="cadastro">Cadastre</button></div>';
       return;
     }
-    var groups = {};
-    list.forEach(function (e) { var d = parseD(e.data); var k = d.getFullYear() + "-" + String(d.getMonth()).padStart(2, "0"); (groups[k] = groups[k] || []).push(e); });
-    box.innerHTML = Object.keys(groups).sort().map(function (k) {
-      var y = k.split("-")[0], m = +k.split("-")[1], items = groups[k];
-      return '<section class="month"><h3 class="month__title"><span>' + MESES[m].charAt(0).toUpperCase() + MESES[m].slice(1) + " de " + y + '</span><span class="month__count">' + items.length + (items.length === 1 ? " item" : " itens") + '</span></h3><ol class="event-list">' +
-        items.map(function (e) { return eventRow(e, clashes, false); }).join("") + "</ol></section>";
-    }).join("");
+    function months(items, desc) {
+      var groups = {};
+      items.forEach(function (e) { var d = parseD(e.data); var k = d.getFullYear() + "-" + String(d.getMonth()).padStart(2, "0"); (groups[k] = groups[k] || []).push(e); });
+      var keys = Object.keys(groups).sort(); if (desc) keys.reverse();
+      return keys.map(function (k) {
+        var y = k.split("-")[0], m = +k.split("-")[1], its = groups[k];
+        if (desc) its = its.slice().reverse();
+        return '<section class="month"><h3 class="month__title"><span>' + MESES[m].charAt(0).toUpperCase() + MESES[m].slice(1) + " de " + y + '</span><span class="month__count">' + its.length + (its.length === 1 ? " item" : " itens") + '</span></h3><ol class="event-list">' +
+          its.map(function (e) { return eventRow(e, clashes, false); }).join("") + "</ol></section>";
+      }).join("");
+    }
+    var t = today();
+    var fut = list.filter(function (e) { return endOf(e) >= t; }), past = list.filter(function (e) { return endOf(e) < t; });
+    box.innerHTML = (fut.length ? months(fut, false) : '<div class="empty"><strong>Nenhum evento futuro com esses filtros.</strong></div>') +
+      (past.length ? '<h3 class="past-title">Já realizados</h3><p class="note">Do mais recente para o mais antigo.</p>' + months(past, true) : "");
   }
 
   function renderNext() {
@@ -311,7 +328,7 @@
       if (first) { var fd = parseD(first.data); if (fd > new Date(t.getFullYear(), t.getMonth() + 1, 0)) state.calMonth = new Date(fd.getFullYear(), fd.getMonth(), 1); }
     }
     var m0 = state.calMonth, y = m0.getFullYear(), m = m0.getMonth();
-    var list = filtered(), byDay = {};
+    var list = filtered(true), byDay = {};
     list.forEach(function (e) {
       daysCovered(e).forEach(function (k) { (byDay[k] = byDay[k] || []).push({ e: e, label: e.titulo }); });
       if (LONGOS[e.tipo] && e.dataFim) (byDay[e.dataFim] = byDay[e.dataFim] || []).push({ e: e, label: "Encerra: " + e.titulo });
@@ -359,6 +376,12 @@
       });
       renderList(); renderCal();
     });
+    var pastBtn = $("[data-past]");
+    if (pastBtn) pastBtn.addEventListener("click", function () {
+      state.past = !state.past;
+      pastBtn.setAttribute("aria-pressed", String(state.past));
+      renderList();
+    });
     var s = $("[data-search]");
     s.addEventListener("input", function () { state.q = s.value; renderList(); renderCal(); });
     $$("[data-mode]").forEach(function (b) {
@@ -381,10 +404,10 @@
     if (e.dataFim && e.dataFim !== e.data) quando += " até " + fmtLong(parseD(e.dataFim));
     var rows = [
       ["Quando", quando + (e.hora ? ", " + e.hora.replace(":", "h") + (e.horaFim ? " às " + e.horaFim.replace(":", "h") : "") : "")],
-      ["Onde", e.local + " (" + FORMATOS[e.formato || "presencial"] + ")"],
+      ["Onde", e.local + (e.local.toLowerCase().indexOf(FORMATOS[e.formato || "presencial"].toLowerCase()) === 0 ? "" : " (" + FORMATOS[e.formato || "presencial"] + ")")],
       ["Organização", e.organizador],
       ["Para quem", (e.publicos || []).join(", ") || "Aberto a todos"],
-      ["Custo", e.gratuito ? "Gratuito" : "Pago"]
+      ["Custo", e.gratuito === true ? "Gratuito" : e.gratuito === false ? "Pago" : "Consulte o organizador"]
     ];
     $("[data-modal-body]").innerHTML =
       '<button class="modal__close" type="button" data-close>Fechar</button>' +
@@ -393,10 +416,12 @@
       (e.descricao ? '<p>' + esc(e.descricao) + '</p>' : "") +
       '<dl>' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join("") + '</dl>' +
       '<div class="modal__actions">' +
-        (e.link ? '<a class="btn" href="' + esc(e.link) + '" target="_blank" rel="noopener">Fazer inscrição</a>' : "") +
-        '<a class="btn btn--ghost" href="' + gcal(e) + '" target="_blank" rel="noopener">Salvar no Google Agenda</a>' +
-        '<button class="btn btn--ghost" type="button" data-ics="' + esc(e.id) + '" title="Arquivo de calendário para Apple, Outlook e outros aplicativos">Baixar .ics</button>' +
-      '</div>';
+        (safeUrl(e.link) ? '<a class="btn" href="' + esc(e.link) + '" target="_blank" rel="noopener">' + (endOf(e) < today() ? "Saber mais" : "Inscrição e informações") + '</a>' : "") +
+        (endOf(e) < today() ? "" :
+          '<a class="btn btn--ghost" href="' + gcal(e) + '" target="_blank" rel="noopener">Salvar no Google Agenda</a>' +
+          '<button class="btn btn--ghost" type="button" data-ics="' + esc(e.id) + '" title="Arquivo de calendário para Apple, Outlook e outros aplicativos">Baixar .ics</button>') +
+      '</div>' +
+      (safeUrl(e.fonte) && e.fonte !== e.link ? '<p class="modal__source"><a href="' + esc(e.fonte) + '" target="_blank" rel="noopener">Fonte da informação</a></p>' : "");
     if (modal.showModal) modal.showModal(); else modal.setAttribute("open", "");
   }
   document.addEventListener("click", function (ev) {
@@ -556,10 +581,9 @@
   /* ---------------- grupo 2 ---------------- */
   function members() {
     var el = $("[data-members]"); if (!el) return;
-    var cores = ["var(--mint)", "var(--sun)", "var(--rose)", "var(--peach)", "var(--mint)", "var(--sun)"];
-    el.innerHTML = GRUPO2.map(function (m, i) {
-      var ini = m.nome.split(" ").filter(Boolean); ini = (ini[0][0] + ini[ini.length - 1][0]).toUpperCase();
-      return '<li><span class="avatar" style="--c:' + cores[i % cores.length] + '" aria-hidden="true">' + ini + '</span><div><strong>' + esc(m.nome) + (m.papel ? '<em>Liderança</em>' : "") + '</strong><span>' + esc(m.org) + (m.papel ? ". " + esc(m.papel) : "") + '</span></div></li>';
+    var cores = ["var(--coral)", "var(--mint)", "var(--sun)", "var(--blue)", "var(--rose)", "var(--peach)"];
+    el.innerHTML = INSTITUICOES.map(function (n, i) {
+      return '<li><span class="dot" style="--c:' + cores[i % cores.length] + '" aria-hidden="true"></span>' + esc(n) + '</li>';
     }).join("");
   }
   function renderKpis() {
@@ -582,7 +606,55 @@
       });
   }
 
+  /* ---------------- app instalável (PWA) ---------------- */
+  var INSTALL_ESPERA = 15000;             // 15 segundos no site
+  var INSTALL_PAUSA = 14 * 24 * 3600000;  // "Agora não" silencia por 14 dias
+  var INSTALL_CHAVE = "eli-install-dispensado";
+  var installEvt = null;
+  function lsGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* navegação privada */ } }
+  function isStandalone() { return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true; }
+  function pwa() {
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) {
+      navigator.serviceWorker.register("sw.js").catch(function () { /* sem app offline, o site segue normal */ });
+    }
+    var box = $("[data-install]"); if (!box) return;
+    var ua = navigator.userAgent || "";
+    var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var isMobile = isIOS || /Android/i.test(ua) || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+    var okBtn = $("[data-install-ok]", box), noBtn = $("[data-install-no]", box), text = $("[data-install-text]", box);
+
+    window.addEventListener("beforeinstallprompt", function (ev) { ev.preventDefault(); installEvt = ev; });
+    window.addEventListener("appinstalled", function () { fechar(); lsSet(INSTALL_CHAVE, "instalado"); });
+
+    function fechar() { box.hidden = true; document.body.classList.remove("has-install"); }
+    function abrir() { box.hidden = false; document.body.classList.add("has-install"); document.body.style.setProperty("--install-h", (box.offsetHeight + 24) + "px"); }
+    noBtn.addEventListener("click", function () { lsSet(INSTALL_CHAVE, String(Date.now())); fechar(); });
+    box.addEventListener("keydown", function (ev) { if (ev.key === "Escape") noBtn.click(); });
+    okBtn.addEventListener("click", function () {
+      if (installEvt) {
+        installEvt.prompt();
+        installEvt.userChoice.then(function (r) { if (r && r.outcome === "accepted") lsSet(INSTALL_CHAVE, "instalado"); else lsSet(INSTALL_CHAVE, String(Date.now())); })
+          .catch(function () {}).then(function () { installEvt = null; fechar(); });
+      } else { lsSet(INSTALL_CHAVE, String(Date.now())); fechar(); }
+    });
+
+    setTimeout(function () {
+      var dispensado = lsGet(INSTALL_CHAVE);
+      if (isStandalone() || !isMobile || dispensado === "instalado") return;
+      if (dispensado && Date.now() - +dispensado < INSTALL_PAUSA) return;
+      if (isIOS) {
+        text.innerHTML = 'No iPhone: toque em <strong>Compartilhar</strong> <span aria-hidden="true">(o quadrado com a seta)</span> e depois em <strong>Adicionar à Tela de Início</strong>.';
+        okBtn.textContent = "Entendi";
+      } else if (!installEvt) {
+        text.innerHTML = 'Abra o menu do navegador <span aria-hidden="true">(⋮)</span> e toque em <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong>.';
+        okBtn.textContent = "Entendi";
+      }
+      abrir();
+    }, INSTALL_ESPERA);
+  }
+
   /* ---------------- início ---------------- */
   network(); org(); refs(); chips(); form(); members();
-  renderAgenda(); loadRemote(); route();
+  renderAgenda(); loadRemote(); route(); pwa();
 })();
