@@ -19,7 +19,7 @@ O site tem três páginas:
 | Site público | https://eli-pouso-alegre.vercel.app |
 | Código | https://github.com/necohope/eli-pouso-alegre (público) |
 | Hospedagem | Vercel, projeto `eli-pouso-alegre` no time Deep Tree |
-| Planilha da agenda | A definir na Etapa 4 (registrar aqui quem tem acesso) |
+| Planilha da agenda | "Agenda ELI Pouso Alegre", no Google Planilhas. Dona: conta Google da Deep Tree Inovação. Acesso de edição: só a curadoria da agenda (registrar aqui cada pessoa ou instituição que receber acesso) |
 
 Cada `git push` na branch `main` publica o site sozinho, pelo GitHub Actions (`.github/workflows/publicar-vercel.yml`). O acompanhamento fica na aba **Actions** do repositório. Para isso funcionar, o repositório precisa do segredo `VERCEL_TOKEN` e das variáveis `VERCEL_ORG_ID` e `VERCEL_PROJECT_ID`.
 
