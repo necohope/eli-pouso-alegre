@@ -77,6 +77,7 @@
     });
     var titles = { inicio: "ELI Pouso Alegre — Ecossistema Local de Inovação", agenda: "Agenda Única da Inovação — ELI Pouso Alegre", governanca: "Governança — ELI Pouso Alegre" };
     document.title = titles[h];
+    hit("pagina", h);
     closeMenu();
     if (pendingGoto) { var g = pendingGoto; pendingGoto = null; setTimeout(function () { goTo(g); }, 30); }
     else window.scrollTo(0, 0);
@@ -399,6 +400,7 @@
   function findEvent(id) { var l = allEvents(); for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i]; return null; }
   function openEvent(id) {
     var e = findEvent(id); if (!e) return;
+    hit("evento_aberto", "agenda", e.id);
     var t = tipo(e.tipo), d = parseD(e.data);
     var quando = e.dataAConfirmar ? MESES[d.getMonth()] + " de " + d.getFullYear() + ", data a confirmar" : fmtLong(d);
     if (e.dataFim && e.dataFim !== e.data) quando += " até " + fmtLong(parseD(e.dataFim));
@@ -416,7 +418,7 @@
       (e.descricao ? '<p>' + esc(e.descricao) + '</p>' : "") +
       '<dl>' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join("") + '</dl>' +
       '<div class="modal__actions">' +
-        (safeUrl(e.link) ? '<a class="btn" href="' + esc(e.link) + '" target="_blank" rel="noopener">' + (endOf(e) < today() ? "Saber mais" : "Inscrição e informações") + '</a>' : "") +
+        (safeUrl(e.link) ? '<a class="btn" data-inscricao="' + esc(e.id) + '" href="' + esc(e.link) + '" target="_blank" rel="noopener">' + (endOf(e) < today() ? "Saber mais" : "Inscrição e informações") + '</a>' : "") +
         (endOf(e) < today() ? "" :
           '<a class="btn btn--ghost" href="' + gcal(e) + '" target="_blank" rel="noopener">Salvar no Google Agenda</a>' +
           '<button class="btn btn--ghost" type="button" data-ics="' + esc(e.id) + '" title="Arquivo de calendário para Apple, Outlook e outros aplicativos">Baixar .ics</button>') +
@@ -562,7 +564,7 @@
         .then(function () {
           msg.className = "form__msg is-ok";
           msg.textContent = "Recebido. A curadoria da agenda confere os dados e publica o evento. Se algo precisar de ajuste, entramos em contato pelo e-mail informado.";
-          f.reset(); radar(); counterReset();
+          hit("cadastro_enviado", "agenda"); f.reset(); radar(); counterReset();
         })
         .catch(function () {
           msg.className = "form__msg is-err";
@@ -628,10 +630,10 @@
     var okBtn = $("[data-install-ok]", box), noBtn = $("[data-install-no]", box), text = $("[data-install-text]", box);
 
     window.addEventListener("beforeinstallprompt", function (ev) { ev.preventDefault(); installEvt = ev; });
-    window.addEventListener("appinstalled", function () { fechar(); lsSet(INSTALL_CHAVE, "instalado"); });
+    window.addEventListener("appinstalled", function () { fechar(); lsSet(INSTALL_CHAVE, "instalado"); hit("app_instalado"); });
 
     function fechar() { box.hidden = true; document.body.classList.remove("has-install"); }
-    function abrir() { box.hidden = false; document.body.classList.add("has-install"); document.body.style.setProperty("--install-h", (box.offsetHeight + 24) + "px"); }
+    function abrir() { hit("convite_app"); box.hidden = false; document.body.classList.add("has-install"); document.body.style.setProperty("--install-h", (box.offsetHeight + 24) + "px"); }
     noBtn.addEventListener("click", function () { lsSet(INSTALL_CHAVE, String(Date.now())); fechar(); });
     box.addEventListener("keydown", function (ev) { if (ev.key === "Escape") noBtn.click(); });
     okBtn.addEventListener("click", function () {
@@ -656,6 +658,74 @@
       abrir();
     }, INSTALL_ESPERA);
   }
+
+  /* ---------------- estatísticas anônimas (LGPD: sem cookies, sem dados pessoais) ---------------- */
+  // Não conta: aparelho com login de Admin, prévias da Vercel, cópia local, robôs de teste e quem pede "não rastrear".
+  var ADMIN_CHAVE = "eli-admin";
+  function isAdmin() { try { var a = JSON.parse(window.localStorage.getItem(ADMIN_CHAVE) || "null"); return !!(a && a.exp > Date.now()); } catch (e) { return false; } }
+  function rastreavel() {
+    if (!CFG.ENDPOINT || isAdmin() || navigator.webdriver) return false;
+    if (location.protocol !== "https:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /-deep-tree-inovacao\.vercel\.app$/.test(location.hostname)) return false;
+    if (navigator.doNotTrack === "1" || window.doNotTrack === "1" || navigator.globalPrivacyControl === true) return false;
+    return true;
+  }
+  var ORIGEM = (function () {
+    try {
+      var q = new URLSearchParams(location.search);
+      if (q.get("utm_source")) return String(q.get("utm_source")).slice(0, 40);
+      if (q.get("origem") === "app") return "app instalado";
+      if (document.referrer) { var r = new URL(document.referrer); if (r.hostname !== location.hostname) return r.hostname.replace(/^www\./, ""); }
+    } catch (e) { /* sem origem */ }
+    return "";
+  })();
+  function visitante() {
+    // Código aleatório que muda todo dia: conta visitantes do dia sem seguir ninguém entre dias.
+    var dia = iso(today());
+    try {
+      var v = JSON.parse(window.localStorage.getItem("eli-v") || "null");
+      if (v && v.d === dia) return v.id;
+      v = { d: dia, id: Math.random().toString(36).slice(2, 12) };
+      window.localStorage.setItem("eli-v", JSON.stringify(v));
+      return v.id;
+    } catch (e) { return "sem-armazenamento"; }
+  }
+  function contexto() {
+    var ua = navigator.userAgent || "";
+    var iPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+    var disp = /iPad|Tablet/i.test(ua) || iPadOS ? "tablet" : /Mobi|Android|iPhone|iPod/i.test(ua) ? "celular" : "computador";
+    var nav = /Edg\//.test(ua) ? "Edge" : /SamsungBrowser/.test(ua) ? "Samsung" : /OPR\//.test(ua) ? "Opera" : /Firefox|FxiOS/.test(ua) ? "Firefox" : /CriOS|Chrome/.test(ua) ? "Chrome" : /Safari/.test(ua) ? "Safari" : "Outro";
+    var so = /Android/.test(ua) ? "Android" : /iPhone|iPad|iPod/.test(ua) || iPadOS ? "iOS" : /Windows/.test(ua) ? "Windows" : /Mac OS X/.test(ua) ? "macOS" : /Linux/.test(ua) ? "Linux" : "Outro";
+    return { dispositivo: disp, navegador: nav, sistema: so };
+  }
+  function hit(tipo, pagina, alvo) {
+    if (!rastreavel()) return;
+    var novo = false;
+    try { if (!window.localStorage.getItem("eli-ja-visitou")) { novo = true; window.localStorage.setItem("eli-ja-visitou", "1"); } } catch (e) { /* ok */ }
+    var c = contexto();
+    var corpo = JSON.stringify({
+      acao: "hit", tipo: tipo, pagina: pagina || (location.hash || "#inicio").slice(1), alvo: alvo || "",
+      visitante: visitante(), novo: tipo === "pagina" && novo, dispositivo: c.dispositivo, navegador: c.navegador, sistema: c.sistema,
+      idioma: (navigator.language || "").slice(0, 8), origem: ORIGEM, app: isStandalone()
+    });
+    ORIGEM = ""; // a origem vale só para a primeira página da visita
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(CFG.ENDPOINT, new Blob([corpo], { type: "text/plain;charset=utf-8" }))) return;
+    } catch (e) { /* tenta fetch */ }
+    try { fetch(CFG.ENDPOINT, { method: "POST", mode: "no-cors", keepalive: true, headers: { "Content-Type": "text/plain;charset=utf-8" }, body: corpo }); } catch (e) { /* sem estatística, sem problema */ }
+  }
+  document.addEventListener("click", function (ev) {
+    var t = ev.target;
+    if (t.closest(".wa-float")) hit("whatsapp");
+    else if (t.closest("[data-ics]") || t.closest('a[href^="https://calendar.google.com"]')) hit("salvar_agenda", "agenda");
+    else if (t.closest("[data-inscricao]")) hit("inscricao", "agenda", t.closest("[data-inscricao]").getAttribute("data-inscricao"));
+  });
+
+  /* ---------------- aviso de privacidade ---------------- */
+  var priv = $("[data-privacidade-modal]");
+  document.addEventListener("click", function (ev) {
+    if (ev.target.closest("[data-privacidade]")) { ev.preventDefault(); if (priv && priv.showModal) priv.showModal(); }
+    if (priv && (ev.target.closest("[data-fechar-privacidade]") || ev.target === priv)) priv.close();
+  });
 
   /* ---------------- início ---------------- */
   network(); org(); refs(); chips(); form(); members();

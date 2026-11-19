@@ -419,6 +419,17 @@
     </section>
   </main>
 
+  <dialog class="modal" data-privacidade-modal aria-labelledby="priv-title">
+    <div class="modal__inner">
+      <button class="modal__close" type="button" data-fechar-privacidade>Fechar</button>
+      <h2 id="priv-title">Privacidade</h2>
+      <p>Este site não usa cookies e não coleta dados pessoais de quem navega.</p>
+      <p>Para entender como o site é usado, contamos as visitas de forma anônima: página vista, tipo de aparelho e navegador, idioma e site de origem. Cada aparelho recebe um código aleatório que muda todo dia, só para contar visitantes, sem identificar ninguém. Se o seu navegador pede para não ser rastreado, nada é contado.</p>
+      <p>Quem cadastra um evento informa nome e e-mail. Esses dados ficam só com a curadoria da agenda, para contato, e nunca aparecem no site.</p>
+      <p>Dúvidas ou pedidos sobre dados: fale conosco pelo botão de WhatsApp.</p>
+    </div>
+  </dialog>
+
   <dialog class="modal" data-modal aria-labelledby="modal-title">
     <div class="modal__inner" data-modal-body></div>
   </dialog>
@@ -434,6 +445,7 @@
         <a href="#agenda">Agenda Única</a>
         <a href="#governanca">Governança</a>
       </nav>
+      <p class="footer__legal"><a href="#" data-privacidade>Privacidade</a><span aria-hidden="true">·</span><a href="admin.html" rel="nofollow">Admin</a></p>
       <details class="credits" open>
         <summary>Créditos das imagens</summary>
         <ul>

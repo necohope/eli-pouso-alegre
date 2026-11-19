@@ -1,3 +1,5 @@
+/** @OnlyCurrentDoc  (o script só acessa esta planilha, nenhuma outra da conta) */
+
 /**
  * ELI Pouso Alegre — Backend gratuito da Agenda Única
  * Google Planilha + Google Apps Script (sem servidor, sem custo).
@@ -37,15 +39,26 @@ function configurar() {
   COLUNAS_TEXTO.forEach(function (c) { sh.getRange(2, COLUNAS.indexOf(c) + 1, 2000, 1).setNumberFormat("@"); });
   sh.getRange(2, COLUNAS.indexOf("enviadoEm") + 1, 2000, 1).setNumberFormat("dd/MM/yyyy HH:mm");
   sh.autoResizeColumns(1, COLUNAS.length);
+  abaAcessos();
   // Pede a autorização de e-mail já na instalação (usada no aviso de novo cadastro).
   MailApp.getRemainingDailyQuota();
 }
 
 function doPost(e) {
+  var d;
+  try { d = JSON.parse((e && e.postData && e.postData.contents) || "{}"); } catch (err) { return json({ ok: false, erro: "Pedido inválido" }); }
+  // Estatísticas e painel (ver analytics.gs)
+  if (d.acao === "hit") return registrarAcesso(d);
+  if (d.acao === "login") return login(d);
+  if (d.acao === "stats") return estatisticas(d);
+  return cadastrar(d);
+}
+
+/** Cadastro de evento vindo do formulário do site. */
+function cadastrar(d) {
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    var d = JSON.parse((e && e.postData && e.postData.contents) || "{}");
     // Campo invisível do formulário: só robôs preenchem. Finge sucesso e descarta.
     if (d.site) return json({ ok: true });
     var erro = validar(d);
@@ -69,7 +82,8 @@ function doPost(e) {
     faixa.setNumberFormats([COLUNAS.map(function (c) { return c === "enviadoEm" ? "dd/MM/yyyy HH:mm" : (COLUNAS_TEXTO.indexOf(c) > -1 ? "@" : "General"); })]);
     faixa.setValues([linha]);
 
-    var aviso = PropertiesService.getScriptProperties().getProperty("EMAIL_AVISO");
+    // Aviso de novo cadastro: e-mail da propriedade EMAIL_AVISO ou, se não houver, o da conta dona da planilha.
+    var aviso = PropertiesService.getScriptProperties().getProperty("EMAIL_AVISO") || Session.getEffectiveUser().getEmail();
     if (aviso) {
       MailApp.sendEmail(aviso, "Agenda ELI: novo evento para conferir",
         "Evento: " + limpar(d.titulo) + "\nData: " + limpar(d.data) + "\nOrganizador: " + limpar(d.organizador) +

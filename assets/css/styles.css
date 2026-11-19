@@ -480,3 +480,9 @@ body.has-install .wa-float { bottom: var(--install-h, 170px); }
 .fn-mark { font-size: .45em; vertical-align: super; margin-left: 2px; color: var(--mint); font-weight: 600; }
 .footnote { max-width: var(--wide); margin: 48px auto 0; padding: 0 var(--gutter); font-size: .8125rem; color: var(--muted); }
 .hp { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* rodapé: privacidade e admin */
+.footer__legal { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; margin: 0; font-size: .8125rem; }
+.footer__legal a { color: #C9D2EF; text-decoration: none; }
+.footer__legal a:hover { color: #fff; text-decoration: underline; }
+.modal__inner > p { margin: 0 0 12px; }

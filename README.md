@@ -74,6 +74,20 @@ Para aprovar um evento: na aba "Eventos", troque a coluna `status` de `pendente`
 
 Nome e e-mail de quem cadastrou ficam só na planilha. O site nunca recebe esses dados.
 
+## Painel Admin e estatísticas
+
+- Endereço: `/admin` (link "Admin" no rodapé). Login com e-mail e senha do Admin; fica salvo no aparelho por 1 ano.
+- A senha não está no site nem no GitHub: fica só no Apps Script, em `apps-script/segredos.gs` (arquivo fora do Git, com a senha embaralhada por SHA-256 com sal). Para trocar a senha, gere um novo `segredos.gs` e envie com `npx -y @google/clasp@2.4.2 push -f` dentro de `apps-script/`.
+- Os acessos ficam na aba "Acessos" da planilha da agenda. Sem cookies e sem dados pessoais: página, aparelho, navegador, sistema, idioma, site de origem e ações (WhatsApp, cadastro, evento aberto, salvar no calendário, inscrição, app). Visitantes são contados por um código aleatório que muda todo dia.
+- Não são contados: aparelhos com login de Admin, prévias da Vercel, cópias locais, robôs de teste e navegadores com "não rastrear".
+- O aviso de privacidade (LGPD) abre pelo link "Privacidade" no rodapé.
+
+## Script do Google (Apps Script)
+
+- Projeto "Agenda ELI", ligado à planilha. Código em `apps-script/` (`Code.gs`, `analytics.gs`, `appsscript.json`).
+- Atualizar o script: dentro de `apps-script/`, `npx -y @google/clasp@2.4.2 push -f` e depois `npx -y @google/clasp@2.4.2 deploy -i <id da implantação> -d "descrição"` (mantém o mesmo endereço `/exec`).
+- A conta dona precisa autorizar o script uma vez (editor do Apps Script > `configurar` > Executar).
+
 ## Antes de publicar
 
 - [ ] Grupo de Governança validou visão, missão, princípios e regras (a página marca tudo como proposta).

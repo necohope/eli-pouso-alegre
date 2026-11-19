@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel Admin — ELI Pouso Alegre</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2A4192">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin">
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="./" aria-label="Voltar ao site do ELI Pouso Alegre">
+        <img src="assets/img/logo-eli.png" alt="Ecossistema Local de Inovação" width="498" height="137">
+        <span class="brand__city">Painel</span>
+      </a>
+      <a class="link" href="./">Voltar ao site</a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="section adm">
+
+    <!-- Login -->
+    <section class="adm-login" data-login hidden aria-labelledby="h-login">
+      <h1 id="h-login">Painel Admin</h1>
+      <p class="lead">Acessos, páginas e ações do site do ELI Pouso Alegre.</p>
+      <form class="adm-card" data-login-form novalidate>
+        <div class="field">
+          <label for="a-email">E-mail</label>
+          <input id="a-email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="a-senha">Senha</label>
+          <input id="a-senha" name="senha" type="password" autocomplete="current-password" required>
+        </div>
+        <p class="note">Você continua conectado neste aparelho por 1 ano. Os acessos deste aparelho deixam de ser contados nas estatísticas.</p>
+        <button class="btn" type="submit">Entrar</button>
+        <p class="form__msg" data-login-msg role="status"></p>
+      </form>
+    </section>
+
+    <!-- Painel -->
+    <section data-painel hidden aria-labelledby="h-painel">
+      <div class="adm-head">
+        <div>
+          <h1 id="h-painel">Painel</h1>
+          <p class="note" data-meta>Carregando…</p>
+        </div>
+        <div class="adm-tools">
+          <div class="seg" role="group" aria-label="Período">
+            <button type="button" aria-pressed="false" data-dias="7">7 dias</button>
+            <button type="button" aria-pressed="true" data-dias="30">30 dias</button>
+            <button type="button" aria-pressed="false" data-dias="90">90 dias</button>
+          </div>
+          <button class="btn btn--ghost btn--small" type="button" data-atualizar>Atualizar</button>
+          <button class="btn btn--ghost btn--small" type="button" data-sair>Sair</button>
+        </div>
+      </div>
+      <p class="adm-alert" data-erro role="alert" hidden></p>
+
+      <ul class="adm-kpis" data-kpis aria-label="Resumo do período"></ul>
+
+      <section class="adm-card adm-chart" aria-labelledby="h-serie">
+        <h2 id="h-serie" class="h-small">Visitantes por dia</h2>
+        <div class="adm-plot" data-grafico></div>
+        <details class="adm-table">
+          <summary>Ver em tabela</summary>
+          <div class="table-wrap"><table data-tabela><thead><tr><th scope="col">Dia</th><th scope="col">Visitantes</th><th scope="col">Páginas vistas</th></tr></thead><tbody></tbody></table></div>
+        </details>
+      </section>
+
+      <div class="adm-grid">
+        <section class="adm-card" aria-labelledby="h-pag"><h2 id="h-pag" class="h-small">Páginas mais vistas</h2><ol class="adm-bars" data-lista="paginas"></ol></section>
+        <section class="adm-card" aria-labelledby="h-acoes"><h2 id="h-acoes" class="h-small">Ações no site</h2><ol class="adm-bars" data-lista="acoes"></ol></section>
+        <section class="adm-card" aria-labelledby="h-orig"><h2 id="h-orig" class="h-small">De onde vêm as visitas</h2><ol class="adm-bars" data-lista="origens"></ol></section>
+        <section class="adm-card" aria-labelledby="h-ev"><h2 id="h-ev" class="h-small">Eventos mais abertos</h2><ol class="adm-bars" data-lista="eventosAbertos"></ol></section>
+        <section class="adm-card" aria-labelledby="h-disp"><h2 id="h-disp" class="h-small">Aparelhos</h2><ol class="adm-bars" data-lista="dispositivos"></ol></section>
+        <section class="adm-card" aria-labelledby="h-nav"><h2 id="h-nav" class="h-small">Navegadores</h2><ol class="adm-bars" data-lista="navegadores"></ol></section>
+        <section class="adm-card" aria-labelledby="h-so"><h2 id="h-so" class="h-small">Sistemas</h2><ol class="adm-bars" data-lista="sistemas"></ol></section>
+        <section class="adm-card" aria-labelledby="h-ag">
+          <h2 id="h-ag" class="h-small">Cadastros na agenda</h2>
+          <ul class="adm-status" data-agenda></ul>
+          <p><a class="link" data-planilha href="#" target="_blank" rel="noopener" hidden>Abrir a planilha para aprovar</a></p>
+        </section>
+      </div>
+      <p class="note">Visitantes são contados por aparelho e por dia, de forma anônima, sem cookies. Este aparelho não entra na contagem.</p>
+    </section>
+  </main>
+
+  <div class="adm-tip" data-tip role="tooltip" hidden></div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/eventos.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

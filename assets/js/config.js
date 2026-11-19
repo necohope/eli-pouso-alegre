@@ -6,6 +6,8 @@ window.ELI_CONFIG = {
   // URL do Web App do Google Apps Script (veja apps-script/Code.gs e o README).
   // Enquanto estiver vazia, o site mostra os eventos de assets/js/eventos.js
   // e o formulário roda em modo de demonstração (não envia nada).
+  // Script já publicado; ativar (colar entre as aspas) só depois que a conta dona autorizar e o teste de ponta a ponta passar:
+  // https://script.google.com/macros/s/AKfycbwAMmntufmq8X5iBfzQ9_GxDjAFjbenVL7Q8oSbZChM5bb_sZ1jx4OcXzgdDBM-gdg/exec
   ENDPOINT: "",
 
   // Mostrar eventos de exemplo junto com os reais? Deixe false quando a agenda tiver eventos de verdade.
