@@ -215,7 +215,7 @@
       '</div>' +
       '<div class="org__groups">' +
         '<article class="org__group" style="--c:var(--sun)"><span class="org__num">Grupo 1</span><h3>Políticas Públicas e Capital</h3><ul><li>Políticas públicas</li><li>Capital</li></ul><p>Leis, conselhos e fundos municipais, investidores, crédito e fomento.</p></article>' +
-        '<article class="org__group is-ours" style="--c:var(--coral)"><span class="org__num">Grupo 2</span><h3>Ambientes de Inovação e Programas e Ações</h3><ul><li>Ambientes de inovação</li><li>Programas e ações</li></ul><p>Espaços onde a inovação acontece e as atividades que movimentam a rede.</p><p class="org__lead">Liderança: NEMPA</p><p><a href="#agenda">Ver o projeto da Agenda Única</a></p></article>' +
+        '<article class="org__group is-ours" style="--c:var(--coral)"><span class="org__num">Grupo 2</span><h3>Ambientes de Inovação e Programas e Ações</h3><ul><li>Ambientes de inovação</li><li>Programas e ações</li></ul><p>Espaços onde a inovação acontece e as atividades que movimentam a rede.</p></article>' +
         '<article class="org__group" style="--c:var(--blue)"><span class="org__num">Grupo 3</span><h3>ICTIs</h3><ul><li>Instituições de ciência, tecnologia e inovação</li></ul><p>Universidades, institutos federais e centros de pesquisa.</p></article>' +
       '</div>';
     $$("[data-org]").forEach(function (el) { el.innerHTML = html; });
@@ -550,15 +550,18 @@
       publicos: $$("input[name=publicos]:checked", f).map(function (c) { return c.value; }),
       gratuito: f.gratuito.checked, descricao: f.descricao.value.trim(),
       responsavel: f.responsavel.value.trim(), email: f.email.value.trim(),
-      enviadoEm: new Date().toISOString()
+      enviadoEm: new Date().toISOString(),
+      site: f.site ? f.site.value : ""
     };
+    // Campo invisível preenchido = robô. Mostra "recebido" e não envia nada.
+    if (data.site) { msg.className = "form__msg is-ok"; msg.textContent = "Recebido."; f.reset(); return; }
     var btn = $("button[type=submit]", f);
     if (CFG.ENDPOINT) {
       btn.disabled = true; btn.textContent = "Enviando…";
       fetch(CFG.ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) })
         .then(function () {
           msg.className = "form__msg is-ok";
-          msg.textContent = "Recebido. O Grupo 2 confere os dados e publica o evento na agenda. Se algo precisar de ajuste, entramos em contato pelo e-mail informado.";
+          msg.textContent = "Recebido. A curadoria da agenda confere os dados e publica o evento. Se algo precisar de ajuste, entramos em contato pelo e-mail informado.";
           f.reset(); radar(); counterReset();
         })
         .catch(function () {

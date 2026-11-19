@@ -160,9 +160,9 @@
           <img src="assets/img/theatro.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1280" height="852">
         </picture>
         <div class="page-head__text">
-          <p class="crumb">Projeto estruturante do Grupo 2: Ambientes de Inovação e Programas e Ações</p>
-          <h1>Agenda Única da Inovação</h1>
-          <p class="lead">Um só calendário para todos os eventos, editais, capacitações e encontros de inovação e empreendedorismo de Pouso Alegre. Como o painel de uma rodoviária: todo mundo olha o mesmo quadro e ninguém marca dois grandes eventos no mesmo horário.</p>
+          <p class="crumb">Ecossistema Local de Inovação de Pouso Alegre</p>
+          <h1>Agenda Única da Inovação<sup class="fn-mark" aria-hidden="true">*</sup></h1>
+          <p class="lead">Um só calendário para todos os eventos, editais, capacitações e encontros de inovação e empreendedorismo de Pouso Alegre. Um painel único para o Ecossistema se organizar, cooperar e compartilhar suas ações.</p>
           <div class="actions">
             <button class="btn btn--light" type="button" data-goto="cadastro">Cadastrar um evento</button>
           </div>
@@ -200,11 +200,11 @@
         <h2 id="h-how">Como a agenda funciona</h2>
         <ol class="flow">
           <li><span class="flow__n">1</span><strong>Você cadastra</strong><span>Qualquer organizador preenche o formulário abaixo. Leva três minutos.</span></li>
-          <li><span class="flow__n">2</span><strong>O Grupo 2 confere</strong><span>Verificamos os dados e avisamos se houver outro evento grande na mesma data.</span></li>
+          <li><span class="flow__n">2</span><strong>A curadoria confere</strong><span>Verificamos os dados e avisamos se houver outro evento grande na mesma data.</span></li>
           <li><span class="flow__n">3</span><strong>O evento entra na agenda</strong><span>Publicado com o selo "Na agenda ELI" e divulgado pelos canais dos parceiros.</span></li>
         </ol>
         <div class="rules">
-          <h3 class="h-small">Combinados propostos pelo Grupo 2</h3>
+          <h3 class="h-small">Combinados propostos para a agenda</h3>
           <ul>
             <li>Evento de inovação, tecnologia ou empreendedorismo aberto ao público entra na agenda, seja de qualquer instituição.</li>
             <li>Cadastro com pelo menos 15 dias de antecedência, para dar tempo de divulgar e evitar choques de data.</li>
@@ -287,8 +287,12 @@
             <label for="f-email">Seu e-mail</label>
             <input id="f-email" name="email" type="email" required autocomplete="email">
           </div>
+          <div class="hp" aria-hidden="true">
+            <label for="f-site">Deixe este campo em branco</label>
+            <input id="f-site" name="site" type="text" tabindex="-1" autocomplete="off">
+          </div>
           <div class="field field--full">
-            <label class="check"><input type="checkbox" name="consentimento" required> Autorizo a publicação dos dados do evento. Meu nome e e-mail ficam só com o Grupo 2, para contato.</label>
+            <label class="check"><input type="checkbox" name="consentimento" required> Autorizo a publicação dos dados do evento. Meu nome e e-mail ficam só com a curadoria da agenda, para contato.</label>
           </div>
           <div class="field field--full form__foot">
             <button class="btn" type="submit">Enviar para a agenda</button>
@@ -297,18 +301,11 @@
         </form>
       </section>
 
-      <section class="section group2" aria-labelledby="h-g2">
+      <section class="section group2" aria-labelledby="h-numeros">
         <div class="split">
           <div>
-            <h2 id="h-g2">Grupo 2: Ambientes de Inovação e Programas e Ações</h2>
-            <p>Nossa missão é saber o que existe, conectar e preencher as lacunas nos ambientes de inovação e nos programas de Pouso Alegre. Trabalhamos em três frentes:</p>
-            <dl class="fronts">
-              <div><dt><span class="dot" style="--c:var(--coral)"></span>Ambientes</dt><dd>Inventário de cada espaço de inovação: quem gere, o que oferece, para quem.</dd></div>
-              <div><dt><span class="dot" style="--c:var(--mint)"></span>Programas e ações</dt><dd>Catálogo dos programas recorrentes: hackathons, editais, mentorias, capacitações.</dd></div>
-              <div><dt><span class="dot" style="--c:var(--blue)"></span>Projetos estruturantes</dt><dd>Obras que beneficiam todo o ecossistema. A Agenda Única é a primeira.</dd></div>
-            </dl>
-            <h3 class="h-small">O que vamos medir</h3>
-            <ul class="kpis">
+            <h2 id="h-numeros">A agenda em números</h2>
+                        <ul class="kpis">
               <li><strong data-kpi="eventos">0</strong><span>eventos na agenda</span></li>
               <li><strong data-kpi="orgs">0</strong><span>organizadores diferentes</span></li>
               <li><strong data-kpi="choques">0</strong><span>datas com mais de um evento</span></li>
@@ -320,14 +317,15 @@
             <div class="join">
               <p class="join__title">O Ecossistema é feito por todos e para todos.</p>
               <p class="join__cta">Venha fazer parte.</p>
-              <p>Qualquer instituição, empresa ou pessoa que movimenta a inovação em Pouso Alegre pode contribuir com o Grupo 2. O primeiro passo é colocar seus eventos na Agenda Única.</p>
+              <p>Qualquer instituição, empresa ou pessoa que movimenta a inovação em Pouso Alegre pode contribuir. Um bom primeiro passo é colocar seus eventos na Agenda Única.</p>
               <button class="btn btn--light" type="button" data-goto="cadastro">Cadastrar um evento</button>
             </div>
-            <p class="h-small members__title">Instituições que já participam</p>
+            <p class="h-small members__title">Algumas instituições que já participam</p>
             <ul class="members" data-members></ul>
           </div>
         </div>
       </section>
+      <p class="footnote">* A Agenda Única do ELI é uma iniciativa do Grupo 2 (Ambientes de Inovação, Programas e Ações).</p>
     </section>
 
     <!-- =========================================================
