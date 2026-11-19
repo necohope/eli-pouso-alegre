@@ -1,0 +1,5 @@
+# Arquivos que ficam no repositório mas NÃO vão para o site publicado
+PROMPT_CLAUDE_CODE.md
+README.md
+.gitignore
+.vercelignore

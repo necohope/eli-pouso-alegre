@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página não encontrada — ELI Pouso Alegre</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2A4192">
+  <!-- Caminhos começam com "/" porque esta página é servida em qualquer endereço inexistente do site. -->
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    .notfound { min-height: 60vh; display: grid; align-content: center; }
+    .notfound__code { font-weight: 800; font-variation-settings: "wdth" 70; font-size: clamp(5rem, 18vw, 10rem); line-height: 1; color: var(--coral); margin: 0 0 8px; }
+    .notfound__dots { display: flex; gap: 10px; margin: 0 0 28px; }
+    .notfound__dots span { width: 14px; height: 14px; border-radius: 50%; background: var(--c); }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="/" aria-label="ELI Pouso Alegre, página inicial">
+        <img src="/assets/img/logo-eli.png" alt="Ecossistema Local de Inovação" width="498" height="137">
+        <span class="brand__city">Pouso Alegre</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="section notfound">
+    <p class="notfound__code" aria-hidden="true">404</p>
+    <div class="notfound__dots" aria-hidden="true">
+      <span style="--c:var(--coral)"></span><span style="--c:var(--mint)"></span><span style="--c:var(--sun)"></span><span style="--c:var(--blue)"></span><span style="--c:var(--rose)"></span><span style="--c:var(--peach)"></span>
+    </div>
+    <h1>Este ponto ainda não está ligado</h1>
+    <p class="lead">A página que você procurou não existe ou mudou de endereço. Os caminhos principais do site continuam aqui:</p>
+    <div class="actions">
+      <a class="btn" href="/">Ir para o início</a>
+      <a class="btn btn--ghost" href="/#agenda">Ver a Agenda Única</a>
+      <a class="btn btn--ghost" href="/#governanca">Governança</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img src="/assets/img/logo-eli-white.png" alt="Ecossistema Local de Inovação" width="1040" height="307">
+        <p>Pouso Alegre, Minas Gerais. Site em construção pelo Grupo 2 do ELI.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
