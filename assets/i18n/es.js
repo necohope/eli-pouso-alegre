@@ -547,5 +547,12 @@ window.ELI_DIC["es"] = {
   "Imagem ilustrativa: estudantes em laboratório de inovação. Foto: Oak Ridge National Laboratory, CC BY 2.0": "Imagen ilustrativa: estudiantes en un laboratorio de innovación. Foto: Oak Ridge National Laboratory, CC BY 2.0",
   "Imagem ilustrativa: auditório lotado em evento de tecnologia. Foto: Jorge Jaramillo, CC BY-SA 4.0": "Imagen ilustrativa: auditorio lleno en un evento de tecnología. Foto: Jorge Jaramillo, CC BY-SA 4.0",
   "Laboratório de inovação (imagem ilustrativa): Oak Ridge National Laboratory,": "Laboratorio de innovación (imagen ilustrativa): Oak Ridge National Laboratory,",
-  "Auditório em evento de tecnologia (imagem ilustrativa): Jorge Jaramillo,": "Auditorio en un evento de tecnología (imagen ilustrativa): Jorge Jaramillo,"
+  "Auditório em evento de tecnologia (imagem ilustrativa): Jorge Jaramillo,": "Auditorio en un evento de tecnología (imagen ilustrativa): Jorge Jaramillo,",
+  "Vista aérea de Pouso Alegre (página inicial): ASCOM Pouso Alegre,": "Vista aérea de Pouso Alegre (página de inicio): ASCOM Pouso Alegre,",
+  "Laboratório de inovação (página inicial, imagem ilustrativa): Oak Ridge National Laboratory,": "Laboratorio de innovación (página de inicio, imagen ilustrativa): Oak Ridge National Laboratory,",
+  "Coffee break em evento (Agenda, imagem ilustrativa): Donatas Dabravolskas,": "Pausa para el café en un evento (Agenda, imagen ilustrativa): Donatas Dabravolskas,",
+  "Auditório em evento de tecnologia (Programas e Ações, imagem ilustrativa): Jorge Jaramillo,": "Auditorio en un evento de tecnología (Programas y Acciones, imagen ilustrativa): Jorge Jaramillo,",
+  "Vista aérea do centro de Pouso Alegre (Vitrine): fernando_lima,": "Vista aérea del centro de Pouso Alegre (Vitrina): fernando_lima,",
+  ", domínio público": ", dominio público",
+  "Centro de Pouso Alegre (Governança): Madu Macedo,": "Centro de Pouso Alegre (Gobernanza): Madu Macedo,"
 };

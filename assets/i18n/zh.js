@@ -547,5 +547,12 @@ window.ELI_DIC["zh"] = {
   "Imagem ilustrativa: estudantes em laboratório de inovação. Foto: Oak Ridge National Laboratory, CC BY 2.0": "示意图：创新实验室中的学生。摄影：Oak Ridge National Laboratory，CC BY 2.0",
   "Imagem ilustrativa: auditório lotado em evento de tecnologia. Foto: Jorge Jaramillo, CC BY-SA 4.0": "示意图：科技活动中座无虚席的礼堂。摄影：Jorge Jaramillo，CC BY-SA 4.0",
   "Laboratório de inovação (imagem ilustrativa): Oak Ridge National Laboratory,": "创新实验室（示意图）：Oak Ridge National Laboratory，",
-  "Auditório em evento de tecnologia (imagem ilustrativa): Jorge Jaramillo,": "科技活动礼堂（示意图）：Jorge Jaramillo，"
+  "Auditório em evento de tecnologia (imagem ilustrativa): Jorge Jaramillo,": "科技活动礼堂（示意图）：Jorge Jaramillo，",
+  "Vista aérea de Pouso Alegre (página inicial): ASCOM Pouso Alegre,": "Pouso Alegre 航拍（首页）：ASCOM Pouso Alegre，",
+  "Laboratório de inovação (página inicial, imagem ilustrativa): Oak Ridge National Laboratory,": "创新实验室（首页，示意图）：Oak Ridge National Laboratory，",
+  "Coffee break em evento (Agenda, imagem ilustrativa): Donatas Dabravolskas,": "活动茶歇（日程，示意图）：Donatas Dabravolskas，",
+  "Auditório em evento de tecnologia (Programas e Ações, imagem ilustrativa): Jorge Jaramillo,": "科技活动礼堂（项目与行动，示意图）：Jorge Jaramillo，",
+  "Vista aérea do centro de Pouso Alegre (Vitrine): fernando_lima,": "Pouso Alegre 市中心航拍（展示窗）：fernando_lima，",
+  ", domínio público": "，公有领域",
+  "Centro de Pouso Alegre (Governança): Madu Macedo,": "Pouso Alegre 市中心（治理）：Madu Macedo，"
 };

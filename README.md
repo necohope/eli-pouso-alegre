@@ -99,20 +99,15 @@ Os textos são escritos em português no HTML e no JS. Ao mudar ou criar um text
 
 ## Créditos e licenças
 
-Fotos do Wikimedia Commons, usadas com atribuição:
+Os créditos ficam no rodapé de todas as páginas ("Créditos das imagens"), não sobre as fotos. Fotos em uso (Wikimedia Commons):
 
-- Vista aérea de Pouso Alegre: ASCOM Pouso Alegre, CC BY 4.0
-- Reitoria do IFSULDEMINAS: Ifsuldeminas, CC BY-SA 4.0 (não usada nas páginas)
-- Theatro Municipal de Pouso Alegre: HVL, CC BY 4.0 (reserva, não usada nas páginas)
-- Centro de Pouso Alegre (2021): Madu Macedo, CC BY-SA 4.0
-- Centro de Pouso Alegre visto do alto: ASCOM Pouso Alegre, CC BY 4.0 (reserva)
-- Região central de Pouso Alegre: HVL, CC BY 4.0 (reserva)
-- Laboratório de inovação (imagem ilustrativa, genérica): Oak Ridge National Laboratory, CC BY 2.0
-- Auditório em evento de tecnologia (imagem ilustrativa, genérica): Jorge Jaramillo, CC BY-SA 4.0
-- Lagoa do Parque Zoobotânico: Lucasedurezende, CC BY-SA 3.0
-- Centro Cultural Cleonice Bonillo Fernandes: HVL, CC BY 4.0 (reserva, não usada nas páginas)
-- Vista aérea 2: ASCOM Pouso Alegre, CC BY 4.0 (reserva)
+- Vista aérea de Pouso Alegre (faixa da página inicial e imagem de compartilhamento): ASCOM Pouso Alegre, CC BY 4.0
+- Laboratório de inovação (página inicial, imagem ilustrativa genérica): Oak Ridge National Laboratory, CC BY 2.0
+- Coffee break em evento (topo da Agenda, imagem ilustrativa genérica): Donatas Dabravolskas, CC BY-SA 4.0
+- Auditório em evento de tecnologia (topo de Programas e Ações, imagem ilustrativa genérica): Jorge Jaramillo, CC BY-SA 4.0
+- Vista aérea do centro de Pouso Alegre (topo da Vitrine): fernando_lima, domínio público
+- Centro de Pouso Alegre (2021) (topo da Governança): Madu Macedo, CC BY-SA 4.0
 
-Foto da Rodada de Negócios (topo da Agenda): Renan Bandana / Terra do Mandu, todos os direitos reservados, uso autorizado no site do ELI. Não reutilizar em outros materiais sem nova autorização.
+Fotos guardadas, fora de uso: Reitoria do IFSULDEMINAS, Theatro Municipal, Centro Cultural, Parque Zoobotânico, região central (HVL), ruas do centro (ASCOM) e a foto da Rodada de Negócios (Renan Bandana / Terra do Mandu, uso autorizado só para o site do ELI; não reutilizar sem nova autorização).
 
 Marca ELI: Sebrae, programa Ecossistemas Locais de Inovação. Fonte Saira: SIL Open Font License 1.1 (`assets/fonts/OFL-Saira.txt`). Biblioteca Firebase (Google), carregada sob demanda de www.gstatic.com.

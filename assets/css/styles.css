@@ -707,3 +707,4 @@ button.ym__d:focus-visible { outline: 3px solid var(--blue); outline-offset: 1px
 .gaveta__langs button { font: inherit; font-size: var(--t-small); font-weight: 650; padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; color: var(--text); cursor: pointer; }
 .gaveta__langs button[aria-current="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
 .gaveta__langs button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.page-head > picture > img.foco-praca { object-position: 30% 42%; opacity: .5; }
