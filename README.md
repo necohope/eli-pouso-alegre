@@ -1,48 +1,53 @@
 # ELI Pouso Alegre — site do Ecossistema Local de Inovação
 
-Versão mínima (MVP) do site do ELI Pouso Alegre, o Ecossistema Local de Inovação da cidade.
-
-O site tem três páginas:
+Site do ELI Pouso Alegre, o Ecossistema Local de Inovação da cidade. HTML, CSS e JavaScript puros, sem framework e sem etapa de build. Os dados cadastrados pelos usuários ficam no Firebase (Google).
 
 | Página | Endereço | Conteúdo |
 |---|---|---|
-| O ELI | `#inicio` | O que é o ELI, etapa da metodologia, os três grupos, referências, próximos eventos |
-| Agenda Única | `#agenda` | Lista e calendário de eventos, filtros, radar de datas, formulário de cadastro, Grupo 2 |
+| O ELI | `#inicio` | O que é o ELI, etapa da metodologia, os grupos, referências, próximos eventos |
+| Agenda | `#agenda` | Eventos em Lista, Mês e Ano, filtros, eventos já realizados |
+| Programas e Ações | `#programas` | Mapa vivo de programas, projetos, ações e serviços, cadastrados pelos atores |
+| Vitrine | `#vitrine`, `#vitrine/<hélice>` | As 4 hélices e os atores ativos, com logo clicável para o site de cada instituição |
 | Governança | `#governanca` | Sobre nós, visão, missão, princípios, estrutura, regras e primeiros 90 dias |
+| Minha conta | `#conta`, `#conta/instituicao`, `#conta/eventos`, `#conta/programas` | Perfil da instituição, meus eventos e meus programas (criar, editar, excluir) |
+| Painel Admin | `/admin` (link no rodapé) | Estatísticas de acesso e moderação. Demonstração: `/admin?demo` |
 
-É um site estático: HTML, CSS e JavaScript puros, sem framework e sem etapa de build. Qualquer hospedagem gratuita serve.
+Idiomas: português, inglês, espanhol, francês e chinês (seletor no topo; textos em `assets/i18n/`).
 
 ## Onde está no ar
 
 | O quê | Onde |
 |---|---|
-| Site público | https://eli-pouso-alegre.vercel.app |
+| Site público | https://eli-pouso-alegre.vercel.app (domínio próprio previsto: elipousoalegre.com.br) |
 | Código | https://github.com/necohope/eli-pouso-alegre (público) |
 | Hospedagem | Vercel, projeto `eli-pouso-alegre` no time Deep Tree |
-| Planilha da agenda | "Agenda ELI Pouso Alegre", no Google Planilhas. Dona: conta Google da Deep Tree Inovação. Acesso de edição: só a curadoria da agenda (registrar aqui cada pessoa ou instituição que receber acesso) |
+| Contas e dados | Firebase, conta Google da Deep Tree Inovação (Authentication + Firestore, região São Paulo) |
+| Admin | mateushope.oficial@gmail.com (lista em `config.js` > `ADMINS` e em `firestore.rules` > `isAdmin`) |
 
-Cada `git push` na branch `main` publica o site sozinho, pelo GitHub Actions (`.github/workflows/publicar-vercel.yml`). O acompanhamento fica na aba **Actions** do repositório. Para isso funcionar, o repositório precisa do segredo `VERCEL_TOKEN` e das variáveis `VERCEL_ORG_ID` e `VERCEL_PROJECT_ID`.
-
-Arquivos listados em `.vercelignore` (este README, o prompt de trabalho, a pasta `.github`) ficam no repositório, mas não vão para o site.
+Publicação: cada `git push` na `main` publica o site pelo GitHub Actions (`.github/workflows/publicar-vercel.yml`), desde que o segredo `VERCEL_TOKEN` esteja configurado no repositório. Sem ele, a publicação é feita à mão com `vercel deploy --prod`.
 
 ## Estrutura das pastas
 
 ```
 index.html                 Todas as páginas (troca por âncora)
-assets/css/styles.css      Estilos. Cores tiradas do símbolo do ELI
-assets/js/config.js        Configurações: endereço da planilha, exemplos ligados ou não
-assets/js/eventos.js       Tipos de evento, eventos e instituições do Grupo 2
-assets/js/app.js           Comportamento do site
-assets/img/                Logos do ELI e fotos de Pouso Alegre (licenças abaixo)
-assets/fonts/              Fonte Saira (licença SIL Open Font License)
-apps-script/Code.gs        Backend gratuito: Google Planilha + Apps Script
+admin.html                 Painel Admin (estatísticas e moderação)
 404.html                   Página de "não encontrado"
-robots.txt, sitemap.xml    Orientação para buscadores
-vercel.json                Cabeçalhos de segurança e cache na Vercel
-.github/workflows/         Publicação automática a cada git push
+assets/css/                styles.css (site) e admin.css (painel)
+assets/js/config.js        Configuração: Firebase, Admins, fuso
+assets/js/eventos.js       Tipos de evento, público-alvo e eventos curados (pesquisa)
+assets/js/catalogos.js     Hélices, categorias, tipos de programa, vertentes
+assets/js/i18n.js          Tradução e formatação de datas por idioma
+assets/i18n/*.js           Dicionários EN, ES, FR, ZH (texto em português -> tradução)
+assets/js/fb.js            Firebase: login, leitura (REST leve) e gravação
+assets/js/app.js           Rotas, agenda (lista, mês, ano), PWA, estatísticas
+assets/js/conta.js         Login (Google ou e-mail e senha) e Minha conta
+assets/js/mapa.js          Vitrine e Programas e Ações
+assets/js/admin.js         Painel Admin
+firestore.rules            Regras de segurança do banco (quem pode ler e gravar)
+manifest.webmanifest, sw.js  App instalável (PWA)
+vercel.json                Cabeçalhos de segurança e cache
+apps-script/               Backend antigo em Google Planilha (não é mais usado)
 ```
-
-As fotos têm versão `.webp` (tamanho cheio e `-800` para celular), usadas via `<picture>`. Os `.jpg` continuam como alternativa. A imagem de compartilhamento em redes sociais é `assets/img/og-eli-pouso-alegre.jpg` (1200×630).
 
 ## Ver o site no computador
 
@@ -56,52 +61,41 @@ cd caminho/da/pasta/eli-pouso-alegre
 python3 -m http.server 8000
 ```
 
-Depois abra `http://localhost:8000` no navegador. Para parar, aperte Ctrl + C.
+Depois abra `http://localhost:8000`. Para parar, aperte Ctrl + C.
 
-## Ligar a agenda à planilha
+## Contas, cadastros e moderação
 
-Enquanto `ENDPOINT` estiver vazio em `assets/js/config.js`, o formulário roda em modo de demonstração e não envia nada.
+- Qualquer pessoa cria conta com Google ou com e-mail e senha. Contas de e-mail e senha precisam confirmar o e-mail (o Firebase envia o link) antes de publicar.
+- Antes de publicar eventos e programas, o usuário completa o perfil da instituição (logo obrigatório, hélice, categoria, site, descrição). O perfil aparece na Vitrine se estiver marcado como ativo.
+- Tudo publica na hora. O Admin oculta o que for indevido no Painel (moderação); o autor continua vendo o item em Minha conta.
+- Cada usuário só edita e exclui o que é dele. Isso é garantido pelas regras do banco (`firestore.rules`), não só pelo site.
+- O usuário pode excluir a própria conta e todos os seus dados em Minha conta (LGPD).
+- Logos são reduzidos no próprio navegador (320 px, WebP) e guardados junto do perfil.
 
-1. Crie uma Planilha Google com o nome "Agenda ELI Pouso Alegre", numa conta do ELI ou de uma instituição parceira.
-2. Na planilha, abra **Extensões > Apps Script**.
-3. Apague o conteúdo do arquivo `Código.gs` e cole todo o conteúdo de `apps-script/Code.gs`.
-4. Salve, escolha a função `configurar` no menu de cima e clique em **Executar**. Autorize o acesso quando o Google pedir. A aba "Eventos" será criada.
-5. (Opcional) Em **Configurações do projeto > Propriedades do script**, crie `EMAIL_AVISO` com o e-mail que deve ser avisado a cada novo cadastro.
-6. Clique em **Implantar > Nova implantação > Tipo: App da Web**. Em "Executar como", escolha **Eu**. Em "Quem pode acessar", escolha **Qualquer pessoa**. Clique em Implantar e copie a URL que termina em `/exec`.
-7. Cole essa URL em `ENDPOINT`, dentro de `assets/js/config.js`, e publique o site de novo.
+Atualizar as regras do banco: `firebase deploy --only firestore:rules --project <id do projeto>`.
 
-Para aprovar um evento: na aba "Eventos", troque a coluna `status` de `pendente` para `aprovado`. Para recusar, use `recusado`.
+## Estatísticas
 
-Nome e e-mail de quem cadastrou ficam só na planilha. O site nunca recebe esses dados.
+Acessos anônimos ficam na coleção `acessos` do Firestore e só o Admin lê. Sem cookies e sem dados pessoais: página, aparelho, navegador, sistema, idioma, site de origem e ações (WhatsApp, evento aberto, salvar no calendário, inscrição, perfil aberto, visita ao site de um ator, app instalado). Visitantes são contados por um código aleatório que muda todo dia. Não são contados: aparelhos com login de Admin, prévias da Vercel, cópias locais, robôs e navegadores com "não rastrear".
 
-## Painel Admin e estatísticas
+## Tradução
 
-- Endereço: `/admin` (link "Admin" no rodapé). Login com e-mail e senha do Admin; fica salvo no aparelho por 1 ano.
-- A senha não está no site nem no GitHub: fica só no Apps Script, em `apps-script/segredos.gs` (arquivo fora do Git, com a senha embaralhada por SHA-256 com sal). Para trocar a senha, gere um novo `segredos.gs` e envie com `npx -y @google/clasp@2.4.2 push -f` dentro de `apps-script/`.
-- Os acessos ficam na aba "Acessos" da planilha da agenda. Sem cookies e sem dados pessoais: página, aparelho, navegador, sistema, idioma, site de origem e ações (WhatsApp, cadastro, evento aberto, salvar no calendário, inscrição, app). Visitantes são contados por um código aleatório que muda todo dia.
-- Não são contados: aparelhos com login de Admin, prévias da Vercel, cópias locais, robôs de teste e navegadores com "não rastrear".
-- O aviso de privacidade (LGPD) abre pelo link "Privacidade" no rodapé.
-
-## Script do Google (Apps Script)
-
-- Projeto "Agenda ELI", ligado à planilha. Código em `apps-script/` (`Code.gs`, `analytics.gs`, `appsscript.json`).
-- Atualizar o script: dentro de `apps-script/`, `npx -y @google/clasp@2.4.2 push -f` e depois `npx -y @google/clasp@2.4.2 deploy -i <id da implantação> -d "descrição"` (mantém o mesmo endereço `/exec`).
-- A conta dona precisa autorizar o script uma vez (editor do Apps Script > `configurar` > Executar).
+Os textos são escritos em português no HTML e no JS. Ao mudar ou criar um texto, acrescente a tradução em `assets/i18n/en.js`, `es.js`, `fr.js` e `zh.js` (a chave é o texto exato em português). Textos montados no JS usam `t("texto com {marcador}", { marcador: valor })`. Conteúdo cadastrado por usuários fica no idioma original; marque com `data-no-i18n` o que não deve ser traduzido.
 
 ## Antes de publicar
 
 - [ ] Grupo de Governança validou visão, missão, princípios e regras (a página marca tudo como proposta).
-- [x] Decisão: o site não publica nomes de pessoas físicas, só de instituições (lista em `ELI_INSTITUICOES_GRUPO2`, `assets/js/eventos.js`).
-- [ ] `CONTATO_GRUPO2` preenchido em `assets/js/config.js`.
-- [x] Eventos reais de 2026 cadastrados em `eventos.js` (pesquisa de novembro de 2026, com link da fonte em cada evento) e `MOSTRAR_EXEMPLOS: false`.
+- [x] Decisão: o site não publica nomes de pessoas físicas, só de instituições.
+- [x] Eventos reais de 2026 cadastrados em `eventos.js` (pesquisa de novembro de 2026, com link da fonte em cada evento).
 - [ ] Confirmar a data do II Seminário INOVA SUL (hoje marcado como "agosto de 2027, a confirmar").
 - [ ] Confirmar com o Sebrae Minas o uso da marca ELI no site.
 
 ## Editar textos e dados
 
-- Textos das páginas: `index.html`.
-- Eventos, tipos de evento e instituições do Grupo 2: `assets/js/eventos.js`. Não use nomes de pessoas físicas.
-- Referências nacionais e mundiais e o organograma: `assets/js/app.js`, procure por `REFS` e `function org`.
+- Textos das páginas: `index.html` (e as traduções em `assets/i18n/`).
+- Eventos curados, tipos de evento e público-alvo: `assets/js/eventos.js`. Não use nomes de pessoas físicas.
+- Hélices, categorias, tipos de programa e vertentes: `assets/js/catalogos.js`.
+- Referências e organograma: `assets/js/app.js`, procure por `REFS` e `function org`.
 
 ## Créditos e licenças
 
@@ -114,4 +108,4 @@ Fotos do Wikimedia Commons, usadas com atribuição:
 - Centro Cultural Cleonice Bonillo Fernandes: HVL, CC BY 4.0 (reserva, não usada nas páginas)
 - Vista aérea 2: ASCOM Pouso Alegre, CC BY 4.0 (reserva)
 
-Marca ELI: Sebrae, programa Ecossistemas Locais de Inovação. Fonte Saira: SIL Open Font License 1.1 (`assets/fonts/OFL-Saira.txt`).
+Marca ELI: Sebrae, programa Ecossistemas Locais de Inovação. Fonte Saira: SIL Open Font License 1.1 (`assets/fonts/OFL-Saira.txt`). Biblioteca Firebase (Google), carregada sob demanda de www.gstatic.com.

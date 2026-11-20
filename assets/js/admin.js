@@ -1,21 +1,23 @@
 /* ==========================================================
    ELI Pouso Alegre — Painel Admin
-   Login verificado no Apps Script (a senha não fica no site).
-   O login fica salvo neste aparelho e desliga a contagem de
-   acessos dele no site (mesma chave usada em app.js).
+   Login pelo Firebase (Google ou e-mail e senha); só contas da
+   lista ADMINS (config.js e firestore.rules) entram. O login fica
+   salvo neste aparelho e desliga a contagem de acessos dele no site.
    ========================================================== */
 (function () {
   "use strict";
   var CFG = window.ELI_CONFIG || {};
+  var FB = window.ELI_FB;
   var CHAVE = "eli-admin";
+  var conta = null, base = { instituicoes: [], eventos: [], programas: [] }, modCol = "instituicoes";
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var dias = 30;
   var ultimo = null;
 
   var NOMES = {
-    paginas: { inicio: "O ELI (início)", agenda: "Agenda Única", governanca: "Governança" },
-    acoes: { whatsapp: "Cliques no WhatsApp", cadastro_enviado: "Eventos cadastrados pelo site", evento_aberto: "Eventos abertos", salvar_agenda: "Salvos no calendário", inscricao: "Cliques em inscrição", convite_app: "Convites para instalar o app", app_instalado: "Apps instalados" },
+    paginas: { inicio: "O ELI (início)", agenda: "Agenda Única", governanca: "Governança", programas: "Programas e Ações", vitrine: "Vitrine", conta: "Minha conta", "vitrine/setor-produtivo": "Vitrine: Setor Produtivo", "vitrine/academia": "Vitrine: Academia e ICTs", "vitrine/setor-publico": "Vitrine: Setor Público", "vitrine/sociedade-civil": "Vitrine: Sociedade Civil" },
+    acoes: { whatsapp: "Cliques no WhatsApp", cadastro_enviado: "Eventos cadastrados pelo site", evento_aberto: "Eventos abertos", salvar_agenda: "Salvos no calendário", inscricao: "Cliques em inscrição", convite_app: "Convites para instalar o app", app_instalado: "Apps instalados", site_ator: "Visitas ao site de atores (Vitrine)", perfil_aberto: "Perfis abertos na Vitrine", programa_aberto: "Programas abertos" },
     dispositivos: { celular: "Celular", computador: "Computador", tablet: "Tablet" }
   };
   var TITULOS = {};
@@ -23,7 +25,7 @@
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function num(n) { return Number(n || 0).toLocaleString("pt-BR"); }
-  function sessao() { if (DEMO) return { email: "demonstração", exp: Infinity }; try { var a = JSON.parse(localStorage.getItem(CHAVE) || "null"); return a && a.exp > Date.now() ? a : null; } catch (e) { return null; } }
+  function sessao() { if (DEMO) return { email: "demonstração", exp: Infinity }; return conta ? { email: conta.email } : null; }
   function salvar(a) { try { localStorage.setItem(CHAVE, JSON.stringify(a)); } catch (e) { /* navegação privada: login só nesta aba */ } }
   function limpar() { try { localStorage.removeItem(CHAVE); } catch (e) { /* ok */ } }
 
@@ -48,18 +50,49 @@
       dispositivos: [{ nome: "celular", total: Math.round(vis * 0.71) }, { nome: "computador", total: Math.round(vis * 0.26) }, { nome: "tablet", total: Math.round(vis * 0.03) }],
       navegadores: [{ nome: "Chrome", total: Math.round(vis * 0.58) }, { nome: "Safari", total: Math.round(vis * 0.31) }, { nome: "Samsung", total: Math.round(vis * 0.07) }, { nome: "Edge", total: Math.round(vis * 0.04) }],
       sistemas: [{ nome: "Android", total: Math.round(vis * 0.52) }, { nome: "iOS", total: Math.round(vis * 0.23) }, { nome: "Windows", total: Math.round(vis * 0.17) }, { nome: "macOS", total: Math.round(vis * 0.08) }],
-      agenda: { pendente: 3, aprovado: 12, recusado: 1 } });
+      cadastros: { instituicoes: { total: 18, ocultos: 0 }, eventos: { total: 9, ocultos: 1 }, programas: { total: 14, ocultos: 0 } } });
   }
 
   function api(corpo) {
     if (DEMO) return demo(corpo);
-    if (!CFG.ENDPOINT) return Promise.reject(new Error("A planilha ainda não está ligada ao site (ENDPOINT vazio em config.js)."));
-    return fetch(CFG.ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(corpo) })
-      .then(function (r) { if (!r.ok) throw new Error("A planilha respondeu com erro " + r.status + "."); return r.json(); })
-      .catch(function (e) {
-        if (e instanceof SyntaxError || /Failed to fetch|NetworkError|Load failed/i.test(e.message)) throw new Error("Não foi possível falar com a planilha. Ela já foi autorizada pela conta dona?");
-        throw e;
+    return carregarFirebase(corpo.dias || 30);
+  }
+
+  /* ---------------- dados reais (Firebase) ---------------- */
+  function diaIso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function carregarFirebase(dias) {
+    var agora = new Date(), inicio = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() - (dias - 1));
+    return Promise.all([FB.acessosDesde(inicio), FB.todos("instituicoes"), FB.todos("eventos"), FB.todos("programas")]).then(function (r) {
+      base = { instituicoes: r[1], eventos: r[2], programas: r[3] };
+      var linhas = r[0], porDia = {}, serie = [];
+      for (var i = dias - 1; i >= 0; i--) { var k = diaIso(new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() - i)); porDia[k] = { dia: k, paginas: 0, v: {} }; serie.push(k); }
+      var mapas = { paginas: {}, dispositivos: {}, navegadores: {}, sistemas: {}, origens: {}, acoes: {}, eventosAbertos: {} };
+      function soma(m, k) { k = k || "(não informado)"; m[k] = (m[k] || 0) + 1; }
+      var visitaDia = {}, totalPag = 0, novos = 0, viaApp = 0;
+      linhas.forEach(function (l) {
+        if (!l.quando) return;
+        var dia = diaIso(l.quando);
+        if (l.tipo === "pagina") {
+          totalPag++; soma(mapas.paginas, l.pagina);
+          if (porDia[dia]) { porDia[dia].paginas++; porDia[dia].v[l.visitante] = 1; }
+          var vk = dia + ":" + l.visitante;
+          if (!visitaDia[vk]) { visitaDia[vk] = 1; soma(mapas.dispositivos, l.dispositivo); soma(mapas.navegadores, l.navegador); soma(mapas.sistemas, l.sistema); soma(mapas.origens, l.origem || "Direto ou app"); if (l.app) viaApp++; }
+          if (l.novo) novos++;
+        } else { soma(mapas.acoes, l.tipo); if (l.tipo === "evento_aberto") soma(mapas.eventosAbertos, l.alvo); }
       });
+      var s = serie.map(function (k) { return { dia: k, paginas: porDia[k].paginas, visitantes: Object.keys(porDia[k].v).length }; });
+      function top(m, max) { return Object.keys(m).map(function (k) { return { nome: k, total: m[k] }; }).sort(function (a, b) { return b.total - a.total; }).slice(0, max || 10); }
+      function contar(l) { return { total: l.length, ocultos: l.filter(function (x) { return x.oculto; }).length }; }
+      var hoje = s[s.length - 1];
+      return {
+        ok: true, dias: dias, geradoEm: agora.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }),
+        totais: { paginas: totalPag, visitantes: s.reduce(function (a, x) { return a + x.visitantes; }, 0), novos: novos, viaApp: viaApp },
+        hoje: { paginas: hoje.paginas, visitantes: hoje.visitantes }, serie: s,
+        paginas: top(mapas.paginas), dispositivos: top(mapas.dispositivos), navegadores: top(mapas.navegadores), sistemas: top(mapas.sistemas),
+        origens: top(mapas.origens, 12), acoes: top(mapas.acoes), eventosAbertos: top(mapas.eventosAbertos),
+        cadastros: { instituicoes: contar(r[1]), eventos: contar(r[2]), programas: contar(r[3]) }
+      };
+    });
   }
 
   /* ---------------- telas ---------------- */
@@ -68,22 +101,18 @@
     $("[data-painel]").hidden = qual !== "painel";
   }
 
+  function msgLogin(txt) { var m = $("[data-login-msg]"); m.className = "form__msg is-err"; m.textContent = txt; }
+  $("[data-google]").addEventListener("click", function () {
+    FB.google().catch(function (e) { msgLogin(FB.msg(e)); });
+  });
   $("[data-login-form]").addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var f = ev.target, msg = $("[data-login-msg]"), btn = $("button[type=submit]", f);
-    if (!f.email.value.trim() || !f.senha.value) { msg.className = "form__msg is-err"; msg.textContent = "Preencha e-mail e senha."; return; }
-    btn.disabled = true; btn.textContent = "Entrando…"; msg.textContent = "";
-    api({ acao: "login", email: f.email.value.trim(), senha: f.senha.value })
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.erro || "Não foi possível entrar.");
-        salvar({ token: r.token, exp: r.exp, email: r.email });
-        f.reset(); mostrar("painel"); carregar();
-      })
-      .catch(function (e) { msg.className = "form__msg is-err"; msg.textContent = e.message; })
-      .then(function () { btn.disabled = false; btn.textContent = "Entrar"; });
+    var f = ev.target, btn = $("button[type=submit]", f);
+    if (!f.email.value.trim() || !f.senha.value) { msgLogin("Preencha e-mail e senha."); return; }
+    btn.disabled = true;
+    FB.entrar(f.email.value.trim(), f.senha.value).catch(function (e) { msgLogin(FB.msg(e)); }).then(function () { btn.disabled = false; f.senha.value = ""; });
   });
-
-  $("[data-sair]").addEventListener("click", function () { limpar(); mostrar("login"); $("#a-email").focus(); });
+  $("[data-sair]").addEventListener("click", function () { limpar(); FB.sair(); });
   $("[data-atualizar]").addEventListener("click", function () { carregar(); });
   $$("[data-dias]").forEach(function (b) {
     b.addEventListener("click", function () {
@@ -97,12 +126,9 @@
     var s = sessao(); if (!s) { mostrar("login"); return; }
     var erro = $("[data-erro]"); erro.hidden = true;
     $("[data-meta]").textContent = "Carregando…";
-    api({ acao: "stats", token: s.token, dias: dias })
-      .then(function (r) {
-        if (!r.ok) { if (r.sair) { limpar(); mostrar("login"); } throw new Error(r.erro || "Erro ao carregar."); }
-        ultimo = r; desenhar(r);
-      })
-      .catch(function (e) { erro.hidden = false; erro.textContent = e.message; $("[data-meta]").textContent = "Conectado como " + s.email + "."; });
+    api({ dias: dias })
+      .then(function (r) { ultimo = r; desenhar(r); })
+      .catch(function (e) { erro.hidden = false; erro.textContent = FB && !DEMO ? FB.msg(e) : e.message; $("[data-meta]").textContent = "Conectado como " + s.email + "."; });
   }
 
   /* ---------------- desenho ---------------- */
@@ -129,11 +155,12 @@
     lista("dispositivos", r.dispositivos, NOMES.dispositivos);
     lista("navegadores", r.navegadores);
     lista("sistemas", r.sistemas);
-    var a = r.agenda || {};
-    $("[data-agenda]").innerHTML = [["pendente", "pendentes"], ["aprovado", "aprovados"], ["recusado", "recusados"]].map(function (x) {
-      return "<li><strong>" + num(a[x[0]]) + "</strong><span>" + x[1] + "</span></li>";
+    var c = r.cadastros || {};
+    $("[data-agenda]").innerHTML = [["instituicoes", "instituições"], ["eventos", "eventos de usuários"], ["programas", "programas e ações"]].map(function (x) {
+      var v = c[x[0]] || { total: 0, ocultos: 0 };
+      return "<li><strong>" + num(v.total) + "</strong><span>" + x[1] + (v.ocultos ? " (" + num(v.ocultos) + " ocultos)" : "") + "</span></li>";
     }).join("");
-    var pl = $("[data-planilha]"); if (r.planilha) { pl.href = r.planilha; pl.hidden = false; }
+    moderacao();
   }
 
   function lista(chave, itens, nomes) {
@@ -194,5 +221,57 @@
     $("[data-painel]").insertBefore(aviso, $("[data-painel]").firstChild);
     $("[data-sair]").style.display = "none";
   }
-  if (sessao()) { mostrar("painel"); carregar(); } else mostrar("login");
+  /* ---------------- moderação ---------------- */
+  function moderacao() {
+    var ul = $("[data-modlist]"); if (!ul) return;
+    if (DEMO) { ul.innerHTML = '<li class="adm-vazio">Na demonstração não há itens para moderar.</li>'; return; }
+    var lista = (base[modCol] || []).slice().sort(function (a, b) { return ((b.criadoEm && b.criadoEm.seconds) || 0) - ((a.criadoEm && a.criadoEm.seconds) || 0); });
+    if (!lista.length) { ul.innerHTML = '<li class="adm-vazio">Nada cadastrado ainda.</li>'; return; }
+    ul.innerHTML = lista.slice(0, 200).map(function (o) {
+      var titulo = o.titulo || o.nome || "(sem nome)", quem = o.instituicao || o.organizador || o.categoria || "";
+      var quando = o.criadoEm && o.criadoEm.toDate ? o.criadoEm.toDate().toLocaleDateString("pt-BR") : "";
+      var extra = modCol === "eventos" && o.data ? " · evento em " + o.data.split("-").reverse().join("/") : "";
+      return '<li class="adm-moditem' + (o.oculto ? " is-oculto" : "") + '">' + (o.logo ? '<img src="' + esc(o.logo) + '" alt="" width="40" height="40">' : '<span class="adm-moditem__sem" aria-hidden="true"></span>') +
+        "<div><strong>" + esc(titulo) + "</strong><span>" + esc(quem) + (quando ? " · cadastrado em " + quando : "") + esc(extra) + "</span></div>" +
+        '<span class="badge' + (o.oculto ? " badge--clash" : " badge--ok") + '">' + (o.oculto ? "Oculto" : "No ar") + "</span>" +
+        '<button class="btn btn--ghost btn--small" type="button" data-moderar="' + esc(o.id) + '" data-oculto="' + (!o.oculto) + '">' + (o.oculto ? "Mostrar" : "Ocultar") + "</button></li>";
+    }).join("");
+  }
+  $$("[data-mod]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      modCol = b.getAttribute("data-mod");
+      $$("[data-mod]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      moderacao();
+    });
+  });
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-moderar]"); if (!b) return;
+    var id = b.getAttribute("data-moderar"), oculto = b.getAttribute("data-oculto") === "true";
+    if (oculto && !confirm("Ocultar este item do site?")) return;
+    b.disabled = true;
+    FB.moderar(modCol, id, oculto).then(function () {
+      base[modCol].forEach(function (o) { if (o.id === id) o.oculto = oculto; });
+      moderacao();
+    }).catch(function (e) { alert(FB.msg(e)); b.disabled = false; });
+  });
+
+  /* ---------------- início ---------------- */
+  if (DEMO) { mostrar("painel"); carregar(); }
+  else if (!FB || !FB.ativo()) {
+    mostrar("login"); msgLogin("O Firebase ainda não foi configurado (config.js).");
+    $$("[data-google], [data-login-form] button").forEach(function (b) { b.disabled = true; });
+  } else {
+    FB.iniciar().catch(function () { msgLogin("Não foi possível carregar o login agora."); });
+    FB.aoMudarUsuario(function (u) {
+      if (!u) { conta = null; mostrar("login"); return; }
+      if (!FB.isAdmin(u)) {
+        conta = null; mostrar("login");
+        msgLogin(u.emailVerified ? "A conta " + u.email + " não tem acesso ao Painel Admin." : "Confirme o e-mail da conta antes de entrar no Painel.");
+        return;
+      }
+      conta = u; salvar({ exp: Date.now() + 365 * 864e5, email: u.email });
+      mostrar("painel"); carregar();
+    });
+  }
+
 })();

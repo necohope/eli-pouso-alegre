@@ -1,21 +1,26 @@
 /* ==========================================================
    Configuração do site ELI Pouso Alegre
-   Edite só este arquivo para ligar a agenda à planilha.
    ========================================================== */
 window.ELI_CONFIG = {
-  // URL do Web App do Google Apps Script (veja apps-script/Code.gs e o README).
-  // Enquanto estiver vazia, o site mostra os eventos de assets/js/eventos.js
-  // e o formulário roda em modo de demonstração (não envia nada).
-  // Script já publicado; ativar (colar entre as aspas) só depois que a conta dona autorizar e o teste de ponta a ponta passar:
-  // https://script.google.com/macros/s/AKfycbwAMmntufmq8X5iBfzQ9_GxDjAFjbenVL7Q8oSbZChM5bb_sZ1jx4OcXzgdDBM-gdg/exec
-  ENDPOINT: "",
+  // Projeto Firebase (contas, eventos, programas, Vitrine e estatísticas).
+  // Estes dados são públicos por natureza: a segurança fica nas regras (firestore.rules).
+  // Enquanto estiver null, o site funciona só com os eventos de assets/js/eventos.js.
+  FIREBASE: {
+    apiKey: "AIzaSyAnSg5N1Ikss4x3lq5VYe1gu6c5ofavNHI",
+    authDomain: "elipousoalegre.firebaseapp.com",
+    projectId: "elipousoalegre",
+    storageBucket: "elipousoalegre.firebasestorage.app",
+    messagingSenderId: "623719263221",
+    appId: "1:623719263221:web:8a33add1c2c373849e4ebc"
+  },
+
+  // Contas com acesso ao Painel Admin e à moderação (precisam ter o e-mail confirmado).
+  // Ao mudar esta lista, mude também firestore.rules (função isAdmin).
+  ADMINS: ["mateushope.oficial@gmail.com"],
 
   // Mostrar eventos de exemplo junto com os reais? Deixe false quando a agenda tiver eventos de verdade.
   MOSTRAR_EXEMPLOS: false,
 
-  // Fuso usado nos links do Google Agenda
-  FUSO: "America/Sao_Paulo",
-
-  // Contato público do Grupo 2 (aparece se o envio falhar). Preencha antes de publicar.
-  CONTATO_GRUPO2: ""
+  // Fuso usado nos links do Google Agenda e nos arquivos .ics
+  FUSO: "America/Sao_Paulo"
 };

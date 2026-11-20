@@ -37,13 +37,44 @@
         <img src="assets/img/logo-eli.png" alt="Ecossistema Local de Inovação" width="498" height="137">
         <span class="brand__city">Pouso Alegre</span>
       </a>
-      <button class="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
       <nav id="nav" class="nav" aria-label="Principal">
         <a href="#inicio" data-nav="inicio">O ELI</a>
-        <a href="#agenda" data-nav="agenda">Agenda Única</a>
+        <a href="#agenda" data-nav="agenda">Agenda</a>
+        <a href="#programas" data-nav="programas">Programas e Ações</a>
+        <a href="#vitrine" data-nav="vitrine">Vitrine</a>
         <a href="#governanca" data-nav="governanca">Governança</a>
-        <a href="#agenda" class="btn btn--small" data-goto="cadastro">Cadastrar evento</a>
       </nav>
+      <div class="tools">
+        <div class="pop" data-lang>
+          <button class="tool-btn" type="button" aria-haspopup="true" aria-expanded="false" data-pop-btn aria-label="Idioma / Language">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 0c2.5 2.4 3.8 5.4 3.8 9s-1.3 6.6-3.8 9m0-18C9.5 5.4 8.2 8.4 8.2 12s1.3 6.6 3.8 9M3.5 9h17M3.5 15h17"/></svg>
+            <span data-lang-cur data-no-i18n>PT</span>
+          </button>
+          <ul class="menu-pop" data-pop-menu hidden>
+            <li><button type="button" data-lang-set="pt" lang="pt-BR" data-no-i18n>Português</button></li>
+            <li><button type="button" data-lang-set="en" lang="en" data-no-i18n>English</button></li>
+            <li><button type="button" data-lang-set="es" lang="es" data-no-i18n>Español</button></li>
+            <li><button type="button" data-lang-set="fr" lang="fr" data-no-i18n>Français</button></li>
+            <li><button type="button" data-lang-set="zh" lang="zh-Hans" data-no-i18n>中文</button></li>
+          </ul>
+        </div>
+        <button class="btn btn--small tool-entrar" type="button" data-entrar>Entrar</button>
+        <div class="pop" data-user hidden>
+          <button class="avatar-btn" type="button" aria-haspopup="true" aria-expanded="false" data-pop-btn aria-label="Minha conta">
+            <span class="avatar avatar--user" data-user-avatar aria-hidden="true"></span>
+            <span class="avatar-btn__name" data-user-name data-no-i18n></span>
+          </button>
+          <ul class="menu-pop menu-pop--right" data-pop-menu hidden>
+            <li class="menu-pop__head"><strong data-user-fullname data-no-i18n></strong><span data-user-email data-no-i18n></span></li>
+            <li><a href="#conta/instituicao">Minha instituição</a></li>
+            <li><a href="#conta/eventos">Meus eventos</a></li>
+            <li><a href="#conta/programas">Meus programas e ações</a></li>
+            <li data-admin-only hidden><a href="admin.html">Painel Admin</a></li>
+            <li><button type="button" data-sair>Sair</button></li>
+          </ul>
+        </div>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+      </div>
     </div>
   </header>
 
@@ -164,7 +195,7 @@
           <h1>Agenda Única da Inovação<sup class="fn-mark" aria-hidden="true">*</sup></h1>
           <p class="lead">Um só calendário para todos os eventos, editais, capacitações e encontros de inovação e empreendedorismo de Pouso Alegre. Um painel único para o Ecossistema se organizar, cooperar e compartilhar suas ações.</p>
           <div class="actions">
-            <button class="btn btn--light" type="button" data-goto="cadastro">Cadastrar um evento</button>
+            <button class="btn btn--light" type="button" data-acao="novo-evento">Cadastrar um evento</button>
           </div>
         </div>
         <p class="photo-credit">Theatro Municipal de Pouso Alegre. Foto: HVL, CC BY 4.0</p>
@@ -179,7 +210,8 @@
           </label>
           <div class="seg" role="group" aria-label="Modo de visualização">
             <button type="button" aria-pressed="true" data-mode="lista">Lista</button>
-            <button type="button" aria-pressed="false" data-mode="calendario">Calendário</button>
+            <button type="button" aria-pressed="false" data-mode="mes">Mês</button>
+            <button type="button" aria-pressed="false" data-mode="ano">Ano</button>
           </div>
         </div>
         <div class="chips" role="group" aria-label="Filtrar por tipo" data-chips></div>
@@ -191,106 +223,23 @@
         <div data-panel="lista">
           <div data-list></div>
         </div>
-        <div data-panel="calendario" hidden>
+        <div data-panel="mes" hidden>
           <div class="cal" data-cal></div>
+        </div>
+        <div data-panel="ano" hidden>
+          <div class="year" data-year></div>
         </div>
       </section>
 
       <section class="section how" aria-labelledby="h-how">
         <h2 id="h-how">Como a agenda funciona</h2>
         <ol class="flow">
-          <li><span class="flow__n">1</span><strong>Você cadastra</strong><span>Qualquer organizador preenche o formulário abaixo. Leva três minutos.</span></li>
-          <li><span class="flow__n">2</span><strong>A curadoria confere</strong><span>Verificamos os dados e avisamos se houver outro evento grande na mesma data.</span></li>
-          <li><span class="flow__n">3</span><strong>O evento entra na agenda</strong><span>Publicado com o selo "Na agenda ELI" e divulgado pelos canais dos parceiros.</span></li>
+          <li><span class="flow__n">1</span><strong>Crie sua conta</strong><span>Com Gmail ou e-mail e senha, e preencha o perfil da sua instituição.</span></li>
+          <li><span class="flow__n">2</span><strong>Cadastre o evento</strong><span>O radar avisa se já existe outro evento no mesmo dia, para evitar choques.</span></li>
+          <li><span class="flow__n">3</span><strong>Ele entra na agenda na hora</strong><span>Você pode editar ou excluir quando quiser. A curadoria só remove o que for indevido.</span></li>
         </ol>
       </section>
 
-      <section class="section form-wrap" id="cadastro" aria-labelledby="h-form" tabindex="-1">
-        <div class="form-wrap__side">
-          <h2 id="h-form">Cadastrar evento ou ação</h2>
-          <p>Preencha os dados do evento. Ao escolher a data, o radar mostra se já existe algo marcado para o mesmo dia.</p>
-          <div class="radar" data-radar aria-live="polite">
-            <p class="radar__idle">Escolha uma data para ver o radar.</p>
-          </div>
-        </div>
-        <form class="form" data-form novalidate>
-          <div class="field field--full">
-            <label for="f-titulo">Nome do evento</label>
-            <input id="f-titulo" name="titulo" required maxlength="120" autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="f-tipo">Tipo</label>
-            <select id="f-tipo" name="tipo" required data-type-select></select>
-          </div>
-          <div class="field">
-            <label for="f-formato">Formato</label>
-            <select id="f-formato" name="formato" required>
-              <option value="presencial">Presencial</option>
-              <option value="online">Online</option>
-              <option value="hibrido">Híbrido</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-data">Data de início</label>
-            <input id="f-data" name="data" type="date" required data-date>
-          </div>
-          <div class="field">
-            <label for="f-hora">Horário</label>
-            <input id="f-hora" name="hora" type="time">
-          </div>
-          <div class="field">
-            <label for="f-datafim">Data de término <span class="opt">se durar mais de um dia</span></label>
-            <input id="f-datafim" name="dataFim" type="date">
-          </div>
-          <div class="field">
-            <label for="f-horafim">Horário de término</label>
-            <input id="f-horafim" name="horaFim" type="time">
-          </div>
-          <div class="field field--full">
-            <label for="f-local">Local ou link</label>
-            <input id="f-local" name="local" required maxlength="160" placeholder="Ex.: Auditório da instituição, rua e número, ou link da transmissão">
-          </div>
-          <div class="field">
-            <label for="f-org">Instituição organizadora</label>
-            <input id="f-org" name="organizador" required maxlength="100">
-          </div>
-          <div class="field">
-            <label for="f-link">Link de inscrição <span class="opt">opcional</span></label>
-            <input id="f-link" name="link" type="url" placeholder="https://">
-          </div>
-          <fieldset class="field field--full">
-            <legend>Para quem é</legend>
-            <div class="checks" data-publicos></div>
-          </fieldset>
-          <div class="field field--full">
-            <label class="check"><input type="checkbox" name="gratuito" checked> Evento gratuito</label>
-          </div>
-          <div class="field field--full">
-            <label for="f-desc">Descrição curta</label>
-            <textarea id="f-desc" name="descricao" rows="3" maxlength="400" required></textarea>
-            <span class="counter" data-counter>0 de 400</span>
-          </div>
-          <div class="field">
-            <label for="f-resp">Seu nome</label>
-            <input id="f-resp" name="responsavel" required maxlength="80" autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="f-email">Seu e-mail</label>
-            <input id="f-email" name="email" type="email" required autocomplete="email">
-          </div>
-          <div class="hp" aria-hidden="true">
-            <label for="f-site">Deixe este campo em branco</label>
-            <input id="f-site" name="site" type="text" tabindex="-1" autocomplete="off">
-          </div>
-          <div class="field field--full">
-            <label class="check"><input type="checkbox" name="consentimento" required> Autorizo a publicação dos dados do evento. Meu nome e e-mail ficam só com a curadoria da agenda, para contato.</label>
-          </div>
-          <div class="field field--full form__foot">
-            <button class="btn" type="submit">Enviar para a agenda</button>
-            <p class="form__msg" data-form-msg role="status"></p>
-          </div>
-        </form>
-      </section>
 
       <section class="section group2" aria-labelledby="h-numeros">
         <div class="split">
@@ -309,7 +258,7 @@
               <p class="join__title">O Ecossistema é feito por todos e para todos.</p>
               <p class="join__cta">Venha fazer parte.</p>
               <p>Qualquer instituição, empresa ou pessoa que movimenta a inovação em Pouso Alegre pode contribuir. Um bom primeiro passo é colocar seus eventos na Agenda Única.</p>
-              <button class="btn btn--light" type="button" data-goto="cadastro">Cadastrar um evento</button>
+              <button class="btn btn--light" type="button" data-acao="novo-evento">Cadastrar um evento</button>
             </div>
             <p class="h-small members__title">Algumas instituições que já participam</p>
             <ul class="members" data-members></ul>
@@ -317,6 +266,215 @@
         </div>
       </section>
       <p class="footnote">* A Agenda Única do ELI é uma iniciativa do Grupo 2 (Ambientes de Inovação, Programas e Ações).</p>
+    </section>
+
+    <!-- =========================================================
+         VIEW: PROGRAMAS E AÇÕES (mapa vivo)
+    ========================================================== -->
+    <section class="view" id="view-programas" data-view="programas" aria-label="Programas e Ações" hidden>
+      <div class="page-head page-head--plain page-head--mint">
+        <div class="page-head__text">
+          <p class="crumb">Mapa vivo do Ecossistema</p>
+          <h1>Programas e Ações</h1>
+          <p class="lead">Projetos, programas, ações e serviços das instituições de Pouso Alegre, num só lugar. Cada ator cadastra e atualiza o que faz, e o mapa do Ecossistema se mantém vivo.</p>
+          <div class="actions">
+            <button class="btn btn--light" type="button" data-acao="novo-programa">Cadastrar programa ou ação</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="section" aria-labelledby="h-prog">
+        <h2 id="h-prog" class="sr-only">Programas e ações cadastrados</h2>
+        <div class="agenda__bar">
+          <label class="search">
+            <span class="sr-only">Buscar programa ou ação</span>
+            <input type="search" placeholder="Buscar por nome, instituição ou tema" data-prog-busca>
+          </label>
+          <div class="seg" role="group" aria-label="Situação">
+            <button type="button" aria-pressed="true" data-prog-status="ativos">Em andamento</button>
+            <button type="button" aria-pressed="false" data-prog-status="todos">Todos</button>
+          </div>
+        </div>
+        <div class="chips" role="group" aria-label="Filtrar por tipo" data-prog-tipos></div>
+        <div class="chips chips--quiet" role="group" aria-label="Filtrar por vertente do ELI" data-prog-vertentes></div>
+        <p class="note" data-prog-resumo aria-live="polite"></p>
+        <div class="cards" data-prog-lista></div>
+      </section>
+    </section>
+
+    <!-- =========================================================
+         VIEW: VITRINE (4 hélices e atores ativos)
+    ========================================================== -->
+    <section class="view" id="view-vitrine" data-view="vitrine" aria-label="Vitrine do Ecossistema" hidden>
+      <div class="page-head page-head--plain page-head--sun">
+        <div class="page-head__text">
+          <p class="crumb">Quem faz o Ecossistema</p>
+          <h1>Vitrine</h1>
+          <p class="lead">As quatro hélices da inovação de Pouso Alegre. Escolha uma para conhecer os atores ativos e visitar o site de cada instituição.</p>
+          <div class="actions">
+            <button class="btn btn--light" type="button" data-acao="minha-instituicao">Cadastrar minha instituição</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="section" data-vitrine-home aria-labelledby="h-helices">
+        <h2 id="h-helices" class="sr-only">As quatro hélices</h2>
+        <div class="helices" data-helices></div>
+        <p class="note">O modelo das quatro hélices descreve a inovação como resultado da cooperação entre quem produz, quem pesquisa, quem governa e quem vive na cidade.</p>
+      </section>
+
+      <section class="section" data-vitrine-helice hidden aria-labelledby="h-helice">
+        <p><a class="link" href="#vitrine">← Todas as hélices</a></p>
+        <div class="helice-head" data-helice-head></div>
+        <div class="agenda__bar">
+          <label class="search">
+            <span class="sr-only">Buscar instituição</span>
+            <input type="search" placeholder="Buscar instituição ou área de atuação" data-atores-busca>
+          </label>
+        </div>
+        <div class="chips chips--quiet" role="group" aria-label="Filtrar por categoria" data-atores-cats></div>
+        <ul class="atores" data-atores></ul>
+      </section>
+    </section>
+
+    <!-- =========================================================
+         VIEW: MINHA CONTA (perfil, eventos, programas)
+    ========================================================== -->
+    <section class="view" id="view-conta" data-view="conta" aria-label="Minha conta" hidden>
+      <section class="section conta">
+
+        <div class="conta-anon" data-conta-anon>
+          <h1>Minha conta</h1>
+          <p class="lead">Entre para cadastrar sua instituição na Vitrine, publicar eventos na Agenda e mapear seus programas e ações.</p>
+          <button class="btn" type="button" data-entrar>Entrar ou criar conta</button>
+          <p class="note" data-fb-off hidden>O cadastro de usuários está sendo ativado. Volte em breve.</p>
+        </div>
+
+        <div data-conta-logado hidden>
+          <div class="conta__head">
+            <div>
+              <h1>Minha conta</h1>
+              <p class="note"><span data-conta-email data-no-i18n></span></p>
+            </div>
+          </div>
+          <div class="aviso" data-verificar hidden>
+            <p><strong>Confirme seu e-mail para publicar.</strong> Enviamos um link para <span data-conta-email2 data-no-i18n></span>. Depois de clicar no link, volte aqui e recarregue a página.</p>
+            <button class="btn btn--small btn--ghost" type="button" data-reenviar>Reenviar e-mail</button>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Seções da conta">
+            <a role="tab" href="#conta/instituicao" data-tab="instituicao">Minha instituição</a>
+            <a role="tab" href="#conta/eventos" data-tab="eventos">Meus eventos</a>
+            <a role="tab" href="#conta/programas" data-tab="programas">Meus programas e ações</a>
+          </div>
+
+          <!-- Instituição -->
+          <div class="tab-panel" data-tab-panel="instituicao" role="tabpanel">
+            <form class="form form--conta" data-form-inst novalidate>
+              <div class="field field--full logo-field">
+                <span class="label">Logo ou foto da instituição <span class="req">obrigatório</span></span>
+                <div class="logo-up">
+                  <div class="logo-up__prev" data-logo-prev aria-hidden="true"><span>Sem imagem</span></div>
+                  <div>
+                    <label class="btn btn--ghost btn--small" for="i-logo">Escolher imagem</label>
+                    <input id="i-logo" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" data-logo-input>
+                    <p class="note">Imagem quadrada funciona melhor. Ela vira o ícone clicável da sua instituição na Vitrine, que leva o visitante ao seu site.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="field field--full"><label for="i-nome">Nome da instituição</label><input id="i-nome" name="nome" required maxlength="100" autocomplete="organization"></div>
+              <div class="field"><label for="i-sigla">Sigla ou nome curto <span class="opt">opcional</span></label><input id="i-sigla" name="sigla" maxlength="24"></div>
+              <div class="field"><label for="i-helice">Hélice</label><select id="i-helice" name="helice" required data-sel-helice></select></div>
+              <div class="field"><label for="i-cat">Categoria</label><select id="i-cat" name="categoria" required data-sel-categoria></select></div>
+              <div class="field"><label for="i-site">Site ou rede principal</label><input id="i-site" name="site" type="url" required placeholder="https://"></div>
+              <div class="field field--full"><label for="i-desc">O que a instituição faz</label><textarea id="i-desc" name="descricao" rows="4" maxlength="600" required></textarea><span class="counter" data-count-for="i-desc">0 de 600</span></div>
+              <fieldset class="field field--full"><legend>Vertentes do ELI em que atua <span class="opt">opcional</span></legend><div class="checks" data-checks-vertentes="inst"></div></fieldset>
+              <div class="field field--full"><label for="i-areas">Áreas de atuação <span class="opt">separadas por vírgula</span></label><input id="i-areas" name="areas" maxlength="200" placeholder="Ex.: agronegócio, saúde, software, educação"></div>
+              <div class="field"><label for="i-insta">Instagram <span class="opt">opcional</span></label><input id="i-insta" name="instagram" type="url" placeholder="https://instagram.com/..."></div>
+              <div class="field"><label for="i-linkedin">LinkedIn <span class="opt">opcional</span></label><input id="i-linkedin" name="linkedin" type="url" placeholder="https://linkedin.com/..."></div>
+              <div class="field"><label for="i-email">E-mail de contato público <span class="opt">opcional</span></label><input id="i-email" name="emailPublico" type="email"></div>
+              <div class="field"><label for="i-tel">Telefone ou WhatsApp público <span class="opt">opcional</span></label><input id="i-tel" name="telefone" maxlength="30" inputmode="tel"></div>
+              <div class="field field--full"><label for="i-end">Endereço <span class="opt">opcional</span></label><input id="i-end" name="endereco" maxlength="160" placeholder="Rua, número, bairro"></div>
+              <div class="field field--full"><label class="check"><input type="checkbox" name="ativo" checked> Perfil ativo: aparece na Vitrine</label></div>
+              <div class="field field--full"><label class="check"><input type="checkbox" name="consentimento" required> Autorizo a publicação destes dados da instituição no site do ELI.</label></div>
+              <div class="field field--full form__foot">
+                <button class="btn" type="submit">Salvar perfil</button>
+                <p class="form__msg" data-msg role="status"></p>
+              </div>
+            </form>
+          </div>
+
+          <!-- Eventos -->
+          <div class="tab-panel" data-tab-panel="eventos" role="tabpanel" hidden>
+            <div class="tab-bar"><h2 class="h-small">Meus eventos</h2><button class="btn btn--small" type="button" data-novo="evento">Novo evento</button></div>
+            <ul class="mine" data-meus="eventos"></ul>
+            <div class="form-wrap form-wrap--conta" data-editor="evento" hidden>
+              <div class="form-wrap__side">
+                <h2 class="h-small" data-editor-titulo>Novo evento</h2>
+                <p>Ao escolher a data, o radar mostra se já existe algo marcado para o mesmo dia.</p>
+                <div class="radar" data-radar aria-live="polite"><p class="radar__idle">Escolha uma data para ver o radar.</p></div>
+              </div>
+              <form class="form" data-form-evento novalidate>
+                <div class="field field--full"><label for="e-titulo">Nome do evento</label><input id="e-titulo" name="titulo" required maxlength="120" autocomplete="off"></div>
+                <div class="field"><label for="e-tipo">Tipo</label><select id="e-tipo" name="tipo" required data-sel-tipo-evento></select></div>
+                <div class="field"><label for="e-formato">Formato</label><select id="e-formato" name="formato" required data-sel-formato></select></div>
+                <div class="field"><label for="e-data">Data de início</label><input id="e-data" name="data" type="date" required data-radar-date></div>
+                <div class="field"><label for="e-hora">Horário</label><input id="e-hora" name="hora" type="time"></div>
+                <div class="field"><label for="e-datafim">Data de término <span class="opt">se durar mais de um dia</span></label><input id="e-datafim" name="dataFim" type="date"></div>
+                <div class="field"><label for="e-horafim">Horário de término</label><input id="e-horafim" name="horaFim" type="time"></div>
+                <div class="field field--full"><label for="e-local">Local ou link</label><input id="e-local" name="local" required maxlength="160" placeholder="Ex.: Auditório da instituição, rua e número, ou link da transmissão"></div>
+                <div class="field"><label for="e-org">Instituição organizadora</label><input id="e-org" name="organizador" required maxlength="140"></div>
+                <div class="field"><label for="e-link">Link de inscrição <span class="opt">opcional</span></label><input id="e-link" name="link" type="url" placeholder="https://"></div>
+                <fieldset class="field field--full"><legend>Para quem é</legend><div class="checks" data-checks-publicos="evento"></div></fieldset>
+                <div class="field field--full"><label class="check"><input type="checkbox" name="gratuito" checked> Evento gratuito</label></div>
+                <div class="field field--full"><label for="e-desc">Descrição curta</label><textarea id="e-desc" name="descricao" rows="3" maxlength="400" required></textarea><span class="counter" data-count-for="e-desc">0 de 400</span></div>
+                <div class="field field--full form__foot">
+                  <button class="btn" type="submit">Publicar evento</button>
+                  <button class="btn btn--ghost" type="button" data-cancelar>Cancelar</button>
+                  <p class="form__msg" data-msg role="status"></p>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Programas e ações -->
+          <div class="tab-panel" data-tab-panel="programas" role="tabpanel" hidden>
+            <div class="tab-bar"><h2 class="h-small">Meus programas e ações</h2><button class="btn btn--small" type="button" data-novo="programa">Novo programa ou ação</button></div>
+            <ul class="mine" data-meus="programas"></ul>
+            <div data-editor="programa" hidden>
+              <h2 class="h-small" data-editor-titulo>Novo programa ou ação</h2>
+              <form class="form form--conta" data-form-programa novalidate>
+                <div class="field field--full"><label for="p-titulo">Nome</label><input id="p-titulo" name="titulo" required maxlength="120"></div>
+                <div class="field"><label for="p-tipo">Tipo</label><select id="p-tipo" name="tipo" required data-sel-tipo-programa></select></div>
+                <div class="field"><label for="p-vertente">Vertente do ELI</label><select id="p-vertente" name="vertente" required data-sel-vertente></select></div>
+                <div class="field"><label for="p-status">Situação</label><select id="p-status" name="status" required data-sel-status></select></div>
+                <div class="field"><label for="p-period">Frequência</label><select id="p-period" name="periodicidade" required data-sel-periodicidade></select></div>
+                <div class="field field--full"><label for="p-desc">Descrição</label><textarea id="p-desc" name="descricao" rows="4" maxlength="600" required></textarea><span class="counter" data-count-for="p-desc">0 de 600</span></div>
+                <fieldset class="field field--full"><legend>Para quem é</legend><div class="checks" data-checks-publicos="programa"></div></fieldset>
+                <div class="field"><label for="p-inicio">Início <span class="opt">opcional</span></label><input id="p-inicio" name="inicio" type="date"></div>
+                <div class="field"><label for="p-fim">Término <span class="opt">opcional</span></label><input id="p-fim" name="fim" type="date"></div>
+                <div class="field"><label for="p-formato">Formato</label><select id="p-formato" name="formato" required data-sel-formato></select></div>
+                <div class="field"><label for="p-local">Local <span class="opt">opcional</span></label><input id="p-local" name="local" maxlength="160"></div>
+                <div class="field"><label for="p-link">Link para saber mais <span class="opt">opcional</span></label><input id="p-link" name="link" type="url" placeholder="https://"></div>
+                <div class="field"><label for="p-parc">Parceiros <span class="opt">opcional</span></label><input id="p-parc" name="parceiros" maxlength="200"></div>
+                <div class="field field--full"><label class="check"><input type="checkbox" name="gratuito" checked> Gratuito para os participantes</label></div>
+                <div class="field field--full form__foot">
+                  <button class="btn" type="submit">Publicar</button>
+                  <button class="btn btn--ghost" type="button" data-cancelar>Cancelar</button>
+                  <p class="form__msg" data-msg role="status"></p>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <details class="zona">
+            <summary>Excluir minha conta</summary>
+            <p>Apaga sua conta, o perfil da instituição e todos os seus eventos, programas e ações. Não há como desfazer.</p>
+            <button class="btn btn--small btn--danger" type="button" data-excluir-conta>Excluir minha conta e meus dados</button>
+            <p class="form__msg" data-msg-excluir role="status"></p>
+          </details>
+        </div>
+      </section>
     </section>
 
     <!-- =========================================================
@@ -425,8 +583,35 @@
       <h2 id="priv-title">Privacidade</h2>
       <p>Este site não usa cookies e não coleta dados pessoais de quem navega.</p>
       <p>Para entender como o site é usado, contamos as visitas de forma anônima: página vista, tipo de aparelho e navegador, idioma e site de origem. Cada aparelho recebe um código aleatório que muda todo dia, só para contar visitantes, sem identificar ninguém. Se o seu navegador pede para não ser rastreado, nada é contado.</p>
-      <p>Quem cadastra um evento informa nome e e-mail. Esses dados ficam só com a curadoria da agenda, para contato, e nunca aparecem no site.</p>
+      <p>Quem cria uma conta informa nome e e-mail (ou entra com o Google). Esses dados ficam guardados no Firebase, serviço do Google, e servem só para identificar quem publica. O e-mail da conta nunca aparece no site.</p>
+      <p>O que aparece publicamente é o que a própria instituição cadastra: perfil, logo, eventos, programas e ações. Você pode editar ou apagar tudo a qualquer momento, inclusive excluir a conta inteira, em Minha conta.</p>
       <p>Dúvidas ou pedidos sobre dados: fale conosco pelo botão de WhatsApp.</p>
+    </div>
+  </dialog>
+
+  <dialog class="modal modal--auth" data-auth aria-labelledby="auth-title">
+    <div class="modal__inner">
+      <button class="modal__close" type="button" data-fechar-auth>Fechar</button>
+      <h2 id="auth-title" data-auth-titulo>Entrar</h2>
+      <p class="note" data-auth-sub>Use sua conta para publicar na Agenda, na Vitrine e em Programas e Ações.</p>
+      <button class="btn btn--google" type="button" data-google>
+        <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true" focusable="false"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+        <span>Continuar com Google</span>
+      </button>
+      <p class="auth__ou"><span>ou com e-mail</span></p>
+      <form class="auth__form" data-auth-form novalidate>
+        <div class="field" data-so-cadastro hidden><label for="u-nome">Seu nome</label><input id="u-nome" name="nome" maxlength="80" autocomplete="name"></div>
+        <div class="field"><label for="u-email">E-mail</label><input id="u-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field" data-campo-senha><label for="u-senha">Senha</label><input id="u-senha" name="senha" type="password" required minlength="8" autocomplete="current-password"><span class="note" data-so-cadastro hidden>Mínimo de 8 caracteres.</span></div>
+        <button class="btn" type="submit" data-auth-enviar>Entrar</button>
+        <p class="form__msg" data-auth-msg role="status"></p>
+      </form>
+      <p class="auth__links">
+        <button type="button" class="linklike" data-auth-modo="cadastro">Não tem conta? <strong>Criar conta</strong></button>
+        <button type="button" class="linklike" data-auth-modo="entrar" hidden>Já tem conta? <strong>Entrar</strong></button>
+        <button type="button" class="linklike" data-auth-modo="senha">Esqueci minha senha</button>
+      </p>
+      <p class="note auth__legal">Ao continuar, você concorda com o uso dos seus dados conforme o aviso de <a href="#" data-privacidade>Privacidade</a>.</p>
     </div>
   </dialog>
 
@@ -461,6 +646,9 @@
 
   <script src="assets/js/config.js"></script>
   <script src="assets/js/eventos.js"></script>
+  <script src="assets/js/catalogos.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/fb.js"></script>
   <!-- Botão flutuante do WhatsApp -->
   <a class="wa-float" href="https://wa.me/5535988001006?text=Quero%20fazer%20parte%20e%20contribuir%20com%20o%20Ecossistema%20Local%20de%20Inova%C3%A7%C3%A3o%20de%20Pouso%20Alegre." target="_blank" rel="noopener" aria-label="Quero fazer parte: conversar pelo WhatsApp" title="Quero fazer parte do ELI">
     <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -481,5 +669,7 @@
   </div>
 
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/conta.js"></script>
+  <script src="assets/js/mapa.js"></script>
 </body>
 </html>

@@ -1,0 +1,126 @@
+rules_version = '2';
+
+// ELI Pouso Alegre — regras de segurança do banco (Firestore)
+// - Todo mundo pode LER o que está publicado (oculto == false).
+// - Só quem está logado e com e-mail confirmado pode PUBLICAR.
+// - Cada usuário só cria, edita e exclui o que é dele (campo "dono" = seu uid).
+// - Só o Admin muda "oculto" (moderação) e lê as estatísticas.
+// - Estatísticas: qualquer visitante grava um acesso anônimo, com campos fixos.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado() { return request.auth != null; }
+    function confirmado() { return logado() && request.auth.token.email_verified == true; }
+    function isAdmin() { return confirmado() && request.auth.token.email in ['mateushope.oficial@gmail.com']; }
+    function texto(v, max) { return v is string && v.size() <= max; }
+    function textoOpc(d, k, max) { return !(k in d) || texto(d[k], max); }
+    function data(v) { return v is string && (v == '' || v.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')); }
+    function hora(v) { return v is string && (v == '' || v.matches('^[0-9]{2}:[0-9]{2}$')); }
+    function link(v) { return v is string && (v == '' || (v.size() <= 400 && v.matches('^https?://.+'))); }
+    function lista(v, max) { return v is list && v.size() <= max; }
+    function mesmosControles() {
+      return request.resource.data.oculto == resource.data.oculto
+        && request.resource.data.dono == resource.data.dono
+        && request.resource.data.criadoEm == resource.data.criadoEm;
+    }
+    function novoControles() {
+      return request.resource.data.oculto == false
+        && request.resource.data.dono == request.auth.uid
+        && request.resource.data.criadoEm == request.time
+        && request.resource.data.atualizadoEm == request.time;
+    }
+    function soModeracao() { return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['oculto']); }
+    function temInstituicao() { return exists(/databases/$(database)/documents/instituicoes/$(request.auth.uid)); }
+
+    // ---------- Instituições (Vitrine): um perfil por conta, id = uid ----------
+    function instValida(d) {
+      return d.keys().hasOnly(['nome', 'sigla', 'helice', 'categoria', 'site', 'descricao', 'vertentes', 'areas', 'instagram', 'linkedin',
+                               'emailPublico', 'telefone', 'endereco', 'ativo', 'logo', 'dono', 'oculto', 'criadoEm', 'atualizadoEm'])
+        && texto(d.nome, 100) && d.nome.size() >= 2
+        && textoOpc(d, 'sigla', 24)
+        && d.helice in ['setor-produtivo', 'academia', 'setor-publico', 'sociedade-civil']
+        && texto(d.categoria, 80) && d.categoria.size() > 0
+        && link(d.site) && d.site != ''
+        && texto(d.descricao, 600) && d.descricao.size() > 0
+        && lista(d.vertentes, 6) && lista(d.areas, 12)
+        && link(d.instagram) && link(d.linkedin)
+        && texto(d.emailPublico, 120) && texto(d.telefone, 30) && texto(d.endereco, 160)
+        && d.ativo is bool
+        && d.logo is string && d.logo.size() < 200000 && d.logo.matches('^data:image/(webp|jpeg|png);base64,.*');
+    }
+    match /instituicoes/{uid} {
+      allow read: if resource.data.oculto == false || isAdmin() || (logado() && request.auth.uid == uid);
+      allow create: if confirmado() && request.auth.uid == uid && instValida(request.resource.data) && novoControles();
+      allow update: if (confirmado() && request.auth.uid == uid && instValida(request.resource.data) && mesmosControles()
+                        && request.resource.data.atualizadoEm == request.time)
+                    || (isAdmin() && soModeracao());
+      allow delete: if (logado() && request.auth.uid == uid) || isAdmin();
+    }
+
+    // ---------- Eventos da Agenda ----------
+    function eventoValido(d) {
+      return d.keys().hasOnly(['titulo', 'tipo', 'formato', 'data', 'hora', 'dataFim', 'horaFim', 'local', 'organizador', 'link', 'publicos',
+                               'gratuito', 'descricao', 'instituicao', 'instituicaoId', 'dono', 'oculto', 'criadoEm', 'atualizadoEm'])
+        && texto(d.titulo, 120) && d.titulo.size() >= 3
+        && d.tipo in ['evento', 'capacitacao', 'edital', 'programa', 'competicao', 'ecossistema']
+        && d.formato in ['presencial', 'online', 'hibrido']
+        && data(d.data) && d.data != '' && data(d.dataFim) && hora(d.hora) && hora(d.horaFim)
+        && texto(d.local, 160) && d.local.size() > 0
+        && texto(d.organizador, 140) && d.organizador.size() > 0
+        && link(d.link) && lista(d.publicos, 6) && d.gratuito is bool
+        && texto(d.descricao, 400) && d.descricao.size() > 0
+        && texto(d.instituicao, 100) && d.instituicaoId == request.auth.uid;
+    }
+    match /eventos/{id} {
+      allow read: if resource.data.oculto == false || isAdmin() || (logado() && resource.data.dono == request.auth.uid);
+      allow create: if confirmado() && temInstituicao() && eventoValido(request.resource.data) && novoControles();
+      allow update: if (confirmado() && resource.data.dono == request.auth.uid && eventoValido(request.resource.data) && mesmosControles()
+                        && request.resource.data.atualizadoEm == request.time)
+                    || (isAdmin() && soModeracao());
+      allow delete: if (logado() && resource.data.dono == request.auth.uid) || isAdmin();
+    }
+
+    // ---------- Programas, projetos, ações e serviços ----------
+    function programaValido(d) {
+      return d.keys().hasOnly(['titulo', 'tipo', 'vertente', 'status', 'periodicidade', 'descricao', 'publicos', 'inicio', 'fim', 'formato',
+                               'local', 'link', 'parceiros', 'gratuito', 'instituicao', 'instituicaoId', 'helice', 'dono', 'oculto', 'criadoEm', 'atualizadoEm'])
+        && texto(d.titulo, 120) && d.titulo.size() >= 3
+        && d.tipo in ['programa', 'projeto', 'acao', 'servico']
+        && d.vertente in ['ambientes', 'programas', 'ictis', 'politicas', 'capital', 'governanca']
+        && d.status in ['ativo', 'planejado', 'encerrado']
+        && texto(d.periodicidade, 30)
+        && texto(d.descricao, 600) && d.descricao.size() > 0
+        && lista(d.publicos, 6) && data(d.inicio) && data(d.fim)
+        && d.formato in ['presencial', 'online', 'hibrido']
+        && texto(d.local, 160) && link(d.link) && texto(d.parceiros, 200) && d.gratuito is bool
+        && texto(d.instituicao, 100) && d.instituicaoId == request.auth.uid && texto(d.helice, 30);
+    }
+    match /programas/{id} {
+      allow read: if resource.data.oculto == false || isAdmin() || (logado() && resource.data.dono == request.auth.uid);
+      allow create: if confirmado() && temInstituicao() && programaValido(request.resource.data) && novoControles();
+      allow update: if (confirmado() && resource.data.dono == request.auth.uid && programaValido(request.resource.data) && mesmosControles()
+                        && request.resource.data.atualizadoEm == request.time)
+                    || (isAdmin() && soModeracao());
+      allow delete: if (logado() && resource.data.dono == request.auth.uid) || isAdmin();
+    }
+
+    // ---------- Estatísticas anônimas ----------
+    match /acessos/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['tipo', 'pagina', 'alvo', 'visitante', 'novo', 'dispositivo', 'navegador',
+                                                               'sistema', 'idioma', 'origem', 'app', 'quando'])
+        && request.resource.data.quando == request.time
+        && request.resource.data.tipo in ['pagina', 'evento_aberto', 'whatsapp', 'cadastro_enviado', 'salvar_agenda', 'convite_app',
+                                          'app_instalado', 'inscricao', 'site_ator', 'perfil_aberto', 'programa_aberto']
+        && texto(request.resource.data.pagina, 40) && texto(request.resource.data.alvo, 120) && texto(request.resource.data.visitante, 24)
+        && request.resource.data.novo is bool && request.resource.data.app is bool
+        && texto(request.resource.data.dispositivo, 12) && texto(request.resource.data.navegador, 16) && texto(request.resource.data.sistema, 16)
+        && texto(request.resource.data.idioma, 8) && texto(request.resource.data.origem, 60);
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    // Qualquer outra coleção: fechado.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

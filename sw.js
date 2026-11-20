@@ -6,13 +6,18 @@
    - imagens e fontes: usa a cópia salva e atualiza em segundo plano.
    Nada de fora do site (planilha do Google, Google Agenda, WhatsApp) passa por aqui.
    Ao mudar a lista de arquivos ou a estratégia, troque a VERSAO. */
-var VERSAO = "eli-v1";
+var VERSAO = "eli-v2";
 var BASICOS = [
   "/",
   "/assets/css/styles.css",
   "/assets/js/config.js",
   "/assets/js/eventos.js",
+  "/assets/js/catalogos.js",
+  "/assets/js/i18n.js",
+  "/assets/js/fb.js",
   "/assets/js/app.js",
+  "/assets/js/conta.js",
+  "/assets/js/mapa.js",
   "/assets/img/logo-eli.png",
   "/assets/img/logo-eli-white.png",
   "/assets/img/favicon.png",
