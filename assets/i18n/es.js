@@ -554,5 +554,6 @@ window.ELI_DIC["es"] = {
   "Auditório em evento de tecnologia (Programas e Ações, imagem ilustrativa): Jorge Jaramillo,": "Auditorio en un evento de tecnología (Programas y Acciones, imagen ilustrativa): Jorge Jaramillo,",
   "Vista aérea do centro de Pouso Alegre (Vitrine): fernando_lima,": "Vista aérea del centro de Pouso Alegre (Vitrina): fernando_lima,",
   ", domínio público": ", dominio público",
-  "Centro de Pouso Alegre (Governança): Madu Macedo,": "Centro de Pouso Alegre (Gobernanza): Madu Macedo,"
+  "Centro de Pouso Alegre (Governança): Madu Macedo,": "Centro de Pouso Alegre (Gobernanza): Madu Macedo,",
+  "Centro de Pouso Alegre visto do alto (Agenda): LuckMotoTrip,": "Centro de Pouso Alegre visto desde lo alto (Agenda): LuckMotoTrip,"
 };

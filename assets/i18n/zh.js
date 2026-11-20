@@ -554,5 +554,6 @@ window.ELI_DIC["zh"] = {
   "Auditório em evento de tecnologia (Programas e Ações, imagem ilustrativa): Jorge Jaramillo,": "科技活动礼堂（项目与行动，示意图）：Jorge Jaramillo，",
   "Vista aérea do centro de Pouso Alegre (Vitrine): fernando_lima,": "Pouso Alegre 市中心航拍（展示窗）：fernando_lima，",
   ", domínio público": "，公有领域",
-  "Centro de Pouso Alegre (Governança): Madu Macedo,": "Pouso Alegre 市中心（治理）：Madu Macedo，"
+  "Centro de Pouso Alegre (Governança): Madu Macedo,": "Pouso Alegre 市中心（治理）：Madu Macedo，",
+  "Centro de Pouso Alegre visto do alto (Agenda): LuckMotoTrip,": "俯瞰 Pouso Alegre 市中心（日程）：LuckMotoTrip，"
 };

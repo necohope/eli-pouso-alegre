@@ -103,11 +103,11 @@ Os créditos ficam no rodapé de todas as páginas ("Créditos das imagens"), n�
 
 - Vista aérea de Pouso Alegre (faixa da página inicial e imagem de compartilhamento): ASCOM Pouso Alegre, CC BY 4.0
 - Laboratório de inovação (página inicial, imagem ilustrativa genérica): Oak Ridge National Laboratory, CC BY 2.0
-- Coffee break em evento (topo da Agenda, imagem ilustrativa genérica): Donatas Dabravolskas, CC BY-SA 4.0
+- Centro de Pouso Alegre visto do alto, com a praça e a catedral (topo da Agenda): LuckMotoTrip, CC BY-SA 4.0
 - Auditório em evento de tecnologia (topo de Programas e Ações, imagem ilustrativa genérica): Jorge Jaramillo, CC BY-SA 4.0
 - Vista aérea do centro de Pouso Alegre (topo da Vitrine): fernando_lima, domínio público
 - Centro de Pouso Alegre (2021) (topo da Governança): Madu Macedo, CC BY-SA 4.0
 
-Fotos guardadas, fora de uso: Reitoria do IFSULDEMINAS, Theatro Municipal, Centro Cultural, Parque Zoobotânico, região central (HVL), ruas do centro (ASCOM) e a foto da Rodada de Negócios (Renan Bandana / Terra do Mandu, uso autorizado só para o site do ELI; não reutilizar sem nova autorização).
+Fotos guardadas, fora de uso: coffee break em evento (Donatas Dabravolskas, CC BY-SA 4.0), Reitoria do IFSULDEMINAS, Theatro Municipal, Centro Cultural, Parque Zoobotânico, região central (HVL), ruas do centro (ASCOM) e a foto da Rodada de Negócios (Renan Bandana / Terra do Mandu, uso autorizado só para o site do ELI; não reutilizar sem nova autorização).
 
 Marca ELI: Sebrae, programa Ecossistemas Locais de Inovação. Fonte Saira: SIL Open Font License 1.1 (`assets/fonts/OFL-Saira.txt`). Biblioteca Firebase (Google), carregada sob demanda de www.gstatic.com.
