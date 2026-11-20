@@ -542,5 +542,10 @@ window.ELI_DIC["fr"] = {
   "Idioma": "Langue",
   "Rodada de Negócios em Pouso Alegre, maio de 2026. Foto: Renan Bandana / Terra do Mandu, uso autorizado": "Rencontres d’affaires à Pouso Alegre, mai 2026. Photo : Renan Bandana / Terra do Mandu, utilisation autorisée",
   "Rodada de Negócios em Pouso Alegre: Renan Bandana /": "Rencontres d’affaires à Pouso Alegre : Renan Bandana /",
-  ", uso autorizado": ", utilisation autorisée"
+  ", uso autorizado": ", utilisation autorisée",
+  "Duas jovens operando equipamentos em um laboratório de inovação com braços robóticos": "Deux jeunes femmes utilisant des équipements dans un laboratoire d’innovation doté de bras robotisés",
+  "Imagem ilustrativa: estudantes em laboratório de inovação. Foto: Oak Ridge National Laboratory, CC BY 2.0": "Image d’illustration : étudiants dans un laboratoire d’innovation. Photo : Oak Ridge National Laboratory, CC BY 2.0",
+  "Imagem ilustrativa: auditório lotado em evento de tecnologia. Foto: Jorge Jaramillo, CC BY-SA 4.0": "Image d’illustration : auditorium comble lors d’un événement technologique. Photo : Jorge Jaramillo, CC BY-SA 4.0",
+  "Laboratório de inovação (imagem ilustrativa): Oak Ridge National Laboratory,": "Laboratoire d’innovation (image d’illustration) : Oak Ridge National Laboratory,",
+  "Auditório em evento de tecnologia (imagem ilustrativa): Jorge Jaramillo,": "Auditorium lors d’un événement technologique (image d’illustration) : Jorge Jaramillo,"
 };

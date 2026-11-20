@@ -542,5 +542,10 @@ window.ELI_DIC["zh"] = {
   "Idioma": "语言",
   "Rodada de Negócios em Pouso Alegre, maio de 2026. Foto: Renan Bandana / Terra do Mandu, uso autorizado": "Pouso Alegre 商务对接会，2026 年 5 月。摄影：Renan Bandana / Terra do Mandu，经授权使用",
   "Rodada de Negócios em Pouso Alegre: Renan Bandana /": "Pouso Alegre 商务对接会：Renan Bandana /",
-  ", uso autorizado": "，经授权使用"
+  ", uso autorizado": "，经授权使用",
+  "Duas jovens operando equipamentos em um laboratório de inovação com braços robóticos": "两位年轻女性在配有机械臂的创新实验室中操作设备",
+  "Imagem ilustrativa: estudantes em laboratório de inovação. Foto: Oak Ridge National Laboratory, CC BY 2.0": "示意图：创新实验室中的学生。摄影：Oak Ridge National Laboratory，CC BY 2.0",
+  "Imagem ilustrativa: auditório lotado em evento de tecnologia. Foto: Jorge Jaramillo, CC BY-SA 4.0": "示意图：科技活动中座无虚席的礼堂。摄影：Jorge Jaramillo，CC BY-SA 4.0",
+  "Laboratório de inovação (imagem ilustrativa): Oak Ridge National Laboratory,": "创新实验室（示意图）：Oak Ridge National Laboratory，",
+  "Auditório em evento de tecnologia (imagem ilustrativa): Jorge Jaramillo,": "科技活动礼堂（示意图）：Jorge Jaramillo，"
 };
