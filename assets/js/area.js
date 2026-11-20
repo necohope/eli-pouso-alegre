@@ -122,20 +122,64 @@
   function ordenar(lista) {
     return lista.slice().sort(function (a, b) { return (a.ordem || 0) - (b.ordem || 0) || String(a.titulo).localeCompare(String(b.titulo)); });
   }
+  // Limpa o que só ocupa espaço: linhas-modelo (só um código, ex.: "EV-001"), linhas que repetem o cabeçalho
+  // e colunas sem nenhum dado. As colunas escondidas pelo Admin ficam em "ocultas" (pelo nome).
+  function cheio(v) { return String(v == null ? "" : v).trim() !== ""; }
+  function prepararTabela(ind) {
+    var cols = ind.colunas || [], ocultas = ind.ocultas || [];
+    var linhas = linhasDe(ind).filter(function (l) {
+      var n = 0, igual = 0, unica = "";
+      cols.forEach(function (c, i) {
+        if (!cheio(l[i])) return;
+        n++; unica = String(l[i]).trim();
+        if (unica.toLowerCase() === String(c).trim().toLowerCase()) igual++;
+      });
+      if (!n) return false;
+      if (igual / n >= 0.5) return false;
+      if (cols.length > 2 && n === 1 && unica.length <= 12) return false;
+      return true;
+    });
+    var vazias = 0;
+    var vis = cols.map(function (c, i) { return i; }).filter(function (i) {
+      if (ocultas.indexOf(cols[i]) > -1) return false;
+      var tem = linhas.some(function (l) { return cheio(l[i]); });
+      if (!tem) vazias++;
+      return tem;
+    });
+    var tam = {};
+    vis.forEach(function (i) { tam[i] = Math.max.apply(null, [0].concat(linhas.map(function (l) { return String(l[i] == null ? "" : l[i]).length; }))); });
+    return { cols: cols, linhas: linhas, vis: vis, tam: tam, vazias: vazias };
+  }
+  var CORTE = 140;
+  function celula(v) {
+    v = String(v == null ? "" : v);
+    if (v.length <= CORTE) return '<span class="cel">' + esc(v) + "</span>";
+    return '<span class="cel"><span class="cel__txt is-corta">' + esc(v) + '</span> <button class="cel__mais" type="button" data-cel-mais aria-expanded="false">' + esc(t("mais")) + "</button></span>";
+  }
+  function classeCol(n) { return n <= 12 ? "curta" : n > 60 ? "longa" : ""; }
   function htmlIndicador(ind, gestao) {
-    var linhas = linhasDe(ind), cols = ind.colunas || [], corpo;
+    var cols = ind.colunas || [], corpo;
+    var tb = prepararTabela(ind), linhas = tb.linhas;
     if (ind.exibir === "cartoes" && ind.valor >= 0 && ind.valor < cols.length) {
-      var itens = linhas.filter(function (l) { return String(l[ind.valor] == null ? "" : l[ind.valor]).trim() !== ""; }).slice(0, 60);
+      var itens = linhas.filter(function (l) { return cheio(l[ind.valor]); }).slice(0, 60);
       corpo = '<ul class="kpi-cards" data-no-i18n>' + itens.map(function (l) {
-        var det = ind.detalhe >= 0 && l[ind.detalhe] ? '<small>' + esc(cols[ind.detalhe]) + ": " + esc(l[ind.detalhe]) + "</small>" : "";
+        var det = ind.detalhe >= 0 && l[ind.detalhe] ? "<small>" + esc(cols[ind.detalhe]) + ": " + esc(l[ind.detalhe]) + "</small>" : "";
         return "<li><strong>" + esc(l[ind.valor]) + "</strong><span>" + esc(ind.rotulo >= 0 ? l[ind.rotulo] : "") + "</span>" + det + "</li>";
       }).join("") + "</ul>";
+    } else if (!linhas.length || !tb.vis.length) {
+      corpo = '<p class="mine__vazio">' + esc(t("Nenhuma linha preenchida nesta aba.")) + "</p>";
     } else {
-      corpo = '<div class="table-wrap kpi-tabela" tabindex="0" data-no-i18n><table><thead><tr>' + cols.map(function (c) { return '<th scope="col">' + esc(c) + "</th>"; }).join("") +
+      var fichas = ind.exibir === "fichas";
+      corpo = '<div class="kpi-tabela' + (fichas ? " kpi-tabela--fichas" : "") + '"' + (fichas ? "" : ' tabindex="0"') + " data-no-i18n><table><thead><tr>" +
+        tb.vis.map(function (i) { var c = classeCol(tb.tam[i]); return '<th scope="col"' + (c ? ' class="' + c + '"' : "") + ">" + esc(cols[i]) + "</th>"; }).join("") +
         "</tr></thead><tbody>" + linhas.slice(0, MAX_TABELA).map(function (l) {
-          return "<tr>" + cols.map(function (c, i) { return "<td>" + esc(l[i] == null ? "" : l[i]) + "</td>"; }).join("") + "</tr>";
+          return "<tr>" + tb.vis.map(function (i) {
+            var c = cheio(l[i]) ? classeCol(tb.tam[i]) : "vazia";
+            return '<td data-rotulo="' + esc(cols[i]) + '"' + (c ? ' class="' + c + '"' : "") + ">" + celula(l[i]) + "</td>";
+          }).join("") + "</tr>";
         }).join("") + "</tbody></table></div>" +
         (linhas.length > MAX_TABELA ? '<p class="note">' + esc(t("Mostrando as primeiras {n} linhas de {total}.", { n: MAX_TABELA, total: linhas.length })) + "</p>" : "");
+      if (gestao && admin && tb.vazias) corpo += '<p class="kpi__aviso">' + esc(t("{n} coluna(s) sem dados escondida(s).", { n: tb.vazias })) + "</p>";
     }
     var meta = t("Atualizado em {data}", { data: dataTxt(ind.atualizadoEm) });
     return '<article class="kpi">' +
@@ -147,10 +191,28 @@
         '<button class="btn btn--ghost btn--small btn--danger-ghost" type="button" data-ind-excluir="' + esc(ind.id) + '">' + esc(t("Excluir")) + "</button></div>" : "") +
       "</article>";
   }
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-cel-mais]"); if (!b) return;
+    var cel = b.previousElementSibling, aberto = !cel.classList.toggle("is-corta");
+    b.setAttribute("aria-expanded", String(aberto)); b.textContent = t(aberto ? "menos" : "mais");
+  });
+  // Tabela que não cabe na largura (muitas colunas de texto) vira fichas: nada de rolagem lateral.
+  function ajustarTabelas(raiz) {
+    $$(".kpi-tabela.is-auto", raiz).forEach(function (el) { el.classList.remove("kpi-tabela--fichas", "is-auto"); el.setAttribute("tabindex", "0"); });
+    $$(".kpi-tabela:not(.kpi-tabela--fichas)", raiz).forEach(function (el) {
+      if (el.offsetParent && el.scrollWidth > el.clientWidth + 4) { el.classList.add("kpi-tabela--fichas", "is-auto"); el.removeAttribute("tabindex"); }
+    });
+  }
+  var rtAjuste;
+  window.addEventListener("resize", function () {
+    clearTimeout(rtAjuste);
+    rtAjuste = setTimeout(function () { ajustarTabelas($("[data-indicadores]")); ajustarTabelas($("[data-indicadores-publicos]")); }, 200);
+  });
   function pintarIndicadores() {
     var box = $("[data-indicadores]"), lista = ordenar(dados.indicadores);
     box.innerHTML = lista.length ? lista.map(function (i) { return htmlIndicador(i, true); }).join("")
       : '<p class="mine__vazio">' + esc(t(admin ? "Nenhum indicador ainda. Use \"Importar planilha\" para trazer os KPIs do Drive." : "Nenhum indicador publicado ainda. A coordenação do ELI importa as planilhas de KPIs aqui.")) + "</p>";
+    ajustarTabelas(box);
   }
 
   /* importação */
@@ -262,7 +324,8 @@
         colunas: x.colunas, dados: json, linhas: x.linhas.length,
         exibir: ex ? ex.exibir : "tabela",
         rotulo: ex && ex.rotulo < n ? ex.rotulo : 0, valor: ex && ex.valor < n ? ex.valor : Math.min(1, n - 1), detalhe: ex && ex.detalhe < n ? ex.detalhe : -1,
-        publico: ex ? !!ex.publico : false, ordem: ex ? ex.ordem || 0 : dados.indicadores.length + k
+        publico: ex ? !!ex.publico : false, ordem: ex ? ex.ordem || 0 : dados.indicadores.length + k,
+        ocultas: ex ? (ex.ocultas || []).filter(function (nm) { return x.colunas.indexOf(nm) > -1; }) : []
       };
       tarefas.push(function () { return FB.salvarArea("indicadores", ex ? ex.id : null, o); });
     });
@@ -285,7 +348,11 @@
       cols.map(function (c, i) { return '<option value="' + i + '"' + (i === valor ? " selected" : "") + ' data-no-i18n>' + esc(c) + "</option>"; }).join("");
     if (opcional && valor < 0) sel.value = "-1";
   }
-  function alternarCartao() { var c = $("[data-q-exibir]").value === "cartoes"; $$("[data-q-cartao]").forEach(function (el) { el.hidden = !c; }); }
+  function alternarCartao() {
+    var c = $("[data-q-exibir]").value === "cartoes";
+    $$("[data-q-cartao]").forEach(function (el) { el.hidden = !c; });
+    $("[data-q-colunas-box]").hidden = c;
+  }
   $("[data-q-exibir]").addEventListener("change", alternarCartao);
   document.addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-ind-editar]");
@@ -294,6 +361,10 @@
       var f = $("[data-form-ind]"), cols = indEditando.colunas || [];
       f.titulo.value = indEditando.titulo || ""; f.descricao.value = indEditando.descricao || "";
       f.exibir.value = indEditando.exibir || "tabela"; f.ordem.value = indEditando.ordem || 0; f.publico.checked = !!indEditando.publico;
+      var ocultas = indEditando.ocultas || [];
+      $("[data-q-colunas]").innerHTML = cols.map(function (c, i) {
+        return '<label class="check"><input type="checkbox" value="' + i + '"' + (ocultas.indexOf(c) === -1 ? " checked" : "") + '> <span data-no-i18n>' + esc(c) + "</span></label>";
+      }).join("");
       opcoesColunas(f.rotulo, cols, indEditando.rotulo, false); opcoesColunas(f.valor, cols, indEditando.valor, false); opcoesColunas(f.detalhe, cols, indEditando.detalhe, true);
       alternarCartao(); mensagem($("[data-msg]", f), "");
       abrir($("[data-ind-modal]"));
@@ -324,6 +395,8 @@
       publico: f.publico.checked
     });
     if (isNaN(o.detalhe)) o.detalhe = -1;
+    var colsInd = indEditando.colunas || [];
+    o.ocultas = $$("[data-q-colunas] input").filter(function (c) { return !c.checked; }).map(function (c) { return colsInd[+c.value]; }).slice(0, 40);
     btn.disabled = true;
     FB.salvarArea("indicadores", indEditando.id, o).then(function () { return garantirDados(true); })
       .then(function () { fechar($("[data-ind-modal]")); pintarIndicadores(); })
@@ -555,6 +628,7 @@
       publicos.indicadores = l;
       sec.hidden = !l.length;
       $("[data-indicadores-publicos]").innerHTML = ordenar(l).map(function (i) { return htmlIndicador(i, false); }).join("");
+      ajustarTabelas($("[data-indicadores-publicos]"));
     }).catch(function () { sec.hidden = true; });
   }
   function pintarPublicoDocs() {

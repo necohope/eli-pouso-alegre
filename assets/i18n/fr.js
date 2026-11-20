@@ -679,5 +679,13 @@ window.ELI_DIC["fr"] = {
   "Nenhum pedido aguardando.": "Aucune demande en attente.",
   "Ninguém nesta lista.": "Personne dans cette liste.",
   "Remover o acesso de {email}?": "Retirer l'accès de {email} ?",
-  "Informe a instituição.": "Indiquez l'institution."
+  "Informe a instituição.": "Indiquez l'institution.",
+  "mais": "plus",
+  "menos": "moins",
+  "Fichas (uma por linha)": "Fiches (une par ligne)",
+  "Colunas que aparecem": "Colonnes affichées",
+  "Colunas sem nenhum dado já ficam escondidas sozinhas.": "Les colonnes sans données sont déjà masquées automatiquement.",
+  "Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.": "Avant de le rendre public, masquez les colonnes contenant des noms de personnes, des téléphones ou des e-mails.",
+  "Nenhuma linha preenchida nesta aba.": "Aucune ligne remplie dans cet onglet.",
+  "{n} coluna(s) sem dados escondida(s).": "{n} colonne(s) sans données masquée(s)."
 };

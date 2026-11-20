@@ -679,5 +679,13 @@ window.ELI_DIC["zh"] = {
   "Nenhum pedido aguardando.": "没有待处理的申请。",
   "Ninguém nesta lista.": "此列表为空。",
   "Remover o acesso de {email}?": "移除 {email} 的访问权限？",
-  "Informe a instituição.": "请填写机构。"
+  "Informe a instituição.": "请填写机构。",
+  "mais": "更多",
+  "menos": "收起",
+  "Fichas (uma por linha)": "卡片（每行一张）",
+  "Colunas que aparecem": "显示的列",
+  "Colunas sem nenhum dado já ficam escondidas sozinhas.": "没有任何数据的列会自动隐藏。",
+  "Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.": "公开之前，请隐藏含有人名、电话或电子邮箱的列。",
+  "Nenhuma linha preenchida nesta aba.": "此工作表没有已填写的行。",
+  "{n} coluna(s) sem dados escondida(s).": "已隐藏 {n} 个无数据的列。"
 };

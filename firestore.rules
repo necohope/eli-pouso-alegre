@@ -152,11 +152,11 @@ service cloud.firestore {
     // Indicadores (KPIs) importados das planilhas. Só o Admin importa e edita.
     function indicadorValido(d) {
       return d.keys().hasOnly(['titulo', 'descricao', 'arquivo', 'aba', 'colunas', 'dados', 'linhas', 'exibir', 'rotulo', 'valor', 'detalhe',
-                               'publico', 'ordem', 'dono', 'criadoEm', 'atualizadoEm'])
+                               'publico', 'ordem', 'ocultas', 'dono', 'criadoEm', 'atualizadoEm'])
         && texto(d.titulo, 120) && d.titulo.size() >= 2
         && texto(d.descricao, 400) && texto(d.arquivo, 160) && texto(d.aba, 100)
         && lista(d.colunas, 40) && texto(d.dados, 900000) && d.linhas is int
-        && d.exibir in ['tabela', 'cartoes']
+        && d.exibir in ['tabela', 'fichas', 'cartoes'] && (!('ocultas' in d) || lista(d.ocultas, 40))
         && d.rotulo is int && d.valor is int && d.detalhe is int
         && d.publico is bool && d.ordem is int
         && d.atualizadoEm == request.time;

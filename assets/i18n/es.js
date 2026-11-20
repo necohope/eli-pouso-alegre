@@ -679,5 +679,13 @@ window.ELI_DIC["es"] = {
   "Nenhum pedido aguardando.": "No hay solicitudes pendientes.",
   "Ninguém nesta lista.": "Nadie en esta lista.",
   "Remover o acesso de {email}?": "¿Retirar el acceso de {email}?",
-  "Informe a instituição.": "Indica la institución."
+  "Informe a instituição.": "Indica la institución.",
+  "mais": "más",
+  "menos": "menos",
+  "Fichas (uma por linha)": "Fichas (una por fila)",
+  "Colunas que aparecem": "Columnas que aparecen",
+  "Colunas sem nenhum dado já ficam escondidas sozinhas.": "Las columnas sin datos ya se ocultan automáticamente.",
+  "Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.": "Antes de hacerlo público, oculta las columnas con nombres de personas, teléfonos o correos.",
+  "Nenhuma linha preenchida nesta aba.": "No hay filas completadas en esta pestaña.",
+  "{n} coluna(s) sem dados escondida(s).": "{n} columna(s) sin datos oculta(s)."
 };

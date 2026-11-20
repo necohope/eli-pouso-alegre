@@ -679,5 +679,13 @@ window.ELI_DIC["en"] = {
   "Nenhum pedido aguardando.": "No pending requests.",
   "Ninguém nesta lista.": "No one on this list.",
   "Remover o acesso de {email}?": "Remove access for {email}?",
-  "Informe a instituição.": "Enter the institution."
+  "Informe a instituição.": "Enter the institution.",
+  "mais": "more",
+  "menos": "less",
+  "Fichas (uma por linha)": "Cards (one per row)",
+  "Colunas que aparecem": "Columns shown",
+  "Colunas sem nenhum dado já ficam escondidas sozinhas.": "Columns with no data are already hidden automatically.",
+  "Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.": "Before making it public, hide columns with people's names, phone numbers or emails.",
+  "Nenhuma linha preenchida nesta aba.": "No filled rows in this sheet.",
+  "{n} coluna(s) sem dados escondida(s).": "{n} column(s) with no data hidden."
 };

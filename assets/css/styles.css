@@ -727,7 +727,7 @@ button.ym__d:focus-visible { outline: 3px solid var(--blue); outline-offset: 1px
 .kpi__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
 .kpi__head h3 { margin: 0; font-size: 1.25rem; color: var(--ink); line-height: 1.25; }
 .kpi__desc { margin: 4px 0 0; font-size: var(--t-small); color: var(--muted); }
-.kpi__meta { margin: 12px 0 0; font-size: .8125rem; color: var(--muted); }
+.kpi__meta { margin: 12px 0 0; font-size: .8125rem; color: var(--muted); overflow-wrap: anywhere; }
 .kpi__acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .kpi-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
 .kpi-cards li { background: var(--mist); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
@@ -780,3 +780,41 @@ button.ym__d:focus-visible { outline: 3px solid var(--blue); outline-offset: 1px
 .modal--doc { max-width: min(1000px, calc(100vw - 32px)); }
 .doc-frame { margin: 0 0 12px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--mist); }
 .doc-frame iframe { display: block; width: 100%; height: min(70vh, 720px); border: 0; }
+
+/* Tabelas da Área dos Atores: texto quebra em linhas, colunas curtas compactas, células longas com "mais" */
+.kpi-tabela { max-height: 600px; }
+.kpi-tabela th, .kpi-tabela td { white-space: normal; vertical-align: top; min-width: 6.5rem; max-width: 22rem; line-height: 1.4; overflow-wrap: break-word; }
+.kpi-tabela th { font-size: .8125rem; line-height: 1.3; }
+.kpi-tabela th.curta, .kpi-tabela td.curta { min-width: 0; white-space: nowrap; }
+.kpi-tabela th.longa, .kpi-tabela td.longa { min-width: 11rem; max-width: 28rem; }
+.kpi-tabela td.vazia .cel::before { content: "–"; color: var(--line); }
+.cel__txt.is-corta { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.cel__mais { font: inherit; font-size: .8125rem; font-weight: 700; color: var(--blue); background: none; border: 0; padding: 2px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.cel__mais:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+.kpi__aviso { margin: 8px 0 0; font-size: .8125rem; color: var(--muted); }
+.q-colunas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; max-height: 240px; overflow-y: auto; padding: 4px 2px; }
+.q-colunas .check span { overflow-wrap: anywhere; }
+[data-q-colunas-box] .note, .modal--largo .field > .note { margin: 2px 0 4px; font-size: .8125rem; }
+
+/* Fichas: uma ficha por linha da planilha (opção "Fichas" e sempre no celular) */
+.kpi-tabela--fichas { max-height: none; overflow: visible; border: 0; border-radius: 0; }
+.kpi-tabela--fichas table, .kpi-tabela--fichas tbody { display: block; }
+.kpi-tabela--fichas tbody { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.kpi-tabela--fichas thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.kpi-tabela--fichas tr { display: block; background: var(--mist); border-radius: 14px; padding: 12px 16px; min-width: 0; }
+.kpi-tabela--fichas td, .kpi-tabela--fichas td.curta, .kpi-tabela--fichas td.longa { display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); gap: 10px; padding: 5px 0; border: 0; min-width: 0; max-width: none; white-space: normal; }
+.kpi-tabela--fichas td::before { content: attr(data-rotulo); font-size: .75rem; font-weight: 700; color: var(--muted); line-height: 1.35; padding-top: 2px; overflow-wrap: anywhere; }
+.kpi-tabela--fichas td.vazia { display: none; }
+.kpi-tabela--fichas td:first-child { color: var(--ink); font-weight: 700; }
+@media (max-width: 720px) {
+  .kpi-tabela { max-height: none; overflow: visible; border: 0; border-radius: 0; }
+  .kpi-tabela table, .kpi-tabela tbody { display: block; }
+  .kpi-tabela tbody { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .kpi-tabela thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .kpi-tabela tr { display: block; background: var(--mist); border-radius: 14px; padding: 12px 14px; }
+  .kpi-tabela td, .kpi-tabela td.curta, .kpi-tabela td.longa { display: grid; grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); gap: 10px; padding: 5px 0; border: 0; min-width: 0; max-width: none; white-space: normal; }
+  .kpi-tabela td::before { content: attr(data-rotulo); font-size: .75rem; font-weight: 700; color: var(--muted); line-height: 1.35; padding-top: 2px; overflow-wrap: anywhere; }
+  .kpi-tabela td.vazia { display: none; }
+  .kpi-tabela td:first-child { color: var(--ink); font-weight: 700; }
+  .kpi-tabela--fichas tbody { grid-template-columns: 1fr; }
+}

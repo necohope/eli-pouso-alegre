@@ -802,12 +802,13 @@
       <form class="form" data-form-ind novalidate>
         <div class="field field--full"><label for="q-titulo">Título</label><input id="q-titulo" name="titulo" required maxlength="120"></div>
         <div class="field field--full"><label for="q-desc">Explicação curta <span class="opt">opcional</span></label><textarea id="q-desc" name="descricao" rows="2" maxlength="400"></textarea></div>
-        <div class="field"><label for="q-exibir">Mostrar como</label><select id="q-exibir" name="exibir" data-q-exibir><option value="tabela">Tabela</option><option value="cartoes">Cartões de destaque</option></select></div>
+        <div class="field"><label for="q-exibir">Mostrar como</label><select id="q-exibir" name="exibir" data-q-exibir><option value="tabela">Tabela</option><option value="fichas">Fichas (uma por linha)</option><option value="cartoes">Cartões de destaque</option></select></div>
         <div class="field"><label for="q-ordem">Ordem na página</label><input id="q-ordem" name="ordem" type="number" min="0" max="999" step="1"></div>
         <div class="field" data-q-cartao><label for="q-rotulo">Coluna com o nome do indicador</label><select id="q-rotulo" name="rotulo" data-q-col></select></div>
         <div class="field" data-q-cartao><label for="q-valor">Coluna com o valor</label><select id="q-valor" name="valor" data-q-col></select></div>
         <div class="field" data-q-cartao><label for="q-detalhe">Coluna com detalhe <span class="opt">opcional, ex.: meta ou período</span></label><select id="q-detalhe" name="detalhe" data-q-col data-q-opcional></select></div>
-        <div class="field field--full"><label class="check"><input type="checkbox" name="publico"> Público: mostrar este quadro no site aberto (seção "O ELI em números", na página inicial)</label></div>
+        <fieldset class="field field--full" data-q-colunas-box><legend>Colunas que aparecem</legend><p class="note">Colunas sem nenhum dado já ficam escondidas sozinhas.</p><div class="checks q-colunas" data-q-colunas></div></fieldset>
+        <div class="field field--full"><label class="check"><input type="checkbox" name="publico"> Público: mostrar este quadro no site aberto (seção "O ELI em números", na página inicial)</label><p class="note">Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.</p></div>
         <div class="field field--full form__foot">
           <button class="btn" type="submit">Salvar</button>
           <p class="form__msg" data-msg role="status"></p>
