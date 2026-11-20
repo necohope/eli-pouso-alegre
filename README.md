@@ -103,12 +103,14 @@ Fotos do Wikimedia Commons, usadas com atribuição:
 
 - Vista aérea de Pouso Alegre: ASCOM Pouso Alegre, CC BY 4.0
 - Reitoria do IFSULDEMINAS: Ifsuldeminas, CC BY-SA 4.0 (não usada nas páginas)
-- Theatro Municipal de Pouso Alegre: HVL, CC BY 4.0
+- Theatro Municipal de Pouso Alegre: HVL, CC BY 4.0 (reserva, não usada nas páginas)
 - Centro de Pouso Alegre (2021): Madu Macedo, CC BY-SA 4.0
 - Centro de Pouso Alegre visto do alto: ASCOM Pouso Alegre, CC BY 4.0
 - Região central de Pouso Alegre: HVL, CC BY 4.0
 - Lagoa do Parque Zoobotânico: Lucasedurezende, CC BY-SA 3.0
 - Centro Cultural Cleonice Bonillo Fernandes: HVL, CC BY 4.0 (reserva, não usada nas páginas)
 - Vista aérea 2: ASCOM Pouso Alegre, CC BY 4.0 (reserva)
+
+Foto da Rodada de Negócios (topo da Agenda): Renan Bandana / Terra do Mandu, todos os direitos reservados, uso autorizado no site do ELI. Não reutilizar em outros materiais sem nova autorização.
 
 Marca ELI: Sebrae, programa Ecossistemas Locais de Inovação. Fonte Saira: SIL Open Font License 1.1 (`assets/fonts/OFL-Saira.txt`). Biblioteca Firebase (Google), carregada sob demanda de www.gstatic.com.

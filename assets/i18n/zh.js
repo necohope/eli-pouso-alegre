@@ -539,5 +539,8 @@ window.ELI_DIC["zh"] = {
   "Entre para publicar eventos, programas e o perfil da sua instituição.": "登录后即可发布活动、项目以及贵机构的简介。",
   "Cadastrar evento": "登记活动",
   "Cadastrar programa": "登记项目",
-  "Idioma": "语言"
+  "Idioma": "语言",
+  "Rodada de Negócios em Pouso Alegre, maio de 2026. Foto: Renan Bandana / Terra do Mandu, uso autorizado": "Pouso Alegre 商务对接会，2026 年 5 月。摄影：Renan Bandana / Terra do Mandu，经授权使用",
+  "Rodada de Negócios em Pouso Alegre: Renan Bandana /": "Pouso Alegre 商务对接会：Renan Bandana /",
+  ", uso autorizado": "，经授权使用"
 };

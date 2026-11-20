@@ -539,5 +539,8 @@ window.ELI_DIC["es"] = {
   "Entre para publicar eventos, programas e o perfil da sua instituição.": "Inicia sesión para publicar eventos, programas y el perfil de tu institución.",
   "Cadastrar evento": "Registrar evento",
   "Cadastrar programa": "Registrar programa",
-  "Idioma": "Idioma"
+  "Idioma": "Idioma",
+  "Rodada de Negócios em Pouso Alegre, maio de 2026. Foto: Renan Bandana / Terra do Mandu, uso autorizado": "Rueda de Negocios en Pouso Alegre, mayo de 2026. Foto: Renan Bandana / Terra do Mandu, uso autorizado",
+  "Rodada de Negócios em Pouso Alegre: Renan Bandana /": "Rueda de Negocios en Pouso Alegre: Renan Bandana /",
+  ", uso autorizado": ", uso autorizado"
 };
