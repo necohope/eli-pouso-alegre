@@ -525,5 +525,19 @@ window.ELI_DIC["zh"] = {
   "1 evento": "1 项活动",
   "2 eventos": "2 项活动",
   "Quem cria uma conta informa nome e e-mail (ou entra com o Google). Esses dados ficam guardados no Firebase, serviço do Google, e servem só para identificar quem publica. O e-mail da conta nunca aparece no site.": "创建账户时需填写姓名和电子邮箱（或使用 Google 登录）。这些数据保存在 Google 的 Firebase 服务中，仅用于识别发布者。账户邮箱绝不会显示在网站上。",
-  "O que aparece publicamente é o que a própria instituição cadastra: perfil, logo, eventos, programas e ações. Você pode editar ou apagar tudo a qualquer momento, inclusive excluir a conta inteira, em Minha conta.": "公开显示的内容均由机构自行登记：简介、标志、活动、项目与行动。您可以随时在“我的账户”中编辑或删除所有内容，包括删除整个账户。"
+  "O que aparece publicamente é o que a própria instituição cadastra: perfil, logo, eventos, programas e ações. Você pode editar ou apagar tudo a qualquer momento, inclusive excluir a conta inteira, em Minha conta.": "公开显示的内容均由机构自行登记：简介、标志、活动、项目与行动。您可以随时在“我的账户”中编辑或删除所有内容，包括删除整个账户。",
+  "Reúne universidades, institutos e centros de pesquisa, indústria forte, comércio ativo e uma comunidade de startups em crescimento.": "这里汇聚了大学、研究院所与研究中心、强大的工业、活跃的商业以及不断壮大的创业社群。",
+  "Centro de Pouso Alegre visto do alto. Foto: ASCOM Pouso Alegre, CC BY 4.0": "俯瞰 Pouso Alegre 市中心。摄影：ASCOM Pouso Alegre，CC BY 4.0",
+  "Vista aérea das ruas e prédios do centro de Pouso Alegre": "Pouso Alegre 市中心街道与建筑的航拍图",
+  "Região central de Pouso Alegre. Foto: HVL, CC BY 4.0": "Pouso Alegre 中心区。摄影：HVL，CC BY 4.0",
+  "Lagoa do Parque Zoobotânico de Pouso Alegre. Foto: Lucasedurezende, CC BY-SA 3.0": "Pouso Alegre 动植物园的湖。摄影：Lucasedurezende，CC BY-SA 3.0",
+  "Centro de Pouso Alegre visto do alto: ASCOM Pouso Alegre,": "俯瞰 Pouso Alegre 市中心：ASCOM Pouso Alegre，",
+  "Região central de Pouso Alegre: HVL,": "Pouso Alegre 中心区：HVL，",
+  "Lagoa do Parque Zoobotânico: Lucasedurezende,": "动植物园的湖：Lucasedurezende，",
+  "Fechar menu": "关闭菜单",
+  "Sua conta": "您的账户",
+  "Entre para publicar eventos, programas e o perfil da sua instituição.": "登录后即可发布活动、项目以及贵机构的简介。",
+  "Cadastrar evento": "登记活动",
+  "Cadastrar programa": "登记项目",
+  "Idioma": "语言"
 };

@@ -24,15 +24,16 @@
   }
   function pintarTopo() {
     var logado = !!usuario;
-    $$("[data-entrar]").forEach(function (b) { b.hidden = logado && b.classList.contains("tool-entrar"); });
+    var eb = $("[data-entrar-box]"); if (eb) eb.hidden = logado;
     var box = $("[data-user]"); if (box) box.hidden = !logado;
+    var mini = $("[data-user-avatar-mini]"); if (mini) mini.hidden = !logado;
     if (!logado) return;
     var nome = (instituicao && (instituicao.sigla || instituicao.nome)) || usuario.displayName || usuario.email.split("@")[0];
     var av = $("[data-user-avatar]");
     if (instituicao && instituicao.logo) av.innerHTML = '<img src="' + esc(instituicao.logo) + '" alt="">';
     else if (usuario.photoURL) av.innerHTML = '<img src="' + esc(usuario.photoURL) + '" alt="" referrerpolicy="no-referrer">';
     else av.textContent = iniciais(usuario.displayName, usuario.email);
-    $("[data-user-name]").textContent = nome.length > 16 ? nome.slice(0, 15) + "…" : nome;
+    if (mini) mini.innerHTML = av.innerHTML;
     $("[data-user-fullname]").textContent = usuario.displayName || nome;
     $("[data-user-email]").textContent = usuario.email;
     var adm = FB.isAdmin(usuario);

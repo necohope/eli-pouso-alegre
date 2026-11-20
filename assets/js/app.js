@@ -115,12 +115,14 @@
   });
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") fecharPops(); });
 
-  /* menu móvel */
-  var menuBtn = $(".menu-toggle"), nav = $("#nav");
-  function closeMenu() { if (!nav) return; nav.classList.remove("is-open"); menuBtn.setAttribute("aria-expanded", "false"); }
-  menuBtn.addEventListener("click", function () {
-    var open = nav.classList.toggle("is-open");
-    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  /* menu lateral (gaveta) */
+  var gaveta = $("[data-gaveta]"), menuBtn = $("[data-abrir-gaveta]");
+  function closeMenu() { if (gaveta && gaveta.open) { gaveta.close(); } }
+  function abrirGaveta() { if (!gaveta.open) { if (gaveta.showModal) gaveta.showModal(); else gaveta.setAttribute("open", ""); menuBtn.setAttribute("aria-expanded", "true"); } }
+  menuBtn.addEventListener("click", abrirGaveta);
+  gaveta.addEventListener("close", function () { menuBtn.setAttribute("aria-expanded", "false"); });
+  gaveta.addEventListener("click", function (ev) {
+    if (ev.target === gaveta || ev.target.closest("[data-fechar-gaveta]") || ev.target.closest("a[href^='#'], [data-acao], [data-entrar], [data-sair], [data-lang-set]")) closeMenu();
   });
 
   /* ---------------- rede do hero ---------------- */
@@ -269,7 +271,7 @@
   }
 
   /* ---------------- agenda: lista ---------------- */
-  var state = { tipos: {}, q: "", mode: "lista", calMonth: null, past: false };
+  var state = { tipos: {}, q: "", mode: "mes", calMonth: null, past: false };
 
   // allDates: true no calendário (navega por qualquer mês); na lista, passados só com o botão ligado.
   function filtered(allDates) {
@@ -461,8 +463,7 @@
   function modo(m) {
     state.mode = m;
     $$("[data-mode]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.getAttribute("data-mode") === m)); });
-    ["lista", "mes", "ano"].forEach(function (p) { var el = $('[data-panel="' + p + '"]'); if (el) el.hidden = p !== m; });
-    var pt = $(".past-toggle"); if (pt) pt.hidden = m !== "lista";
+    ["mes", "ano"].forEach(function (p) { var el = $('[data-panel="' + p + '"]'); if (el) el.hidden = p !== m; });
   }
 
   /* ---------------- detalhe do evento ---------------- */
@@ -733,7 +734,7 @@
     TIPOS: TIPOS, PUBLICOS: PUBLICOS, FORMATOS: FORMATOS_PT, parseD: parseD, iso: iso, today: today, endOf: endOf, cap1: cap1,
     esc: esc, safeUrl: safeUrl, t: t, radarHtml: radarHtml, modalHtml: modalHtml, hit: hit, rota: function () { return rotaAtual; }
   };
-  network(); org(); refs(); chips(); members(); modo("lista");
+  network(); org(); refs(); chips(); members(); modo("mes");
   renderAgenda(); route(); pwa();
   // Eventos cadastrados por usuários: carrega depois que a página já apareceu.
   (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(loadRemote);

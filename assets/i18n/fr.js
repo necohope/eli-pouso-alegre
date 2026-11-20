@@ -525,5 +525,19 @@ window.ELI_DIC["fr"] = {
   "1 evento": "1 événement",
   "2 eventos": "2 événements",
   "Quem cria uma conta informa nome e e-mail (ou entra com o Google). Esses dados ficam guardados no Firebase, serviço do Google, e servem só para identificar quem publica. O e-mail da conta nunca aparece no site.": "Toute personne qui crée un compte indique un nom et une adresse e-mail (ou se connecte avec Google). Ces données sont conservées dans Firebase, un service de Google, et servent uniquement à identifier qui publie. L’e-mail du compte n’apparaît jamais sur le site.",
-  "O que aparece publicamente é o que a própria instituição cadastra: perfil, logo, eventos, programas e ações. Você pode editar ou apagar tudo a qualquer momento, inclusive excluir a conta inteira, em Minha conta.": "Ce qui apparaît publiquement est ce que l’institution elle-même enregistre : profil, logo, événements, programmes et actions. Vous pouvez tout modifier ou supprimer à tout moment, y compris supprimer le compte entier, dans Mon compte."
+  "O que aparece publicamente é o que a própria instituição cadastra: perfil, logo, eventos, programas e ações. Você pode editar ou apagar tudo a qualquer momento, inclusive excluir a conta inteira, em Minha conta.": "Ce qui apparaît publiquement est ce que l’institution elle-même enregistre : profil, logo, événements, programmes et actions. Vous pouvez tout modifier ou supprimer à tout moment, y compris supprimer le compte entier, dans Mon compte.",
+  "Reúne universidades, institutos e centros de pesquisa, indústria forte, comércio ativo e uma comunidade de startups em crescimento.": "Elle réunit des universités, des instituts et des centres de recherche, une industrie solide, un commerce actif et une communauté de startups en pleine croissance.",
+  "Centro de Pouso Alegre visto do alto. Foto: ASCOM Pouso Alegre, CC BY 4.0": "Le centre de Pouso Alegre vu d’en haut. Photo : ASCOM Pouso Alegre, CC BY 4.0",
+  "Vista aérea das ruas e prédios do centro de Pouso Alegre": "Vue aérienne des rues et des immeubles du centre de Pouso Alegre",
+  "Região central de Pouso Alegre. Foto: HVL, CC BY 4.0": "Quartier central de Pouso Alegre. Photo : HVL, CC BY 4.0",
+  "Lagoa do Parque Zoobotânico de Pouso Alegre. Foto: Lucasedurezende, CC BY-SA 3.0": "Lac du parc zoobotanique de Pouso Alegre. Photo : Lucasedurezende, CC BY-SA 3.0",
+  "Centro de Pouso Alegre visto do alto: ASCOM Pouso Alegre,": "Le centre de Pouso Alegre vu d’en haut : ASCOM Pouso Alegre,",
+  "Região central de Pouso Alegre: HVL,": "Quartier central de Pouso Alegre : HVL,",
+  "Lagoa do Parque Zoobotânico: Lucasedurezende,": "Lac du parc zoobotanique : Lucasedurezende,",
+  "Fechar menu": "Fermer le menu",
+  "Sua conta": "Votre compte",
+  "Entre para publicar eventos, programas e o perfil da sua instituição.": "Connectez-vous pour publier des événements, des programmes et le profil de votre institution.",
+  "Cadastrar evento": "Ajouter un événement",
+  "Cadastrar programa": "Ajouter un programme",
+  "Idioma": "Langue"
 };

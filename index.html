@@ -37,46 +37,67 @@
         <img src="assets/img/logo-eli.png" alt="Ecossistema Local de Inovação" width="498" height="137">
         <span class="brand__city">Pouso Alegre</span>
       </a>
-      <nav id="nav" class="nav" aria-label="Principal">
-        <a href="#inicio" data-nav="inicio">O ELI</a>
-        <a href="#agenda" data-nav="agenda">Agenda</a>
-        <a href="#programas" data-nav="programas">Programas e Ações</a>
-        <a href="#vitrine" data-nav="vitrine">Vitrine</a>
-        <a href="#governanca" data-nav="governanca">Governança</a>
-      </nav>
-      <div class="tools">
-        <div class="pop" data-lang>
-          <button class="tool-btn" type="button" aria-haspopup="true" aria-expanded="false" data-pop-btn aria-label="Idioma / Language">
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 0c2.5 2.4 3.8 5.4 3.8 9s-1.3 6.6-3.8 9m0-18C9.5 5.4 8.2 8.4 8.2 12s1.3 6.6 3.8 9M3.5 9h17M3.5 15h17"/></svg>
-            <span data-lang-cur data-no-i18n>PT</span>
-          </button>
-          <ul class="menu-pop" data-pop-menu hidden>
-            <li><button type="button" data-lang-set="pt" lang="pt-BR" data-no-i18n>Português</button></li>
-            <li><button type="button" data-lang-set="en" lang="en" data-no-i18n>English</button></li>
-            <li><button type="button" data-lang-set="es" lang="es" data-no-i18n>Español</button></li>
-            <li><button type="button" data-lang-set="fr" lang="fr" data-no-i18n>Français</button></li>
-            <li><button type="button" data-lang-set="zh" lang="zh-Hans" data-no-i18n>中文</button></li>
-          </ul>
-        </div>
-        <button class="btn btn--small tool-entrar" type="button" data-entrar>Entrar</button>
-        <div class="pop" data-user hidden>
-          <button class="avatar-btn" type="button" aria-haspopup="true" aria-expanded="false" data-pop-btn aria-label="Minha conta">
-            <span class="avatar avatar--user" data-user-avatar aria-hidden="true"></span>
-            <span class="avatar-btn__name" data-user-name data-no-i18n></span>
-          </button>
-          <ul class="menu-pop menu-pop--right" data-pop-menu hidden>
-            <li class="menu-pop__head"><strong data-user-fullname data-no-i18n></strong><span data-user-email data-no-i18n></span></li>
-            <li><a href="#conta/instituicao">Minha instituição</a></li>
-            <li><a href="#conta/eventos">Meus eventos</a></li>
-            <li><a href="#conta/programas">Meus programas e ações</a></li>
-            <li data-admin-only hidden><a href="admin.html">Painel Admin</a></li>
-            <li><button type="button" data-sair>Sair</button></li>
-          </ul>
-        </div>
-        <button class="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
-      </div>
+      <button class="menu-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="gaveta" data-abrir-gaveta>
+        <span class="avatar avatar--user avatar--mini" data-user-avatar-mini hidden aria-hidden="true"></span>
+        <span class="menu-btn__txt">Menu</span>
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </header>
+
+  <dialog class="gaveta" id="gaveta" data-gaveta aria-label="Menu">
+    <div class="gaveta__topo">
+      <img src="assets/img/logo-eli.png" alt="Ecossistema Local de Inovação" width="498" height="137" class="gaveta__logo">
+      <button class="gaveta__fechar" type="button" data-fechar-gaveta aria-label="Fechar menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="gaveta__conta">
+      <div data-entrar-box>
+        <p class="gaveta__rot">Sua conta</p>
+        <p class="gaveta__txt">Entre para publicar eventos, programas e o perfil da sua instituição.</p>
+        <button class="btn gaveta__entrar" type="button" data-entrar>Entrar ou criar conta</button>
+      </div>
+      <div data-user hidden>
+        <div class="gaveta__user">
+          <span class="avatar avatar--user" data-user-avatar aria-hidden="true"></span>
+          <div><strong data-user-fullname data-no-i18n></strong><span data-user-email data-no-i18n></span></div>
+        </div>
+        <ul class="gaveta__sub">
+          <li><a href="#conta/instituicao">Minha instituição</a></li>
+          <li><a href="#conta/eventos">Meus eventos</a></li>
+          <li><a href="#conta/programas">Meus programas e ações</a></li>
+          <li data-admin-only hidden><a href="admin.html">Painel Admin</a></li>
+          <li><button type="button" data-sair>Sair</button></li>
+        </ul>
+      </div>
+    </div>
+
+    <nav id="nav" class="gaveta__nav" aria-label="Principal">
+      <a href="#inicio" data-nav="inicio">O ELI</a>
+      <a href="#agenda" data-nav="agenda">Agenda</a>
+      <a href="#programas" data-nav="programas">Programas e Ações</a>
+      <a href="#vitrine" data-nav="vitrine">Vitrine</a>
+      <a href="#governanca" data-nav="governanca">Governança</a>
+    </nav>
+
+    <div class="gaveta__acoes">
+      <button class="btn btn--ghost btn--small" type="button" data-acao="novo-evento">Cadastrar evento</button>
+      <button class="btn btn--ghost btn--small" type="button" data-acao="novo-programa">Cadastrar programa</button>
+    </div>
+
+    <div class="gaveta__idioma" role="group" aria-label="Idioma / Language">
+      <p class="gaveta__rot">Idioma</p>
+      <div class="gaveta__langs">
+        <button type="button" data-lang-set="pt" lang="pt-BR" data-no-i18n>Português</button>
+        <button type="button" data-lang-set="en" lang="en" data-no-i18n>English</button>
+        <button type="button" data-lang-set="es" lang="es" data-no-i18n>Español</button>
+        <button type="button" data-lang-set="fr" lang="fr" data-no-i18n>Français</button>
+        <button type="button" data-lang-set="zh" lang="zh-Hans" data-no-i18n>中文</button>
+      </div>
+    </div>
+  </dialog>
 
   <main id="conteudo">
 
@@ -153,14 +174,14 @@
       <section class="section photo-split" aria-labelledby="h-ictis">
         <figure>
           <picture>
-            <source type="image/webp" srcset="assets/img/ifsuldeminas-800.webp 800w, assets/img/ifsuldeminas.webp 1280w" sizes="(max-width: 860px) 100vw, 600px">
-            <img src="assets/img/ifsuldeminas.jpg" alt="Fachada da Reitoria do Instituto Federal do Sul de Minas em Pouso Alegre" loading="lazy" decoding="async" width="1280" height="784">
+            <source type="image/webp" srcset="assets/img/pa-ruas-centro-800.webp 800w, assets/img/pa-ruas-centro.webp 1280w" sizes="(max-width: 860px) 100vw, 600px">
+            <img src="assets/img/pa-ruas-centro.jpg" alt="Vista aérea das ruas e prédios do centro de Pouso Alegre" loading="lazy" decoding="async" width="1280" height="720">
           </picture>
-          <figcaption>Reitoria do IFSULDEMINAS, Pouso Alegre. Foto: Ifsuldeminas, CC BY-SA 4.0</figcaption>
+          <figcaption>Centro de Pouso Alegre visto do alto. Foto: ASCOM Pouso Alegre, CC BY 4.0</figcaption>
         </figure>
         <div>
           <h2 id="h-ictis">Uma cidade com conhecimento instalado</h2>
-          <p>Pouso Alegre tem 152.212 habitantes (Censo 2022), é a segunda maior cidade do Sul de Minas e fica entre São Paulo e Belo Horizonte. Abriga a reitoria de um instituto federal, um campus de universidade federal, universidades e centros universitários, indústria forte e uma comunidade de startups em crescimento.</p>
+          <p>Pouso Alegre tem 152.212 habitantes (Censo 2022), é a segunda maior cidade do Sul de Minas e fica entre São Paulo e Belo Horizonte. Reúne universidades, institutos e centros de pesquisa, indústria forte, comércio ativo e uma comunidade de startups em crescimento.</p>
           <p>O ELI existe para que tudo isso trabalhe junto: que o estudante encontre o laboratório, que o laboratório encontre a empresa e que a empresa encontre o investidor.</p>
         </div>
       </section>
@@ -209,21 +230,14 @@
             <input type="search" placeholder="Buscar por nome, organizador ou local" data-search>
           </label>
           <div class="seg" role="group" aria-label="Modo de visualização">
-            <button type="button" aria-pressed="true" data-mode="lista">Lista</button>
-            <button type="button" aria-pressed="false" data-mode="mes">Mês</button>
+            <button type="button" aria-pressed="true" data-mode="mes">Mês</button>
             <button type="button" aria-pressed="false" data-mode="ano">Ano</button>
           </div>
         </div>
         <div class="chips" role="group" aria-label="Filtrar por tipo" data-chips></div>
-        <div class="past-toggle">
-          <button class="chip" type="button" aria-pressed="false" data-past>Mostrar eventos já realizados</button>
-        </div>
         <p class="sandbox-note" data-sandbox-note hidden></p>
 
-        <div data-panel="lista">
-          <div data-list></div>
-        </div>
-        <div data-panel="mes" hidden>
+        <div data-panel="mes">
           <div class="cal" data-cal></div>
         </div>
         <div data-panel="ano" hidden>
@@ -272,7 +286,11 @@
          VIEW: PROGRAMAS E AÇÕES (mapa vivo)
     ========================================================== -->
     <section class="view" id="view-programas" data-view="programas" aria-label="Programas e Ações" hidden>
-      <div class="page-head page-head--plain page-head--mint">
+      <div class="page-head page-head--photo">
+        <picture>
+          <source type="image/webp" srcset="assets/img/pa-regiao-central-800.webp 800w, assets/img/pa-regiao-central.webp 1280w" sizes="100vw">
+          <img src="assets/img/pa-regiao-central.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1280" height="853">
+        </picture>
         <div class="page-head__text">
           <p class="crumb">Mapa vivo do Ecossistema</p>
           <h1>Programas e Ações</h1>
@@ -281,6 +299,7 @@
             <button class="btn btn--light" type="button" data-acao="novo-programa">Cadastrar programa ou ação</button>
           </div>
         </div>
+        <p class="photo-credit">Região central de Pouso Alegre. Foto: HVL, CC BY 4.0</p>
       </div>
 
       <section class="section" aria-labelledby="h-prog">
@@ -306,7 +325,11 @@
          VIEW: VITRINE (4 hélices e atores ativos)
     ========================================================== -->
     <section class="view" id="view-vitrine" data-view="vitrine" aria-label="Vitrine do Ecossistema" hidden>
-      <div class="page-head page-head--plain page-head--sun">
+      <div class="page-head page-head--photo">
+        <picture>
+          <source type="image/webp" srcset="assets/img/parque-lagoa-800.webp 800w, assets/img/parque-lagoa.webp 1280w" sizes="100vw">
+          <img src="assets/img/parque-lagoa.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1280" height="960">
+        </picture>
         <div class="page-head__text">
           <p class="crumb">Quem faz o Ecossistema</p>
           <h1>Vitrine</h1>
@@ -315,6 +338,7 @@
             <button class="btn btn--light" type="button" data-acao="minha-instituicao">Cadastrar minha instituição</button>
           </div>
         </div>
+        <p class="photo-credit">Lagoa do Parque Zoobotânico de Pouso Alegre. Foto: Lucasedurezende, CC BY-SA 3.0</p>
       </div>
 
       <section class="section" data-vitrine-home aria-labelledby="h-helices">
@@ -635,7 +659,9 @@
         <summary>Créditos das imagens</summary>
         <ul>
           <li>Vista aérea de Pouso Alegre: ASCOM Pouso Alegre, <a href="https://commons.wikimedia.org/wiki/File:ASCOM_PPY_0001.jpg">Wikimedia Commons</a>, CC BY 4.0</li>
-          <li>Reitoria do IFSULDEMINAS: Ifsuldeminas, <a href="https://commons.wikimedia.org/wiki/File:Fachada_Reitoria_Ifsuldeminas.png">Wikimedia Commons</a>, CC BY-SA 4.0</li>
+          <li>Centro de Pouso Alegre visto do alto: ASCOM Pouso Alegre, <a href="https://commons.wikimedia.org/wiki/File:ASCOM_PPY_0002.jpg">Wikimedia Commons</a>, CC BY 4.0</li>
+          <li>Região central de Pouso Alegre: HVL, <a href="https://commons.wikimedia.org/wiki/File:Vista_parcial_da_regi%C3%A3o_central_de_Pouso_Alegre_MG.JPG">Wikimedia Commons</a>, CC BY 4.0</li>
+          <li>Lagoa do Parque Zoobotânico: Lucasedurezende, <a href="https://commons.wikimedia.org/wiki/File:Lagoa_do_parque.JPG">Wikimedia Commons</a>, CC BY-SA 3.0</li>
           <li>Theatro Municipal: HVL, <a href="https://commons.wikimedia.org/wiki/File:Vista_noturna_da_fachada_do_Theatro_Municipal_de_Pouso_Alegre_MG.JPG">Wikimedia Commons</a>, CC BY 4.0</li>
           <li>Centro de Pouso Alegre: Madu Macedo, <a href="https://commons.wikimedia.org/wiki/File:Pouso_Alegre_(2021).jpg">Wikimedia Commons</a>, CC BY-SA 4.0</li>
           <li>Marca ELI: Sebrae, programa Ecossistemas Locais de Inovação</li>

@@ -5,7 +5,7 @@ Site do ELI Pouso Alegre, o Ecossistema Local de Inovação da cidade. HTML, CSS
 | Página | Endereço | Conteúdo |
 |---|---|---|
 | O ELI | `#inicio` | O que é o ELI, etapa da metodologia, os grupos, referências, próximos eventos |
-| Agenda | `#agenda` | Eventos em Lista, Mês e Ano, filtros, eventos já realizados |
+| Agenda | `#agenda` | Calendário em Mês e Ano, com busca e filtros por tipo |
 | Programas e Ações | `#programas` | Mapa vivo de programas, projetos, ações e serviços, cadastrados pelos atores |
 | Vitrine | `#vitrine`, `#vitrine/<hélice>` | As 4 hélices e os atores ativos, com logo clicável para o site de cada instituição |
 | Governança | `#governanca` | Sobre nós, visão, missão, princípios, estrutura, regras e primeiros 90 dias |
@@ -102,9 +102,12 @@ Os textos são escritos em português no HTML e no JS. Ao mudar ou criar um text
 Fotos do Wikimedia Commons, usadas com atribuição:
 
 - Vista aérea de Pouso Alegre: ASCOM Pouso Alegre, CC BY 4.0
-- Reitoria do IFSULDEMINAS: Ifsuldeminas, CC BY-SA 4.0
+- Reitoria do IFSULDEMINAS: Ifsuldeminas, CC BY-SA 4.0 (não usada nas páginas)
 - Theatro Municipal de Pouso Alegre: HVL, CC BY 4.0
 - Centro de Pouso Alegre (2021): Madu Macedo, CC BY-SA 4.0
+- Centro de Pouso Alegre visto do alto: ASCOM Pouso Alegre, CC BY 4.0
+- Região central de Pouso Alegre: HVL, CC BY 4.0
+- Lagoa do Parque Zoobotânico: Lucasedurezende, CC BY-SA 3.0
 - Centro Cultural Cleonice Bonillo Fernandes: HVL, CC BY 4.0 (reserva, não usada nas páginas)
 - Vista aérea 2: ASCOM Pouso Alegre, CC BY 4.0 (reserva)
 
