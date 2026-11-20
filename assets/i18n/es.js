@@ -687,5 +687,12 @@ window.ELI_DIC["es"] = {
   "Colunas sem nenhum dado já ficam escondidas sozinhas.": "Las columnas sin datos ya se ocultan automáticamente.",
   "Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.": "Antes de hacerlo público, oculta las columnas con nombres de personas, teléfonos o correos.",
   "Nenhuma linha preenchida nesta aba.": "No hay filas completadas en esta pestaña.",
-  "{n} coluna(s) sem dados escondida(s).": "{n} columna(s) sin datos oculta(s)."
+  "{n} coluna(s) sem dados escondida(s).": "{n} columna(s) sin datos oculta(s).",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre": "ELI - Ecosistema Local de Innovación de Pouso Alegre",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Agenda Única": "ELI - Ecosistema Local de Innovación de Pouso Alegre | Agenda Única",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Programas e Ações": "ELI - Ecosistema Local de Innovación de Pouso Alegre | Programas y Acciones",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Vitrine": "ELI - Ecosistema Local de Innovación de Pouso Alegre | Vitrina",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Governança": "ELI - Ecosistema Local de Innovación de Pouso Alegre | Gobernanza",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Minha conta": "ELI - Ecosistema Local de Innovación de Pouso Alegre | Mi cuenta",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Área dos Atores": "ELI - Ecosistema Local de Innovación de Pouso Alegre | Área de los Actores"
 };

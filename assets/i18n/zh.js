@@ -687,5 +687,12 @@ window.ELI_DIC["zh"] = {
   "Colunas sem nenhum dado já ficam escondidas sozinhas.": "没有任何数据的列会自动隐藏。",
   "Antes de tornar público, esconda as colunas com nomes de pessoas, telefones ou e-mails.": "公开之前，请隐藏含有人名、电话或电子邮箱的列。",
   "Nenhuma linha preenchida nesta aba.": "此工作表没有已填写的行。",
-  "{n} coluna(s) sem dados escondida(s).": "已隐藏 {n} 个无数据的列。"
+  "{n} coluna(s) sem dados escondida(s).": "已隐藏 {n} 个无数据的列。",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre": "ELI - Pouso Alegre 本地创新生态系统",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Agenda Única": "ELI - Pouso Alegre 本地创新生态系统 | 统一日程",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Programas e Ações": "ELI - Pouso Alegre 本地创新生态系统 | 项目与行动",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Vitrine": "ELI - Pouso Alegre 本地创新生态系统 | 展示窗",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Governança": "ELI - Pouso Alegre 本地创新生态系统 | 治理",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Minha conta": "ELI - Pouso Alegre 本地创新生态系统 | 我的账户",
+  "ELI - Ecossistema Local de Inovação de Pouso Alegre | Área dos Atores": "ELI - Pouso Alegre 本地创新生态系统 | 成员专区"
 };
