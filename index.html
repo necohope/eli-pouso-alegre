@@ -80,6 +80,7 @@
       <a href="#programas" data-nav="programas">Programas e Ações</a>
       <a href="#vitrine" data-nav="vitrine">Vitrine</a>
       <a href="#governanca" data-nav="governanca">Governança</a>
+      <a href="#area" data-nav="area" class="gaveta__restrita"><svg class="cadeado" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Área dos Atores</span></a>
     </nav>
 
     <div class="gaveta__acoes">
@@ -188,6 +189,12 @@
         <h2 id="h-ref">Referências que nos inspiram</h2>
         <p class="section__intro">Não precisamos inventar tudo. Estes ecossistemas resolveram problemas parecidos com os nossos.</p>
         <div class="refs" data-refs></div>
+      </section>
+
+      <section class="section" data-publico-indicadores hidden aria-labelledby="h-numeros-eli">
+        <h2 id="h-numeros-eli">O ELI em números</h2>
+        <p class="section__intro">Indicadores acompanhados pelos atores do ecossistema.</p>
+        <div class="indicadores" data-indicadores-publicos></div>
       </section>
 
       <section class="section next" aria-labelledby="h-next">
@@ -488,10 +495,144 @@
 
           <details class="zona">
             <summary>Excluir minha conta</summary>
-            <p>Apaga sua conta, o perfil da instituição e todos os seus eventos, programas e ações. Não há como desfazer.</p>
+            <p>Apaga sua conta, o perfil da instituição, todos os seus eventos, programas e ações e o que você publicou na Área dos Atores. Não há como desfazer.</p>
             <button class="btn btn--small btn--danger" type="button" data-excluir-conta>Excluir minha conta e meus dados</button>
             <p class="form__msg" data-msg-excluir role="status"></p>
           </details>
+        </div>
+      </section>
+    </section>
+
+    <!-- =========================================================
+         VIEW: ÁREA DOS ATORES (restrita a membros aprovados)
+    ========================================================== -->
+    <section class="view" id="view-area" data-view="area" aria-label="Área dos Atores" hidden>
+      <section class="section conta area">
+
+        <div class="area-intro" data-area="anon">
+          <p class="area__selo"><svg class="cadeado" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Acesso restrito</span></p>
+          <h1>Área dos Atores</h1>
+          <p class="lead">Espaço exclusivo dos atores do ELI: indicadores, relatórios, atas e anotações do ecossistema, sem precisar abrir o Drive.</p>
+          <p>O acesso é liberado pela coordenação do ELI. Entre com sua conta e faça o pedido.</p>
+          <button class="btn" type="button" data-entrar data-destino="area">Entrar ou criar conta</button>
+          <p class="note" data-area-off hidden>O cadastro de usuários está sendo ativado. Volte em breve.</p>
+        </div>
+
+        <div class="area-intro" data-area="carregando" hidden>
+          <h1>Área dos Atores</h1>
+          <p class="note">Carregando…</p>
+        </div>
+
+        <div class="area-intro" data-area="pedir" hidden>
+          <p class="area__selo"><svg class="cadeado" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Acesso restrito</span></p>
+          <h1>Área dos Atores</h1>
+          <p class="lead">Peça acesso para ver os indicadores, relatórios, atas e anotações do ELI.</p>
+          <div class="aviso" data-area-verificar hidden>
+            <p><strong>Confirme seu e-mail antes de pedir acesso.</strong> Use o link que enviamos quando você criou a conta e depois recarregue esta página.</p>
+          </div>
+          <form class="form form--conta area-pedido" data-form-pedido novalidate>
+            <div class="field field--full"><label for="m-inst">Instituição que você representa no ELI</label><input id="m-inst" name="instituicao" required maxlength="100" autocomplete="organization"></div>
+            <div class="field field--full"><label for="m-msg">Sua ligação com o ELI <span class="opt">opcional</span></label><textarea id="m-msg" name="mensagem" rows="3" maxlength="300" placeholder="Ex.: participo do grupo de trabalho de Ambientes de Inovação"></textarea></div>
+            <div class="field field--full form__foot">
+              <button class="btn" type="submit">Pedir acesso</button>
+              <p class="form__msg" data-msg role="status"></p>
+            </div>
+          </form>
+        </div>
+
+        <div class="area-intro" data-area="pendente" hidden>
+          <p class="area__selo"><svg class="cadeado" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Acesso restrito</span></p>
+          <h1>Pedido enviado</h1>
+          <p class="lead">Seu pedido de acesso à Área dos Atores está com a coordenação do ELI. Assim que for aprovado, esta página mostra os dados.</p>
+          <p class="note" data-area-pedido-info></p>
+          <button class="btn btn--ghost btn--small" type="button" data-cancelar-pedido>Cancelar pedido</button>
+        </div>
+
+        <div class="area-intro" data-area="recusado" hidden>
+          <h1>Área dos Atores</h1>
+          <p class="lead">Seu pedido de acesso não foi aprovado.</p>
+          <p>Se acha que foi um engano, fale com a coordenação do ELI pelo WhatsApp do site e depois peça de novo.</p>
+          <button class="btn btn--ghost btn--small" type="button" data-cancelar-pedido>Fazer um novo pedido</button>
+        </div>
+
+        <div data-area="membro" hidden>
+          <div class="conta__head">
+            <div>
+              <p class="area__selo"><svg class="cadeado" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Só para membros do ELI</span></p>
+              <h1>Área dos Atores</h1>
+              <p class="note">O que estiver marcado como <strong>Público</strong> também aparece no site aberto. O resto só os membros veem.</p>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Seções da Área dos Atores">
+            <a role="tab" href="#area/indicadores" data-area-tab="indicadores">Indicadores</a>
+            <a role="tab" href="#area/documentos" data-area-tab="documentos">Relatórios e atas</a>
+            <a role="tab" href="#area/notas" data-area-tab="notas">Anotações</a>
+            <a role="tab" href="#area/pedidos" data-area-tab="pedidos" data-so-admin hidden>Pedidos de acesso <span class="area__conta" data-pendentes hidden></span></a>
+          </div>
+
+          <!-- Indicadores -->
+          <div class="tab-panel" data-area-panel="indicadores" role="tabpanel">
+            <div class="tab-bar">
+              <h2 class="h-small">Indicadores do ecossistema</h2>
+              <div data-so-admin hidden>
+                <label class="btn btn--small" for="x-arquivo">Importar planilha</label>
+                <input id="x-arquivo" class="sr-only" type="file" accept=".xlsx,.xlsm,.xls,.csv" data-importar>
+              </div>
+            </div>
+            <p class="note" data-so-admin hidden>Envie o arquivo .xlsx ou .csv exportado do Drive. Cada aba vira um quadro. Para atualizar, importe de novo o mesmo arquivo: os quadros com o mesmo nome de aba são substituídos e mantêm suas configurações.</p>
+            <p class="form__msg" data-msg-importar role="status"></p>
+            <div class="indicadores" data-indicadores></div>
+          </div>
+
+          <!-- Documentos -->
+          <div class="tab-panel" data-area-panel="documentos" role="tabpanel" hidden>
+            <div class="tab-bar">
+              <h2 class="h-small">Relatórios, atas e apresentações</h2>
+              <button class="btn btn--small" type="button" data-novo-doc>Adicionar documento</button>
+            </div>
+            <div class="seg area-filtro" role="group" aria-label="Tipo de documento" data-doc-filtro></div>
+            <form class="form form--conta area-doc-form" data-form-doc novalidate hidden>
+              <div class="field field--full"><label for="d-titulo">Título</label><input id="d-titulo" name="titulo" required maxlength="140"></div>
+              <div class="field"><label for="d-tipo">Tipo</label><select id="d-tipo" name="tipo" required data-sel-doc-tipo></select></div>
+              <div class="field"><label for="d-data">Data do documento <span class="opt">opcional</span></label><input id="d-data" name="data" type="date"></div>
+              <div class="field field--full"><label for="d-url">Link do arquivo no Drive</label><input id="d-url" name="url" type="url" required placeholder="https://drive.google.com/..."><span class="note">No Drive, use "Compartilhar" e libere para os membros do ELI (ou para "qualquer pessoa com o link", se o documento for público).</span></div>
+              <div class="field field--full"><label for="d-desc">Resumo <span class="opt">opcional</span></label><textarea id="d-desc" name="descricao" rows="3" maxlength="400"></textarea></div>
+              <div class="field field--full" data-so-admin hidden><label class="check"><input type="checkbox" name="publico"> Público: mostrar este documento no site aberto (página Governança)</label></div>
+              <div class="field field--full form__foot">
+                <button class="btn" type="submit">Salvar documento</button>
+                <button class="btn btn--ghost" type="button" data-cancelar-doc>Cancelar</button>
+                <p class="form__msg" data-msg role="status"></p>
+              </div>
+            </form>
+            <ul class="docs" data-docs></ul>
+          </div>
+
+          <!-- Anotações -->
+          <div class="tab-panel" data-area-panel="notas" role="tabpanel" hidden>
+            <h2 class="h-small">Anotações dos membros</h2>
+            <form class="form form--conta area-nota-form" data-form-nota novalidate>
+              <div class="field field--full"><label for="n-texto">Nova anotação</label><textarea id="n-texto" name="texto" rows="3" maxlength="2000" required placeholder="Recado, encaminhamento de reunião, ideia, lembrete…"></textarea></div>
+              <div class="field field--full form__foot">
+                <button class="btn" type="submit">Publicar anotação</button>
+                <button class="btn btn--ghost" type="button" data-cancelar-nota hidden>Cancelar edição</button>
+                <p class="form__msg" data-msg role="status"></p>
+              </div>
+            </form>
+            <ul class="notas" data-notas></ul>
+          </div>
+
+          <!-- Pedidos de acesso (Admin) -->
+          <div class="tab-panel" data-area-panel="pedidos" role="tabpanel" hidden>
+            <h2 class="h-small">Pedidos aguardando</h2>
+            <ul class="mine" data-pedidos="pendente"></ul>
+            <h2 class="h-small">Membros com acesso</h2>
+            <ul class="mine" data-pedidos="aprovado"></ul>
+            <details class="zona">
+              <summary>Pedidos recusados ou acessos removidos</summary>
+              <ul class="mine" data-pedidos="recusado"></ul>
+            </details>
+          </div>
         </div>
       </section>
     </section>
@@ -592,6 +733,12 @@
           <li><span class="road__when">Fevereiro a março de 2027</span><strong>Plenária aberta</strong><span>Apresentação do diagnóstico, dos grupos e dos primeiros indicadores para todo o ecossistema.</span></li>
         </ol>
       </section>
+
+      <section class="section" data-publico-docs hidden aria-labelledby="h-docs-pub">
+        <h2 id="h-docs-pub">Documentos públicos</h2>
+        <p class="section__intro">Relatórios e materiais que o ELI compartilha com toda a cidade.</p>
+        <ul class="docs" data-docs-publicos></ul>
+      </section>
     </section>
   </main>
 
@@ -630,6 +777,52 @@
         <button type="button" class="linklike" data-auth-modo="senha">Esqueci minha senha</button>
       </p>
       <p class="note auth__legal">Ao continuar, você concorda com o uso dos seus dados conforme o aviso de <a href="#" data-privacidade>Privacidade</a>.</p>
+    </div>
+  </dialog>
+
+  <dialog class="modal modal--largo" data-importar-modal aria-labelledby="imp-title">
+    <div class="modal__inner">
+      <button class="modal__close" type="button" data-fechar-importar>Fechar</button>
+      <h2 id="imp-title">Importar planilha</h2>
+      <p class="note" data-imp-arquivo data-no-i18n></p>
+      <form data-form-importar novalidate>
+        <div class="imp-abas" data-imp-abas></div>
+        <div class="form__foot imp-foot">
+          <button class="btn" type="submit">Importar abas marcadas</button>
+          <p class="form__msg" data-msg role="status"></p>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog class="modal modal--largo" data-ind-modal aria-labelledby="ind-title">
+    <div class="modal__inner">
+      <button class="modal__close" type="button" data-fechar-ind>Fechar</button>
+      <h2 id="ind-title">Editar quadro</h2>
+      <form class="form" data-form-ind novalidate>
+        <div class="field field--full"><label for="q-titulo">Título</label><input id="q-titulo" name="titulo" required maxlength="120"></div>
+        <div class="field field--full"><label for="q-desc">Explicação curta <span class="opt">opcional</span></label><textarea id="q-desc" name="descricao" rows="2" maxlength="400"></textarea></div>
+        <div class="field"><label for="q-exibir">Mostrar como</label><select id="q-exibir" name="exibir" data-q-exibir><option value="tabela">Tabela</option><option value="cartoes">Cartões de destaque</option></select></div>
+        <div class="field"><label for="q-ordem">Ordem na página</label><input id="q-ordem" name="ordem" type="number" min="0" max="999" step="1"></div>
+        <div class="field" data-q-cartao><label for="q-rotulo">Coluna com o nome do indicador</label><select id="q-rotulo" name="rotulo" data-q-col></select></div>
+        <div class="field" data-q-cartao><label for="q-valor">Coluna com o valor</label><select id="q-valor" name="valor" data-q-col></select></div>
+        <div class="field" data-q-cartao><label for="q-detalhe">Coluna com detalhe <span class="opt">opcional, ex.: meta ou período</span></label><select id="q-detalhe" name="detalhe" data-q-col data-q-opcional></select></div>
+        <div class="field field--full"><label class="check"><input type="checkbox" name="publico"> Público: mostrar este quadro no site aberto (seção "O ELI em números", na página inicial)</label></div>
+        <div class="field field--full form__foot">
+          <button class="btn" type="submit">Salvar</button>
+          <p class="form__msg" data-msg role="status"></p>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog class="modal modal--doc" data-doc-modal aria-labelledby="doc-title">
+    <div class="modal__inner">
+      <button class="modal__close" type="button" data-fechar-doc>Fechar</button>
+      <h2 id="doc-title" data-doc-titulo data-no-i18n></h2>
+      <div class="doc-frame" data-doc-frame></div>
+      <p class="note">Se o documento não aparecer, entre no Google com a conta que tem acesso ao arquivo ou use "Abrir no Drive".</p>
+      <a class="btn btn--small" data-doc-abrir href="#" target="_blank" rel="noopener">Abrir no Drive</a>
     </div>
   </dialog>
 
@@ -690,6 +883,7 @@
 
   <script src="assets/js/app.js"></script>
   <script src="assets/js/conta.js"></script>
+  <script src="assets/js/area.js"></script>
   <script src="assets/js/mapa.js"></script>
 </body>
 </html>

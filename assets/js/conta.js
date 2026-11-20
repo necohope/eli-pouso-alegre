@@ -73,7 +73,7 @@
 
   document.addEventListener("click", function (ev) {
     var el = ev.target;
-    if (el.closest("[data-entrar]")) { ev.preventDefault(); abrirAuth(); return; }
+    var ent = el.closest("[data-entrar]"); if (ent) { ev.preventDefault(); abrirAuth(ent.getAttribute("data-destino")); return; }
     if (el.closest("[data-fechar-auth]") || el === dlg) { fecharAuth(); return; }
     var am = el.closest("[data-auth-modo]"); if (am) { modo(am.getAttribute("data-auth-modo")); return; }
     if (el.closest("[data-google]")) {

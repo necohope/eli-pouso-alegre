@@ -16,8 +16,8 @@
   var ultimo = null;
 
   var NOMES = {
-    paginas: { inicio: "O ELI (início)", agenda: "Agenda Única", governanca: "Governança", programas: "Programas e Ações", vitrine: "Vitrine", conta: "Minha conta", "vitrine/setor-produtivo": "Vitrine: Setor Produtivo", "vitrine/academia": "Vitrine: Academia e ICTs", "vitrine/setor-publico": "Vitrine: Setor Público", "vitrine/sociedade-civil": "Vitrine: Sociedade Civil" },
-    acoes: { whatsapp: "Cliques no WhatsApp", cadastro_enviado: "Eventos cadastrados pelo site", evento_aberto: "Eventos abertos", salvar_agenda: "Salvos no calendário", inscricao: "Cliques em inscrição", convite_app: "Convites para instalar o app", app_instalado: "Apps instalados", site_ator: "Visitas ao site de atores (Vitrine)", perfil_aberto: "Perfis abertos na Vitrine", programa_aberto: "Programas abertos" },
+    paginas: { inicio: "O ELI (início)", agenda: "Agenda Única", governanca: "Governança", programas: "Programas e Ações", vitrine: "Vitrine", conta: "Minha conta", area: "Área dos Atores", "vitrine/setor-produtivo": "Vitrine: Setor Produtivo", "vitrine/academia": "Vitrine: Academia e ICTs", "vitrine/setor-publico": "Vitrine: Setor Público", "vitrine/sociedade-civil": "Vitrine: Sociedade Civil" },
+    acoes: { whatsapp: "Cliques no WhatsApp", cadastro_enviado: "Eventos cadastrados pelo site", evento_aberto: "Eventos abertos", salvar_agenda: "Salvos no calendário", inscricao: "Cliques em inscrição", convite_app: "Convites para instalar o app", app_instalado: "Apps instalados", site_ator: "Visitas ao site de atores (Vitrine)", perfil_aberto: "Perfis abertos na Vitrine", programa_aberto: "Programas abertos", pedido_acesso: "Pedidos de acesso à Área dos Atores" },
     dispositivos: { celular: "Celular", computador: "Computador", tablet: "Tablet" }
   };
   var TITULOS = {};
@@ -62,7 +62,7 @@
   function diaIso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function carregarFirebase(dias) {
     var agora = new Date(), inicio = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() - (dias - 1));
-    return Promise.all([FB.acessosDesde(inicio), FB.todos("instituicoes"), FB.todos("eventos"), FB.todos("programas")]).then(function (r) {
+    return Promise.all([FB.acessosDesde(inicio), FB.todos("instituicoes"), FB.todos("eventos"), FB.todos("programas"), FB.todos("membros").catch(function () { return []; })]).then(function (r) {
       base = { instituicoes: r[1], eventos: r[2], programas: r[3] };
       var linhas = r[0], porDia = {}, serie = [];
       for (var i = dias - 1; i >= 0; i--) { var k = diaIso(new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() - i)); porDia[k] = { dia: k, paginas: 0, v: {} }; serie.push(k); }
@@ -90,7 +90,8 @@
         hoje: { paginas: hoje.paginas, visitantes: hoje.visitantes }, serie: s,
         paginas: top(mapas.paginas), dispositivos: top(mapas.dispositivos), navegadores: top(mapas.navegadores), sistemas: top(mapas.sistemas),
         origens: top(mapas.origens, 12), acoes: top(mapas.acoes), eventosAbertos: top(mapas.eventosAbertos),
-        cadastros: { instituicoes: contar(r[1]), eventos: contar(r[2]), programas: contar(r[3]) }
+        cadastros: { instituicoes: contar(r[1]), eventos: contar(r[2]), programas: contar(r[3]) },
+        membros: { aprovados: r[4].filter(function (m) { return m.status === "aprovado"; }).length, pendentes: r[4].filter(function (m) { return m.status === "pendente"; }).length }
       };
     });
   }
@@ -160,6 +161,10 @@
       var v = c[x[0]] || { total: 0, ocultos: 0 };
       return "<li><strong>" + num(v.total) + "</strong><span>" + x[1] + (v.ocultos ? " (" + num(v.ocultos) + " ocultos)" : "") + "</span></li>";
     }).join("");
+    var mb = r.membros || { aprovados: 0, pendentes: 0 }, box = $("[data-membros]");
+    if (box) box.innerHTML = "<strong>" + num(mb.aprovados) + "</strong> membros com acesso à Área dos Atores" +
+      (mb.pendentes ? ' · <a href="./#area/pedidos"><strong>' + num(mb.pendentes) + "</strong> " + (mb.pendentes === 1 ? "pedido aguardando" : "pedidos aguardando") + " aprovação</a>" : " · nenhum pedido aguardando") +
+      ' · <a href="./#area">Abrir a Área dos Atores</a>';
     moderacao();
   }
 

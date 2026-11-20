@@ -8,6 +8,10 @@
      eventos/{id}        eventos da Agenda
      programas/{id}      programas, projetos, ações e serviços
      acessos/{id}        estatísticas anônimas (só o Admin lê)
+     membros/{uid}       pedidos de acesso à Área dos Atores (Admin aprova)
+     indicadores/{id}    KPIs importados das planilhas (Área dos Atores)
+     documentos/{id}     relatórios, atas e apresentações (links do Drive)
+     notas/{id}          anotações internas dos membros
    As regras de segurança ficam em firestore.rules.
    ========================================================== */
 (function () {
@@ -156,6 +160,22 @@
         return d;
       });
   }
+  // Itens que o Admin marcou como públicos (Área dos Atores), sem login.
+  function listaPublica(colecao) {
+    if (!ativo()) return Promise.reject(new Error("off"));
+    var chave = colecao + ":publico", c = cache[chave];
+    if (c && Date.now() - c.t < CACHE_MS) return Promise.resolve(c.d);
+    var corpo = { structuredQuery: { from: [{ collectionId: colecao }], where: { fieldFilter: { field: { fieldPath: "publico" }, op: "EQUAL", value: { booleanValue: true } } } } };
+    return fetch(rest(":runQuery"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (linhas) {
+        var d = (linhas || []).filter(function (l) { return l.document; }).map(function (l) {
+          var o = decodificar({ mapValue: { fields: l.document.fields } }); o.id = l.document.name.split("/").pop(); return o;
+        });
+        cache[chave] = { t: Date.now(), d: d };
+        return d;
+      });
+  }
   function limparCache(colecao) { if (colecao) delete cache[colecao]; else cache = {}; }
 
   /* ---------------- escrita do usuário ---------------- */
@@ -201,9 +221,14 @@
   function excluirConta() {
     return iniciar().then(function () {
       var uid = auth.currentUser.uid;
-      return Promise.all(["eventos", "programas"].map(function (c) {
+      function apagarDe(c) {
         return db.collection(c).where("dono", "==", uid).get().then(function (s) { return Promise.all(s.docs.map(function (d) { return d.ref.delete(); })); });
-      })).then(function () { return db.collection("instituicoes").doc(uid).delete(); })
+      }
+      // Área dos Atores: só dá para listar enquanto a pessoa é membro; por isso vem antes de apagar o pedido de acesso.
+      function apagarDaArea(c) { return apagarDe(c).catch(function () { /* não era membro: nada a apagar */ }); }
+      return Promise.all([apagarDe("eventos"), apagarDe("programas"), apagarDaArea("notas"), apagarDaArea("documentos")])
+        .then(function () { return db.collection("membros").doc(uid).delete().catch(function () { /* ok */ }); })
+        .then(function () { return db.collection("instituicoes").doc(uid).delete(); })
         .then(function () { return auth.currentUser.delete(); });
     }).then(function () { limparCache(); });
   }
@@ -235,6 +260,51 @@
     return iniciar().then(function () { return db.collection(colecao).doc(id).update({ oculto: !!oculto }); }).then(function () { limparCache(colecao); });
   }
 
+  /* ---------------- Área dos Atores ---------------- */
+  function comId(d) { var o = d.data(); o.id = d.id; return o; }
+  function meuPedido() {
+    return iniciar().then(function () {
+      if (!auth.currentUser) return null;
+      return db.collection("membros").doc(auth.currentUser.uid).get().then(function (d) { return d.exists ? d.data() : null; });
+    });
+  }
+  function pedirAcesso(dados) {
+    return iniciar().then(function () {
+      var u = auth.currentUser;
+      return db.collection("membros").doc(u.uid).set({
+        email: u.email, nome: String(u.displayName || "").slice(0, 100),
+        instituicao: dados.instituicao, mensagem: dados.mensagem || "", status: "pendente", pedidoEm: agora()
+      });
+    });
+  }
+  function cancelarPedido() { return iniciar().then(function () { return db.collection("membros").doc(auth.currentUser.uid).delete(); }); }
+  function decidirMembro(uid, status) {
+    return iniciar().then(function () { return db.collection("membros").doc(uid).update({ status: status, decididoEm: agora() }); });
+  }
+  function daArea(colecao) {
+    return iniciar().then(function () { return db.collection(colecao).get(); })
+      .then(function (s) { return s.docs.map(comId); });
+  }
+  // Grava na Área: mantém dono e data de criação; quem não é Admin não muda o "publico".
+  function salvarArea(colecao, id, dados) {
+    return iniciar().then(function () {
+      var uid = auth.currentUser.uid;
+      var o = Object.assign({}, dados, { atualizadoEm: agora() });
+      if (!id) { o.dono = uid; o.criadoEm = agora(); return db.collection(colecao).add(o); }
+      var ref = db.collection(colecao).doc(id);
+      return ref.get().then(function (d) {
+        var antes = d.data();
+        o.dono = antes.dono; o.criadoEm = antes.criadoEm;
+        if (colecao === "notas") return ref.update({ texto: o.texto, atualizadoEm: o.atualizadoEm });
+        if (!isAdminUser(auth.currentUser) && "publico" in antes) o.publico = antes.publico;
+        return ref.set(o);
+      });
+    }).then(function (r) { limparCache(colecao + ":publico"); return r; });
+  }
+  function excluirArea(colecao, id) {
+    return iniciar().then(function () { return db.collection(colecao).doc(id).delete(); }).then(function () { limparCache(colecao + ":publico"); });
+  }
+
   window.ELI_FB = {
     ativo: ativo, iniciar: iniciar, msg: msg,
     google: google, entrar: entrar, cadastrar: cadastrar, recuperar: recuperar, reenviar: reenviar, sair: sair,
@@ -242,6 +312,8 @@
     lista: lista, limparCache: limparCache,
     minhaInstituicao: minhaInstituicao, salvarInstituicao: salvarInstituicao,
     meus: meus, salvar: salvar, excluir: excluir, excluirConta: excluirConta,
-    registrar: registrar, acessosDesde: acessosDesde, todos: todos, moderar: moderar
+    registrar: registrar, acessosDesde: acessosDesde, todos: todos, moderar: moderar,
+    listaPublica: listaPublica, meuPedido: meuPedido, pedirAcesso: pedirAcesso, cancelarPedido: cancelarPedido,
+    decidirMembro: decidirMembro, daArea: daArea, salvarArea: salvarArea, excluirArea: excluirArea
   };
 })();

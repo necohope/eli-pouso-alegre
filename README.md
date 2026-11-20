@@ -10,6 +10,7 @@ Site do ELI Pouso Alegre, o Ecossistema Local de Inovação da cidade. HTML, CSS
 | Vitrine | `#vitrine`, `#vitrine/<hélice>` | As 4 hélices e os atores ativos, com logo clicável para o site de cada instituição |
 | Governança | `#governanca` | Sobre nós, visão, missão, princípios, estrutura, regras e primeiros 90 dias |
 | Minha conta | `#conta`, `#conta/instituicao`, `#conta/eventos`, `#conta/programas` | Perfil da instituição, meus eventos e meus programas (criar, editar, excluir) |
+| Área dos Atores | `#area`, `#area/indicadores`, `#area/documentos`, `#area/notas`, `#area/pedidos` | Restrita a membros aprovados: indicadores (KPIs das planilhas), relatórios e atas (links do Drive) e anotações |
 | Painel Admin | `/admin` (link no rodapé) | Estatísticas de acesso e moderação. Demonstração: `/admin?demo` |
 
 Idiomas: português, inglês, espanhol, francês e chinês (seletor no topo; textos em `assets/i18n/`).
@@ -42,6 +43,7 @@ assets/js/fb.js            Firebase: login, leitura (REST leve) e gravação
 assets/js/app.js           Rotas, agenda (lista, mês, ano), PWA, estatísticas
 assets/js/conta.js         Login (Google ou e-mail e senha) e Minha conta
 assets/js/mapa.js          Vitrine e Programas e Ações
+assets/js/area.js          Área dos Atores (restrita) e as partes públicas dela
 assets/js/admin.js         Painel Admin
 firestore.rules            Regras de segurança do banco (quem pode ler e gravar)
 manifest.webmanifest, sw.js  App instalável (PWA)
@@ -73,6 +75,16 @@ Depois abra `http://localhost:8000`. Para parar, aperte Ctrl + C.
 - Logos são reduzidos no próprio navegador (320 px, WebP) e guardados junto do perfil.
 
 Atualizar as regras do banco: `firebase deploy --only firestore:rules --project <id do projeto>`.
+
+## Área dos Atores (restrita)
+
+- Quem tem conta pede acesso em `#area` (informa a instituição). O Admin aprova, recusa ou remove o acesso na aba "Pedidos de acesso". O Painel Admin mostra quantos pedidos estão aguardando.
+- **Indicadores:** o Admin importa a planilha (.xlsx ou .csv exportado do Drive) pelo botão "Importar planilha". A leitura é feita no navegador, com a biblioteca SheetJS carregada só nessa hora. Cada aba vira um quadro, que pode ser mostrado como tabela ou como cartões de destaque. Para atualizar, basta importar de novo o mesmo arquivo: os quadros da mesma aba são substituídos e mantêm a configuração. Limite: 2.000 linhas e 40 colunas por aba.
+- **Relatórios e atas:** ficam no Drive. O site guarda só o link e mostra uma prévia ("Ver aqui"). Para o membro ver o arquivo, ele precisa estar compartilhado com ele no Drive.
+- **Anotações:** mural interno; cada membro edita as próprias anotações.
+- **Público:** só o Admin marca um quadro ou documento como público. Quadros públicos aparecem em "O ELI em números" (página inicial) e documentos públicos em "Documentos públicos" (Governança). Documento público precisa estar no Drive como "qualquer pessoa com o link".
+- A segurança fica nas regras do banco (`firestore.rules`): sem aprovação, nada é lido, nem por fora do site.
+- Planilhas e arquivos internos para trabalhar no computador ficam na pasta `dados-privados/`, que não vai para o GitHub nem para o site.
 
 ## Estatísticas
 

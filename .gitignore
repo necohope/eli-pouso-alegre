@@ -23,3 +23,6 @@ node_modules/
 
 # Credenciais do painel Admin (só vão para o Apps Script, nunca para o GitHub)
 apps-script/segredos.gs
+
+# Planilhas e documentos internos do ELI (nunca vão para o GitHub nem para o site)
+dados-privados/

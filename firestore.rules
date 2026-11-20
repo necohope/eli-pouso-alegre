@@ -6,6 +6,7 @@ rules_version = '2';
 // - Cada usuário só cria, edita e exclui o que é dele (campo "dono" = seu uid).
 // - Só o Admin muda "oculto" (moderação) e lê as estatísticas.
 // - Estatísticas: qualquer visitante grava um acesso anônimo, com campos fixos.
+// - Área dos Atores: indicadores, documentos e anotações só para membros aprovados.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -111,13 +112,98 @@ service cloud.firestore {
                                                                'sistema', 'idioma', 'origem', 'app', 'quando'])
         && request.resource.data.quando == request.time
         && request.resource.data.tipo in ['pagina', 'evento_aberto', 'whatsapp', 'cadastro_enviado', 'salvar_agenda', 'convite_app',
-                                          'app_instalado', 'inscricao', 'site_ator', 'perfil_aberto', 'programa_aberto']
+                                          'app_instalado', 'inscricao', 'site_ator', 'perfil_aberto', 'programa_aberto', 'pedido_acesso']
         && texto(request.resource.data.pagina, 40) && texto(request.resource.data.alvo, 120) && texto(request.resource.data.visitante, 24)
         && request.resource.data.novo is bool && request.resource.data.app is bool
         && texto(request.resource.data.dispositivo, 12) && texto(request.resource.data.navegador, 16) && texto(request.resource.data.sistema, 16)
         && texto(request.resource.data.idioma, 8) && texto(request.resource.data.origem, 60);
       allow read, delete: if isAdmin();
       allow update: if false;
+    }
+
+    // =====================================================================
+    // Área dos Atores (restrita): só membros aprovados pelo Admin leem.
+    // O que o Admin marcar como "publico" aparece também no site aberto.
+    // =====================================================================
+    function membroAprovado() {
+      return confirmado()
+        && exists(/databases/$(database)/documents/membros/$(request.auth.uid))
+        && get(/databases/$(database)/documents/membros/$(request.auth.uid)).data.status == 'aprovado';
+    }
+    function daArea() { return isAdmin() || membroAprovado(); }
+
+    // Pedidos de acesso: id = uid. A pessoa pede; só o Admin aprova ou recusa.
+    match /membros/{uid} {
+      allow read: if (logado() && request.auth.uid == uid) || isAdmin();
+      allow create: if confirmado() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['email', 'nome', 'instituicao', 'mensagem', 'status', 'pedidoEm'])
+        && request.resource.data.email == request.auth.token.email
+        && texto(request.resource.data.nome, 100)
+        && texto(request.resource.data.instituicao, 100) && request.resource.data.instituicao.size() >= 2
+        && texto(request.resource.data.mensagem, 300)
+        && request.resource.data.status == 'pendente'
+        && request.resource.data.pedidoEm == request.time;
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'decididoEm'])
+        && request.resource.data.status in ['pendente', 'aprovado', 'recusado'];
+      allow delete: if (logado() && request.auth.uid == uid) || isAdmin();
+    }
+
+    // Indicadores (KPIs) importados das planilhas. Só o Admin importa e edita.
+    function indicadorValido(d) {
+      return d.keys().hasOnly(['titulo', 'descricao', 'arquivo', 'aba', 'colunas', 'dados', 'linhas', 'exibir', 'rotulo', 'valor', 'detalhe',
+                               'publico', 'ordem', 'dono', 'criadoEm', 'atualizadoEm'])
+        && texto(d.titulo, 120) && d.titulo.size() >= 2
+        && texto(d.descricao, 400) && texto(d.arquivo, 160) && texto(d.aba, 100)
+        && lista(d.colunas, 40) && texto(d.dados, 900000) && d.linhas is int
+        && d.exibir in ['tabela', 'cartoes']
+        && d.rotulo is int && d.valor is int && d.detalhe is int
+        && d.publico is bool && d.ordem is int
+        && d.atualizadoEm == request.time;
+    }
+    match /indicadores/{id} {
+      allow read: if resource.data.publico == true || daArea();
+      allow create: if isAdmin() && indicadorValido(request.resource.data)
+        && request.resource.data.dono == request.auth.uid && request.resource.data.criadoEm == request.time;
+      allow update: if isAdmin() && indicadorValido(request.resource.data)
+        && request.resource.data.dono == resource.data.dono && request.resource.data.criadoEm == resource.data.criadoEm;
+      allow delete: if isAdmin();
+    }
+
+    // Documentos (relatórios, atas, apresentações): link do Drive. Membros cadastram; só o Admin torna público.
+    function documentoValido(d) {
+      return d.keys().hasOnly(['titulo', 'tipo', 'url', 'data', 'descricao', 'publico', 'instituicao', 'dono', 'criadoEm', 'atualizadoEm'])
+        && texto(d.titulo, 140) && d.titulo.size() >= 3
+        && d.tipo in ['relatorio', 'ata', 'apresentacao', 'planilha', 'outro']
+        && link(d.url) && d.url != '' && data(d.data)
+        && texto(d.descricao, 400) && d.publico is bool && texto(d.instituicao, 100)
+        && d.atualizadoEm == request.time;
+    }
+    match /documentos/{id} {
+      allow read: if resource.data.publico == true || daArea();
+      allow create: if daArea() && documentoValido(request.resource.data)
+        && request.resource.data.dono == request.auth.uid && request.resource.data.criadoEm == request.time
+        && (request.resource.data.publico == false || isAdmin());
+      allow update: if daArea() && documentoValido(request.resource.data)
+        && request.resource.data.dono == resource.data.dono && request.resource.data.criadoEm == resource.data.criadoEm
+        && ((resource.data.dono == request.auth.uid && request.resource.data.publico == resource.data.publico) || isAdmin());
+      allow delete: if (logado() && resource.data.dono == request.auth.uid) || isAdmin();
+    }
+
+    // Anotações internas: só membros leem; cada um edita as suas.
+    match /notas/{id} {
+      allow read: if daArea();
+      allow create: if daArea()
+        && request.resource.data.keys().hasOnly(['texto', 'instituicao', 'dono', 'criadoEm', 'atualizadoEm'])
+        && texto(request.resource.data.texto, 2000) && request.resource.data.texto.size() >= 1
+        && texto(request.resource.data.instituicao, 100)
+        && request.resource.data.dono == request.auth.uid
+        && request.resource.data.criadoEm == request.time && request.resource.data.atualizadoEm == request.time;
+      allow update: if daArea() && resource.data.dono == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['texto', 'atualizadoEm'])
+        && texto(request.resource.data.texto, 2000) && request.resource.data.texto.size() >= 1
+        && request.resource.data.atualizadoEm == request.time;
+      allow delete: if (logado() && resource.data.dono == request.auth.uid) || isAdmin();
     }
 
     // Qualquer outra coleção: fechado.

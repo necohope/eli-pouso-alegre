@@ -708,3 +708,75 @@ button.ym__d:focus-visible { outline: 3px solid var(--blue); outline-offset: 1px
 .gaveta__langs button[aria-current="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
 .gaveta__langs button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 .page-head > picture > img.foco-praca { object-position: 30% 42%; opacity: .5; }
+
+/* =========================================================
+   Área dos Atores (restrita) e "O ELI em números"
+   ========================================================= */
+.gaveta__restrita { display: flex !important; align-items: center; gap: 10px; }
+.gaveta__restrita .cadeado { flex: none; color: var(--coral-text); }
+.area { max-width: 1100px; }
+.area-intro { max-width: 640px; }
+.area-intro h1 { font-size: clamp(2.25rem, 5vw, 3.25rem); margin-bottom: 4px; }
+.area__selo { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 10px; font-size: .8125rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--coral-text); }
+.area-pedido { margin-top: 18px; }
+.area__conta { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; margin-left: 6px; border-radius: 999px; background: var(--coral); color: #fff; font-size: .75rem; }
+.area__conta[hidden] { display: none; }
+
+.indicadores { display: grid; gap: 18px; }
+.kpi { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; min-width: 0; }
+.kpi__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.kpi__head h3 { margin: 0; font-size: 1.25rem; color: var(--ink); line-height: 1.25; }
+.kpi__desc { margin: 4px 0 0; font-size: var(--t-small); color: var(--muted); }
+.kpi__meta { margin: 12px 0 0; font-size: .8125rem; color: var(--muted); }
+.kpi__acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.kpi-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.kpi-cards li { background: var(--mist); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.kpi-cards strong { font-size: 2.125rem; line-height: 1; font-weight: 800; font-variation-settings: "wdth" 75; color: var(--ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.kpi-cards span { font-size: var(--t-small); color: var(--text); line-height: 1.3; }
+.kpi-cards small { font-size: .8125rem; color: var(--muted); }
+.kpi-tabela, .imp-previa .table-wrap { max-height: 460px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; margin-top: 0; }
+.kpi-tabela:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.kpi-tabela table, .imp-previa table { width: 100%; border-collapse: collapse; font-size: var(--t-small); font-variant-numeric: tabular-nums; }
+.kpi-tabela th, .kpi-tabela td, .imp-previa th, .imp-previa td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.kpi-tabela th, .imp-previa th { position: sticky; top: 0; background: var(--mist); color: var(--ink); font-weight: 700; }
+.kpi-tabela tbody tr:last-child td { border-bottom: 0; }
+
+.area-filtro { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; border: 0; border-radius: 0; overflow: visible; }
+.area-filtro button { border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: var(--t-small); }
+.area-filtro button[aria-pressed="true"] { border-color: var(--ink); }
+.area-filtro button span { opacity: .7; margin-left: 2px; }
+.area-doc-form { margin-bottom: 16px; }
+.area-doc-form .note { margin: 4px 0 0; font-size: .8125rem; }
+.docs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.doc { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+.doc__ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--mist); color: var(--ink); }
+.doc__txt { min-width: 0; }
+.doc__txt strong { display: block; color: var(--ink); line-height: 1.3; }
+.doc__meta { display: block; font-size: .8125rem; color: var(--muted); margin-top: 2px; }
+.doc__txt p { margin: 6px 0 0; font-size: var(--t-small); color: var(--muted); }
+.doc__acoes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+@media (max-width: 720px) { .doc { grid-template-columns: 44px 1fr; } .doc__acoes { grid-column: 1 / -1; justify-content: flex-start; } }
+
+.area-nota-form { margin-bottom: 16px; }
+.notas { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.nota { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--mint); border-radius: 12px; padding: 14px 16px; }
+.nota__txt { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.nota__meta { margin: 8px 0 0; font-size: .8125rem; color: var(--muted); }
+.nota__acoes { display: flex; gap: 14px; margin-top: 6px; font-size: .8125rem; }
+.pedido__msg { margin: 6px 0 0; font-size: var(--t-small); color: var(--text); font-style: italic; }
+.mine__item > div:first-child { min-width: 0; }
+.mine__item > div:first-child span { display: inline-block; }
+
+.modal--largo { max-width: min(880px, calc(100vw - 32px)); }
+.modal--largo .form { border: 0; padding: 0; }
+.imp-aba { border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px 16px; margin: 0 0 14px; min-width: 0; }
+.imp-aba.is-vazia { opacity: .6; }
+.imp-aba legend { padding: 0 6px; }
+.imp-campos { display: grid; grid-template-columns: 1fr 160px; gap: 12px; margin: 8px 0 10px; }
+@media (max-width: 560px) { .imp-campos { grid-template-columns: 1fr; } }
+.imp-previa .note { margin: 0 0 6px; font-size: .8125rem; }
+.imp-previa .table-wrap { max-height: 200px; }
+.imp-foot { display: flex; }
+.modal--doc { max-width: min(1000px, calc(100vw - 32px)); }
+.doc-frame { margin: 0 0 12px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--mist); }
+.doc-frame iframe { display: block; width: 100%; height: min(70vh, 720px); border: 0; }

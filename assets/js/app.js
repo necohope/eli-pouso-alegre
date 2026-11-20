@@ -74,8 +74,8 @@
 
   /* ---------------- rotas ---------------- */
   // #vitrine/academia, #conta/eventos etc.: a parte depois da barra fica em "sub".
-  var VIEWS = ["inicio", "agenda", "programas", "vitrine", "governanca", "conta"];
-  var TITULOS = { inicio: "ELI Pouso Alegre — Ecossistema Local de Inovação", agenda: "Agenda Única da Inovação — ELI Pouso Alegre", programas: "Programas e Ações — ELI Pouso Alegre", vitrine: "Vitrine do Ecossistema — ELI Pouso Alegre", governanca: "Governança — ELI Pouso Alegre", conta: "Minha conta — ELI Pouso Alegre" };
+  var VIEWS = ["inicio", "agenda", "programas", "vitrine", "governanca", "conta", "area"];
+  var TITULOS = { inicio: "ELI Pouso Alegre — Ecossistema Local de Inovação", agenda: "Agenda Única da Inovação — ELI Pouso Alegre", programas: "Programas e Ações — ELI Pouso Alegre", vitrine: "Vitrine do Ecossistema — ELI Pouso Alegre", governanca: "Governança — ELI Pouso Alegre", conta: "Minha conta — ELI Pouso Alegre", area: "Área dos Atores — ELI Pouso Alegre" };
   var rotaAtual = { view: "", sub: [] };
   function route() {
     var partes = (location.hash || "").replace("#", "").split("/");
